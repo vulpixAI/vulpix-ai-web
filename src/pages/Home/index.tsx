@@ -22,7 +22,7 @@ export default function Home() {
             <header id="header" className="bg-black font-sans">
                 <nav className={"fixed w-full flex justify-center items-center h-20 top-0 transition-all duration-300 " + navBackgroundColor}>
                     <div className='w-1/4 flex justify-end'>
-                        <img className="h-16 pointer-events-none" src="/vulpixai-logo.jpeg" alt="Logo vulpix.AI" />
+                        <img className="h-[4.5rem] pointer-events-none" src="/vulpixai-logo.jpeg" alt="Logo vulpix.AI" />
                     </div>
 
                     <ul className="text-white-gray flex justify-center select-none w-1/2 mx-12">
