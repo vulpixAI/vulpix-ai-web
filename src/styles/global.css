@@ -1,0 +1,35 @@
+body::-webkit-scrollbar {
+    width: 6px;
+}
+
+body::-webkit-scrollbar-track {
+    background: #161719;
+}
+
+body::-webkit-scrollbar-thumb {
+    background-color: #5d5aff;
+    border-radius: 30px;
+}
+
+p::selection,
+span::selection,
+br::selection,
+h1::selection,
+h2::selection,
+h3::selection,
+h4::selection,
+h5::selection,
+h6::selection {
+    background-color: #5d5aff;
+}
+
+a {
+    text-decoration: none;
+}
+
+button,
+input,
+img,
+a {
+    user-select: none;
+}
