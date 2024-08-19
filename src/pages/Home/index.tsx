@@ -19,7 +19,7 @@ export default function Home() {
 
     return (
         <div className='h-screen bg-black'>
-            <header id="header" className="bg-black font-sans">
+            <header id="header" className="bg-black">
                 <nav className={"fixed w-full flex justify-center items-center h-20 top-0 transition-all duration-300 " + navBackgroundColor}>
                     <div className='w-1/4 flex justify-end'>
                         <img className="h-[4.5rem] pointer-events-none" src="/vulpixai-logo.jpeg" alt="Logo vulpix.AI" />
@@ -39,8 +39,8 @@ export default function Home() {
                     </div>
                 </nav>
 
-                <div className="flex flex-col justify-center items-center mt-16 text-white-gray">
-                    <h1 className="text-4xl font-bold mt-24">Seu agente de marketing.</h1>
+                <div className="flex flex-col justify-center items-center pt-20 text-white-gray">
+                    <h1 className="text-4xl font-bold mt-16">Seu agente de marketing.</h1>
                     <p className="mt-4 text-md">Impulsione suas vendas com IA: personalize campanhas, <br /> segmente públicos com precisão e automatize interações.</p>
                     <div className="bg-white h-[450px] w-[75%] mt-20 rounded-sm"></div>
                 </div>
