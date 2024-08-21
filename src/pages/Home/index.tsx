@@ -32,8 +32,11 @@ export default function Home() {
                 </div>
 
                 <nav className={"fixed z-10 w-full flex justify-center items-center h-20 top-0 transition-all duration-300 " + navBackgroundColor}>
-                    <div className='w-1/4 flex justify-end'>
-                        <a href="#home"><img className="h-[4.5rem] pointer-events-none" src="/vulpixai-logo.jpeg" alt="Logo vulpix.AI" /></a>
+                    <div className='w-1/4 flex items-center justify-end'>
+                        <a href="#home" className="flex items-center">
+                            <img className="h-[4.5rem] pointer-events-none" src="/vulpixai-logo.jpeg" alt="Logo vulpix.AI" />
+                            <h4 className="text-2xl text-white ml-[-8px] font-bold">vulpix.<span className="text-purple">AI</span></h4>
+                        </a>
                     </div>
 
                     <ul className="text-white-gray flex justify-center select-none w-1/2 mx-12">
@@ -54,9 +57,10 @@ export default function Home() {
 
                 <div className="flex flex-col justify-center items-center text-white-gray h-full">
                     <div className="flex flex-col items-center mt-[-2rem]">
-                        <h1 className="text-6xl font-bold mt-20 animate-slideDown">Seu <span className="text-purple">Agente</span> de Marketing.</h1>
+                        <h1 className="text-6xl font-bold mt-20 animate-slideDown">Seu Agente de <span className="text-purple select-none">Marketing</span>.</h1>
                         <TypeAnimation
-                            sequence={[1200, 'Impulsione suas vendas com a utilização de Inteligência Artificial: personalize campanhas, \nsegmente públicos com precisão e automatize interações.']}
+                            // sequence={[1200, 'Impulsione suas vendas com a utilização de Inteligência Artificial: personalize campanhas, \nsegmente públicos com precisão e automatize interações.']}
+                            sequence={[1200, 'Impulsione seu negócio com IA: Desenvolva campanhas únicas e impactantes em poucos minutos, \nutilizando o poder da Inteligência Artificial.']}
                             speed={50}
                             repeat={1}
                             style={{ whiteSpace: 'pre-line', fontSize: '1.25rem', marginTop: '2rem', marginBottom: '2rem', textAlign: 'center', height: '3.5rem' }}
