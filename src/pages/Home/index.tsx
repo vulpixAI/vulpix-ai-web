@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useLastPage } from '../../hooks/useLastPage';
+import { TypeAnimation } from 'react-type-animation';
 import 'aos/dist/aos.css'
 import AOS from 'aos';
 
@@ -19,7 +20,7 @@ export default function Home() {
 
     return (
         <div className='h-screen bg-black'>
-            <header id="header" className="bg-black">
+            <header id="home" className="bg-black h-full">
                 <div className={"absolute w-full flex justify-center items-center h-20 top-0"}>
                     <div className='w-1/4'></div>
                     <div className="w-1/2 mx-12"></div>
@@ -32,29 +33,36 @@ export default function Home() {
 
                 <nav className={"fixed z-10 w-full flex justify-center items-center h-20 top-0 transition-all duration-300 " + navBackgroundColor}>
                     <div className='w-1/4 flex justify-end'>
-                        <img className="h-[4.5rem] pointer-events-none" src="/vulpixai-logo.jpeg" alt="Logo vulpix.AI" />
+                        <a href="#home"><img className="h-[4.5rem] pointer-events-none" src="/vulpixai-logo.jpeg" alt="Logo vulpix.AI" /></a>
                     </div>
 
                     <ul className="text-white-gray flex justify-center select-none w-1/2 mx-12">
-                        <li className="mx-4"><a className="hover:text-purple transition-all" href="">Features</a></li>
-                        <li className="mx-4"><a className="hover:text-purple transition-all" href="">Planos</a></li>
-                        <li className="mx-4"><a className="hover:text-purple transition-all" href="">Documentação</a></li>
-                        <li className="mx-4"><a className="hover:text-purple transition-all" href="">Sobre nós</a></li>
-                        <li className="mx-4"><a className="hover:text-purple transition-all" href="">Contato</a></li>
+                        <li className="mx-4"><a className="hover:text-purple transition-all" href="#home">Home</a></li>
+                        <li className="mx-4"><a className="hover:text-purple transition-all" href="#servicos">Serviços</a></li>
+                        <li className="mx-4"><a className="hover:text-purple transition-all" href="#produto">Produto</a></li>
+                        <li className="mx-4"><a className="hover:text-purple transition-all" href="#sobre-nos">Sobre nós</a></li>
+                        <li className="mx-4"><a className="hover:text-purple transition-all" href="#contato">Contato</a></li>
                     </ul>
 
                     <div className="w-1/4 flex items-center">
-                        <div className='relative flex w-[172px]'>
+                        <div className='flex w-[172px]'>
                             <Link to="/login" className="h-8 mr-4 text-white-gray hover:text-purple transition-all flex items-center">Entrar</Link>
                             <Link to="/signup" className="h-8 px-3 text-nowrap bg-purple flex items-center text-white rounded-sm hover:bg-purple-dark transition-all">Inscrever-se</Link>
                         </div>
                     </div>
                 </nav>
 
-                <div className="flex flex-col justify-center items-center pt-20 text-white-gray">
-                    <h1 className="text-4xl font-bold mt-20">Seu agente de marketing.</h1>
-                    <p className="mt-4 text-md">Impulsione suas vendas com IA: personalize campanhas, <br /> segmente públicos com precisão e automatize interações.</p>
-                    <div className="bg-white h-[450px] w-[75%] mt-20 rounded-sm"></div>
+                <div className="flex flex-col justify-center items-center text-white-gray h-full">
+                    <div className="flex flex-col items-center mt-[-2rem]">
+                        <h1 className="text-6xl font-bold mt-20 animate-slideDown">Seu <span className="text-purple">Agente</span> de Marketing.</h1>
+                        <TypeAnimation
+                            sequence={[1200, 'Impulsione suas vendas com a utilização de Inteligência Artificial: personalize campanhas, \nsegmente públicos com precisão e automatize interações.']}
+                            speed={50}
+                            repeat={1}
+                            style={{ whiteSpace: 'pre-line', fontSize: '1.25rem', marginTop: '2rem', marginBottom: '2rem', textAlign: 'center', height: '3.5rem' }}
+                        />
+                        <a href="#servico" className="h-12 px-5 text-nowrap text-xl bg-purple flex items-center text-white rounded-sm hover:bg-purple-dark hover:px-7 duration-300 ease-in-out">Conheça nossos serviços</a>
+                    </div>
                 </div>
             </header>
         </div>
