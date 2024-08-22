@@ -13,8 +13,8 @@ export default function NotFound() {
             <img className="h-[404px] mr-20 pointer-events-none select-none" src="/monster-404.svg" alt="Monster 404" />
 
             <div className="flex flex-col items-start ml-20">
-                <h1 className="text-white-gray text-3xl font-medium">Ooops!</h1>
-                <h2 className="text-white-gray text-2xl font-medium w-80 my-8 text-start">Parece que o monstrinho devorou a página que você estava procurando...</h2>
+                <h1 className="text-white-gray text-3xl font-semibold">Ooops!</h1>
+                <h2 className="text-white-gray text-2xl font-semibold w-80 my-8 text-start">Parece que o monstrinho devorou a página que você estava procurando...</h2>
                 {
                     lastPage
                         ?

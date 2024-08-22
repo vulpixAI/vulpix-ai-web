@@ -16,15 +16,29 @@ export default {
         sans: ['Inter', 'sans-serif']
       },
       animation: {
-        slideDown: 'slideDown 1.5s ease-out'
+        fadeIn: 'fadeIn 2s ease-in forwards',
+        slideDown: 'slideDown 1.5s ease-out',
+        wheelDown: 'wheelDown 2s infinite'
       },
       keyframes: {
+        fadeIn: {
+          '0%': { opacity: 0 },
+          '100%': { opacity: 1 }
+        },
         slideDown: {
           '0%': { opacity: 0, transform: 'translateY(-50px)' },
           '100%': { opacity: 1, transform: 'translateY(0)' }
+        },
+        wheelDown: {
+          'to': {
+            opacity: 0,
+            top: '60px'
+          }
         }
       }
     },
   },
-  plugins: [],
+  plugins: [
+    require("tailwindcss-animate")
+  ],
 }

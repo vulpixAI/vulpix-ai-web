@@ -20,7 +20,7 @@ export default function Home() {
 
     return (
         <div className='h-screen bg-black'>
-            <header id="home" className="bg-black h-full">
+            <header id="home" className="bg-black h-full relative">
                 <div className={"absolute w-full flex justify-center items-center h-20 top-0"}>
                     <div className='w-1/4'></div>
                     <div className="w-1/2 mx-12"></div>
@@ -42,8 +42,7 @@ export default function Home() {
                     <ul className="text-white-gray flex justify-center select-none w-1/2 mx-12">
                         <li className="mx-4"><a className="hover:text-purple transition-all" href="#home">Home</a></li>
                         <li className="mx-4"><a className="hover:text-purple transition-all" href="#servicos">Serviços</a></li>
-                        <li className="mx-4"><a className="hover:text-purple transition-all" href="#produto">Produto</a></li>
-                        <li className="mx-4"><a className="hover:text-purple transition-all" href="#sobre-nos">Sobre nós</a></li>
+                        <li className="mx-4"><a className="hover:text-purple transition-all" href="#sobre">Sobre nós</a></li>
                         <li className="mx-4"><a className="hover:text-purple transition-all" href="#contato">Contato</a></li>
                     </ul>
 
@@ -59,16 +58,29 @@ export default function Home() {
                     <div className="flex flex-col items-center mt-[-2rem]">
                         <h1 className="text-6xl font-bold mt-20 animate-slideDown">Seu Agente de <span className="text-purple select-none">Marketing</span>.</h1>
                         <TypeAnimation
-                            // sequence={[1200, 'Impulsione suas vendas com a utilização de Inteligência Artificial: personalize campanhas, \nsegmente públicos com precisão e automatize interações.']}
                             sequence={[1200, 'Impulsione seu negócio com IA: Desenvolva campanhas únicas e impactantes em poucos minutos, \nutilizando o poder da Inteligência Artificial.']}
                             speed={50}
                             repeat={1}
                             style={{ whiteSpace: 'pre-line', fontSize: '1.25rem', marginTop: '2rem', marginBottom: '2rem', textAlign: 'center', height: '3.5rem' }}
                         />
-                        <a href="#servico" className="h-12 px-5 text-nowrap text-xl bg-purple flex items-center text-white rounded-sm hover:bg-purple-dark hover:px-7 duration-300 ease-in-out">Conheça nossos serviços</a>
+                        <a href="#servicos" className="h-14 px-5 text-nowrap text-xl bg-purple flex items-center text-white rounded-sm hover:px-7 duration-500 ease-in-out">Conheça nossos serviços</a>
                     </div>
                 </div>
+
+                <a href="#servicos" className="animate-fadeIn delay-700 opacity-0 absolute bottom-2 left-8 scale-[0.6] cursor-pointer w-[50px] h-[90px] rounded-[60px] border-solid border-[3px] border-white before:content-[''] before:w-[12px] before:h-[12px] before:absolute before:top-[10px] before:left-[50%] before:translate-x-[-50%] before:bg-white before:rounded-full before:opacity-100 before:animate-wheelDown before:delay-700"></a>
             </header>
+
+            <section id="servicos">
+
+            </section>
+
+            <section id="sobre">
+
+            </section>
+
+            <section id="contato">
+
+            </section>
         </div>
     )
 }
