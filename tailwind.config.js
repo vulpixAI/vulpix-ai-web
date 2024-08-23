@@ -18,7 +18,7 @@ export default {
       animation: {
         fadeIn: 'fadeIn 2s ease-in forwards',
         slideDown: 'slideDown 1.5s ease-out',
-        wheelDown: 'wheelDown 2s infinite'
+        moveArrow: 'moveArrow 1.4s ease-in-out infinite'
       },
       keyframes: {
         fadeIn: {
@@ -29,12 +29,14 @@ export default {
           '0%': { opacity: 0, transform: 'translateY(-50px)' },
           '100%': { opacity: 1, transform: 'translateY(0)' }
         },
-        wheelDown: {
-          'to': {
-            opacity: 0,
-            top: '60px'
-          }
+        moveArrow: {
+          '0%': { transform: 'translateY(-20px)' },
+          '100%': { transform: 'translateY(0)' }
         }
+      },
+      backgroundImage: {
+        'header': "linear-gradient(to right, rgba(22, 23, 25, 0.84), rgba(22, 23, 25, 0.84)), url('/bg-header.jpg')",
+        'fade': "url('/fade.svg')"
       }
     },
   },

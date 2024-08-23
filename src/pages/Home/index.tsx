@@ -16,21 +16,11 @@ export default function Home() {
         AOS.init();
     }, []);
 
-    useEffect(() => wasScrolled ? setNavBackgroundColor("bg-gray/85") : setNavBackgroundColor("transparent"), [wasScrolled]);
+    useEffect(() => wasScrolled ? setNavBackgroundColor("bg-gray/85 backdrop-blur-sm") : setNavBackgroundColor("transparent"), [wasScrolled]);
 
     return (
         <div className='h-screen bg-black'>
-            <header id="home" className="bg-black h-full relative">
-                <div className={"absolute w-full flex justify-center items-center h-20 top-0"}>
-                    <div className='w-1/4'></div>
-                    <div className="w-1/2 mx-12"></div>
-                    <div className="w-1/4 flex">
-                        <div className='w-[1000px] h-[650px] overflow-hidden'>
-                            <img src="src/assets/waves.svg" className="scale-[1.7] mt-[320px] ml-[70px] select-none pointer-events-none" />
-                        </div>
-                    </div>
-                </div>
-
+            <header id="home" className="bg-header bg-cover h-full relative after:content-[''] after:bg-fade after:absolute after:bottom-0 after:w-full after:h-[160px]">
                 <nav className={"fixed z-10 w-full flex justify-center items-center h-20 top-0 transition-all duration-300 " + navBackgroundColor}>
                     <div className='w-1/4 flex items-center justify-end'>
                         <a href="#home" className="flex items-center">
@@ -42,7 +32,7 @@ export default function Home() {
                     <ul className="text-white-gray flex justify-center select-none w-1/2 mx-12">
                         <li className="mx-4"><a className="hover:text-purple transition-all" href="#home">Home</a></li>
                         <li className="mx-4"><a className="hover:text-purple transition-all" href="#servicos">Serviços</a></li>
-                        <li className="mx-4"><a className="hover:text-purple transition-all" href="#sobre">Sobre nós</a></li>
+                        <li className="mx-4"><a className="hover:text-purple transition-all" href="#perguntas">Perguntas frequentes</a></li>
                         <li className="mx-4"><a className="hover:text-purple transition-all" href="#contato">Contato</a></li>
                     </ul>
 
@@ -63,18 +53,20 @@ export default function Home() {
                             repeat={1}
                             style={{ whiteSpace: 'pre-line', fontSize: '1.25rem', marginTop: '2rem', marginBottom: '2rem', textAlign: 'center', height: '3.5rem' }}
                         />
-                        <a href="#servicos" className="h-14 px-5 text-nowrap text-xl bg-purple flex items-center text-white rounded-sm hover:px-7 duration-500 ease-in-out">Conheça nossos serviços</a>
+                        <a href="#servicos" className="h-14 px-7 text-nowrap text-xl bg-purple flex items-center text-white rounded-md hover:px-9 duration-500 ease-in-out">Conheça nossos serviços</a>
                     </div>
                 </div>
 
-                <a href="#servicos" className="animate-fadeIn delay-700 opacity-0 absolute bottom-2 left-8 scale-[0.6] cursor-pointer w-[50px] h-[90px] rounded-[60px] border-solid border-[3px] border-white before:content-[''] before:w-[12px] before:h-[12px] before:absolute before:top-[10px] before:left-[50%] before:translate-x-[-50%] before:bg-white before:rounded-full before:opacity-100 before:animate-wheelDown before:delay-700"></a>
+                <div className="animate-fadeIn delay-700 opacity-0 absolute bottom-2 left-[50%] -translate-x-[50%] z-10">
+                    <img className="h-12 animate-moveArrow direction-alternate select-none pointer-events-none" src="/arrow-down.svg" />
+                </div>
             </header>
 
             <section id="servicos">
 
             </section>
 
-            <section id="sobre">
+            <section id="perguntas">
 
             </section>
 
