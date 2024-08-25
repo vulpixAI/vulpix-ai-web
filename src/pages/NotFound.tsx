@@ -18,7 +18,7 @@ export default function NotFound() {
                     {
                         lastPage
                             ?
-                            <Link to={"" + lastPage} className="h-10 px-4 bg-purple flex items-center text-white text-xl rounded-md hover:bg-purple-dark transition-all">Voltar</Link>
+                            <Link to={`${lastPage}`} className="h-10 px-4 bg-purple flex items-center text-white text-xl rounded-md hover:bg-purple-dark transition-all">Voltar</Link>
                             :
                             <Link to="/" className="h-10 px-4 bg-purple flex items-center text-white text-xl rounded-md hover:bg-purple-dark transition-all">Ir Para a Home</Link>
                     }

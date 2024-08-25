@@ -23,7 +23,7 @@ export default function Home() {
     return (
         <div className='h-screen bg-black max-w-full'>
             <header id="home" className="bg-header bg-cover h-full relative after:content-[''] after:bg-fade after:absolute after:bottom-0 after:w-full after:h-[160px]">
-                <nav className={"fixed z-20 w-full flex justify-center items-center h-20 top-0 transition-all duration-300 " + navBackgroundColor}>
+                <nav className={`fixed z-20 w-screen flex justify-center items-center h-20 top-0 transition-all duration-300 ${navBackgroundColor}`}>
                     <div className='w-1/4 flex items-center justify-end'>
                         <a href="#home" className="flex items-center">
                             <img className="h-[4.5rem] pointer-events-none" src="/vulpixai-logo.jpeg" alt="Logo vulpix.AI" />
@@ -48,7 +48,7 @@ export default function Home() {
 
                 <div className="flex flex-col justify-center items-center text-white-gray h-full">
                     <div className="flex flex-col items-center mt-[-2rem]">
-                        <h1 className="text-6xl font-bold mt-20 animate-slideDown select-none">Seu Agente de <span className="text-purple">Marketing</span>.</h1>
+                        <h1 className="text-6xl text-center font-bold mt-20 animate-slideDown select-none">Seu Agente de <span className="text-purple">Marketing</span>.</h1>
                         <TypeAnimation
                             sequence={[1200, 'Impulsione seu negócio com IA: Desenvolva campanhas únicas e impactantes em poucos minutos, \nutilizando o poder da Inteligência Artificial.']}
                             speed={50}
@@ -65,7 +65,7 @@ export default function Home() {
             </header>
 
 
-            <section id="hero-section" className="flex justify-center pt-24 pb-48 text-white-gray text-[1.04rem]">
+            <section id="hero-section" className="flex justify-center pt-24 pb-48 text-white-gray text-[1.04rem] overflow-x-hidden">
                 <div className="flex flex-col items-center -mr-12" data-aos="fade-right" data-aos-duration="1500" data-aos-once="true">
                     <div className="w-24 h-24 rounded-full bg-purple"></div>
                     <h4 className="font-bold mt-10">1. Lorem Ipsum</h4>
@@ -90,7 +90,7 @@ export default function Home() {
 
 
             <section id="servicos" className="pb-40 flex flex-col justify-center items-center overflow-x-hidden">
-                <h1 className="text-4xl text-white-gray font-bold select-none" data-aos="fade-right" data-aos-duration="1500" data-aos-once="true">Construído <span className="text-purple">exclusivamente</span> para você.</h1>
+                <h1 className="text-4xl text-center text-white-gray font-bold select-none" data-aos="fade-right" data-aos-duration="1500" data-aos-once="true">Construído <span className="text-purple">exclusivamente</span> para você.</h1>
                 <p className="mt-6 mb-24 text-white-gray w-[54rem] text-center" data-aos="fade-right" data-aos-duration="1500" data-aos-once="true">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ullam velit quidem ipsa unde ex tenetur quia neque, nesciunt id quod necessitatibus modi sapiente nam earum cumque at? Quas, maxime illum.</p>
                 <div data-aos="fade-right" data-aos-duration="1500" data-aos-once="true">
                     <Swiper />
@@ -98,8 +98,8 @@ export default function Home() {
             </section>
 
 
-            <section id="planos" className="pb-32 flex flex-col items-center">
-                <h1 className="text-4xl text-white-gray font-bold select-none" data-aos="fade-right" data-aos-duration="1500" data-aos-once="true">Comece por nossos <span className="text-purple">planos</span>.</h1>
+            <section id="planos" className="pb-32 flex flex-col items-center overflow-x-hidden">
+                <h1 className="text-4xl text-center text-white-gray font-bold select-none" data-aos="fade-right" data-aos-duration="1500" data-aos-once="true">Comece por nossos <span className="text-purple">planos</span>.</h1>
                 <p className="mt-6 text-white-gray w-[54rem] text-center" data-aos="fade-right" data-aos-duration="1500" data-aos-once="true">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ullam velit quidem ipsa unde ex tenetur quia neque, nesciunt id quod necessitatibus modi sapiente nam earum cumque at? Quas, maxime illum.</p>
                 <div className="flex mt-20">
                     <div className="w-72 h-96 border-solid border-purple border-2 rounded-[1.6rem] cursor-pointer" data-aos="fade-up" data-aos-duration="1500" data-aos-once="true" data-aos-delay="150"></div>
