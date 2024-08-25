@@ -16,9 +16,9 @@ export default {
         sans: ['Inter', 'sans-serif']
       },
       animation: {
-        fadeIn: 'fadeIn 2s ease-in forwards',
+        fadeIn: 'fadeIn 1.5s ease-in forwards',
         slideDown: 'slideDown 1.5s ease-out',
-        moveArrow: 'moveArrow 1.4s ease-in-out infinite'
+        moveArrow: 'moveArrow 1.5s ease-in-out infinite'
       },
       keyframes: {
         fadeIn: {
