@@ -1,4 +1,4 @@
-import { useLastPage } from "../../hooks/useLastPage";
+import { useLastPage } from "../hooks/useLastPage";
 
 export default function SignUp() {
     useLastPage();

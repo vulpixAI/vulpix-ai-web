@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useLastPage } from '../../hooks/useLastPage';
+import { useLastPage } from '../hooks/useLastPage';
 import { TypeAnimation } from 'react-type-animation';
-import { Swiper } from '../../components/Swiper';
-import { Footer } from '../../components/Footer';
+import { Swiper } from '../components/Swiper';
+import { Footer } from '../components/Footer';
 import 'aos/dist/aos.css'
 import AOS from 'aos';
 
