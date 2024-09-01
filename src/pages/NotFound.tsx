@@ -27,7 +27,7 @@ export default function NotFound() {
                 <img className="h-[404px] ml-14 pointer-events-none select-none" src="/monster-404.svg" alt="Monster 404" />
             </div>
 
-            <Footer property={"absolute -bottom-4"} />
+            <Footer properties={"absolute -bottom-4"} />
         </div>
     )
 }

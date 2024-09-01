@@ -1,10 +1,10 @@
 interface Footer {
-    property?: String
+    properties?: String
 }
 
-export function Footer({ property = "" }: Footer) {
+export function Footer({ properties = "" }: Footer) {
     return (
-        <footer className={"w-full flex justify-center py-10 " + property}>
+        <footer className={`w-full flex justify-center py-10 ${properties}`}>
             <div className="flex flex-col justify-start items-end w-1/4">
                 <div className="flex flex-col items-center">
                     <div className="flex items-center select-none">

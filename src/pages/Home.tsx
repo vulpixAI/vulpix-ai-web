@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useLastPage } from '../hooks/useLastPage';
 import { TypeAnimation } from 'react-type-animation';
-import { Swiper } from '../components/Swiper';
+import { Slider } from '../components/Slider';
+import { Faq } from '../components/Faq';
 import { Footer } from '../components/Footer';
 import 'aos/dist/aos.css'
 import AOS from 'aos';
@@ -31,14 +32,14 @@ export default function Home() {
                         </a>
                     </div>
 
-                    <ul className="text-white-gray text-[1.04rem] flex justify-center select-none w-1/2 mx-12">
+                    <ul className="text-white-gray text-[1.04rem] flex justify-center select-none w-1/2 mx-12 mobile:hidden">
                         <li className="mx-4 flex items-center"><a className="hover:text-purple transition-all" href="#home">Home</a></li>
                         <li className="mx-4 flex items-center"><a className="hover:text-purple transition-all" href="#servicos">Serviços</a></li>
                         <li className="mx-4 flex items-center"><a className="hover:text-purple transition-all" href="#planos">Planos</a></li>
                         <li className="mx-4 flex items-center text-nowrap"><a className="hover:text-purple transition-all" href="#perguntas">Perguntas Frequentes</a></li>
                     </ul>
 
-                    <div className="w-1/4 flex items-center">
+                    <div className="w-1/4 flex items-center mobile:hidden">
                         <div className='flex items-center w-[172px]'>
                             <Link to="/login" className="h-8 mr-4 text-white-gray text-[1.04rem] hover:text-purple transition-all flex items-center">Entrar</Link>
                             <Link to="/signup" className="h-9 px-4 text-nowrap text-[1.04rem] bg-purple flex items-center text-white rounded-md hover:bg-purple-dark transition-all">Inscrever-se</Link>
@@ -51,7 +52,7 @@ export default function Home() {
                         <h1 className="text-6xl text-center font-bold mt-20 animate-slideDown select-none">Seu Agente de <span className="text-purple">Marketing</span>.</h1>
                         <TypeAnimation
                             sequence={[1200, 'Impulsione seu negócio com IA: Desenvolva campanhas únicas e impactantes em poucos minutos, \nutilizando o poder da Inteligência Artificial.']}
-                            speed={50}
+                            speed={56}
                             repeat={1}
                             style={{ whiteSpace: 'pre-line', fontSize: '1.25rem', marginTop: '2rem', marginBottom: '2rem', textAlign: 'center', height: '3.5rem' }}
                         />
@@ -93,7 +94,7 @@ export default function Home() {
                 <h1 className="text-4xl text-center text-white-gray font-bold select-none" data-aos="fade-right" data-aos-duration="1500" data-aos-once="true">Construído <span className="text-purple">exclusivamente</span> para você.</h1>
                 <p className="mt-6 mb-24 text-white-gray w-[54rem] text-center" data-aos="fade-right" data-aos-duration="1500" data-aos-once="true">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ullam velit quidem ipsa unde ex tenetur quia neque, nesciunt id quod necessitatibus modi sapiente nam earum cumque at? Quas, maxime illum.</p>
                 <div data-aos="fade-right" data-aos-duration="1500" data-aos-once="true">
-                    <Swiper />
+                    <Slider />
                 </div>
             </section>
 
@@ -110,6 +111,13 @@ export default function Home() {
                 </div>
             </section>
 
+
+            <section id="perguntas" className="flex flex-col items-center pb-16 select-none">
+                <h1 className="text-4xl text-center text-white-gray font-bold mb-6" data-aos="fade-right" data-aos-duration="1500" data-aos-once="true"><span className="text-purple">Perguntas</span> Frequentes</h1>
+                <div className="w-1/2" data-aos="fade-right" data-aos-duration="1500" data-aos-once="true">
+                    <Faq />
+                </div>
+            </section>
 
             <Footer />
         </div>

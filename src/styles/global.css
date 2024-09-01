@@ -39,3 +39,23 @@ img,
 a {
     user-select: none;
 }
+
+.slick-prev {
+    top: unset !important;
+    bottom: -3rem;
+    left: unset !important;
+    right: 6rem !important;
+    transform: scale(2.2) !important;
+}
+
+.slick-next {
+    top: unset !important;
+    bottom: -3rem;
+    right: 3rem !important;
+    transform: scale(2.2) !important;
+}
+
+.slick-prev::before,
+.slick-next::before {
+    color: #5d5aff !important;
+}
