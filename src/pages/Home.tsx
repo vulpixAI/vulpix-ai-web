@@ -2,29 +2,35 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useLastPage } from '../hooks/useLastPage';
 import { TypeAnimation } from 'react-type-animation';
+import { Drawer } from '../components/Drawer';
 import { Slider } from '../components/Slider';
 import { Faq } from '../components/Faq';
 import { Footer } from '../components/Footer';
-import 'aos/dist/aos.css'
+import Hamburger from 'hamburger-react';
 import AOS from 'aos';
+import 'aos/dist/aos.css'
 
 export default function Home() {
     useLastPage();
 
-    const [wasScrolled, setWasScrolled] = useState<Boolean>(false);
-    const [navBackgroundColor, setNavBackgroundColor] = useState<String>("transparent");
-
+    const [isScrolled, setScrolled] = useState<Boolean>(false);
     useEffect(() => {
-        window.addEventListener("scroll", () => window.scrollY > 0 ? setWasScrolled(true) : setWasScrolled(false));
+        window.addEventListener("scroll", () => window.scrollY > 0 ? setScrolled(true) : setScrolled(false));
         AOS.init();
     }, []);
 
-    useEffect(() => wasScrolled ? setNavBackgroundColor("bg-gray/85 backdrop-blur-sm") : setNavBackgroundColor("transparent"), [wasScrolled]);
+    const [navBackgroundColor, setNavBackgroundColor] = useState<String>("transparent");
+    useEffect(() => isScrolled ? setNavBackgroundColor("bg-gray/85 backdrop-blur-sm") : setNavBackgroundColor("transparent"), [isScrolled]);
+
+    const [isMenuOpened, setMenuOpened] = useState(false);
+    useEffect(() => { isMenuOpened ? document.documentElement.style.overflow = "hidden" : document.documentElement.style.overflow = "auto" }, [isMenuOpened]);
 
     return (
-        <div className='h-screen bg-black max-w-full'>
+        <div className="h-screen bg-black max-w-full">
+            <Drawer isMenuOpened={isMenuOpened} setMenuOpened={() => setMenuOpened(false)} />
+
             <header id="home" className="bg-header bg-cover h-full relative after:content-[''] after:bg-fade after:absolute after:bottom-0 after:w-full after:h-[160px]">
-                <nav className={`fixed z-20 w-screen flex justify-center items-center h-20 top-0 transition-all duration-300 ${navBackgroundColor}`}>
+                <nav className={`fixed z-20 w-screen flex justify-center mobile:justify-between items-center h-20 top-0 transition-all duration-300 ${navBackgroundColor}`}>
                     <div className='w-1/4 flex items-center justify-end'>
                         <a href="#home" className="flex items-center">
                             <img className="h-[4.5rem] pointer-events-none" src="/vulpixai-logo.jpeg" alt="Logo vulpix.AI" />
@@ -44,6 +50,10 @@ export default function Home() {
                             <Link to="/login" className="h-8 mr-4 text-white-gray text-[1.04rem] hover:text-purple transition-all flex items-center">Entrar</Link>
                             <Link to="/signup" className="h-9 px-4 text-nowrap text-[1.04rem] bg-purple flex items-center text-white rounded-md hover:bg-purple-dark transition-all">Inscrever-se</Link>
                         </div>
+                    </div>
+
+                    <div className="hidden mobile:block mr-6">
+                        <Hamburger direction="right" toggled={isMenuOpened} toggle={setMenuOpened} color="#5d5aff" />
                     </div>
                 </nav>
 
