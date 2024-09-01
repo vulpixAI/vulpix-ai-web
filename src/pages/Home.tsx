@@ -103,7 +103,7 @@ export default function Home() {
 
 
             <section id="galeria" className="pb-40 flex flex-col justify-center items-center overflow-x-hidden">
-                <h1 className="text-4xl text-center text-white-gray font-bold select-none mobile:text-2xl" data-aos="fade-right" data-aos-duration="1500" data-aos-once="true">Construído <span className="text-purple">exclusivamente</span> para você.</h1>
+                <h1 className="text-4xl text-center text-white-gray font-bold select-none mobile:text-2xl mobile:w-80" data-aos="fade-right" data-aos-duration="1500" data-aos-once="true">Construído <span className="text-purple">exclusivamente</span> para você.</h1>
                 <p className="mt-6 mb-24 text-white-gray w-[54rem] mobile:w-80 text-center mobile:text-base" data-aos="fade-right" data-aos-duration="1500" data-aos-once="true">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ullam velit quidem ipsa unde ex tenetur quia neque, nesciunt id quod necessitatibus modi sapiente nam earum cumque at? Quas, maxime illum.</p>
                 <div data-aos="fade-right" data-aos-duration="1500" data-aos-once="true">
                     <Slider />
