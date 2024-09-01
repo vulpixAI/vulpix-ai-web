@@ -46,16 +46,16 @@ export function Slider() {
         <div className="slider-container w-[100vw] cursor-grab">
             <div className="h-48 !w-[100%] block">
                 <SliderComponent {...settings}>
-                    <div className="h-64 !w-[30rem] rounded-2xl bg-white"></div>
-                    <div className="h-64 !w-[30rem] rounded-2xl bg-white"></div>
-                    <div className="h-64 !w-[30rem] rounded-2xl bg-white"></div>
-                    <div className="h-64 !w-[30rem] rounded-2xl bg-white"></div>
-                    <div className="h-64 !w-[30rem] rounded-2xl bg-white"></div>
-                    <div className="h-64 !w-[30rem] rounded-2xl bg-white"></div>
-                    <div className="h-64 !w-[30rem] rounded-2xl bg-white"></div>
-                    <div className="h-64 !w-[30rem] rounded-2xl bg-white"></div>
-                    <div className="h-64 !w-[30rem] rounded-2xl bg-white"></div>
-                    <div className="h-64 !w-[30rem] rounded-2xl bg-white"></div>
+                    <div className="h-64 !w-[30rem] mobile:!w-[21rem] mobile:ml-4 rounded-2xl bg-white"></div>
+                    <div className="h-64 !w-[30rem] mobile:!w-[21rem] mobile:ml-4 rounded-2xl bg-white"></div>
+                    <div className="h-64 !w-[30rem] mobile:!w-[21rem] mobile:ml-4 rounded-2xl bg-white"></div>
+                    <div className="h-64 !w-[30rem] mobile:!w-[21rem] mobile:ml-4 rounded-2xl bg-white"></div>
+                    <div className="h-64 !w-[30rem] mobile:!w-[21rem] mobile:ml-4 rounded-2xl bg-white"></div>
+                    <div className="h-64 !w-[30rem] mobile:!w-[21rem] mobile:ml-4 rounded-2xl bg-white"></div>
+                    <div className="h-64 !w-[30rem] mobile:!w-[21rem] mobile:ml-4 rounded-2xl bg-white"></div>
+                    <div className="h-64 !w-[30rem] mobile:!w-[21rem] mobile:ml-4 rounded-2xl bg-white"></div>
+                    <div className="h-64 !w-[30rem] mobile:!w-[21rem] mobile:ml-4 rounded-2xl bg-white"></div>
+                    <div className="h-64 !w-[30rem] mobile:!w-[21rem] mobile:ml-4 rounded-2xl bg-white"></div>
                 </SliderComponent>
             </div>
         </div>

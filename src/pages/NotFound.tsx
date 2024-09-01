@@ -11,10 +11,10 @@ export default function NotFound() {
 
     return (
         <div className='h-screen bg-black overflow-hidden flex flex-col justify-center items-center relative'>
-            <div className="flex items-center h-[70%] -mt-28">
-                <div className="flex flex-col items-center mr-14">
-                    <h1 className="text-white-gray text-3xl font-semibold">Ooops!</h1>
-                    <h2 className="text-white-gray text-[1.6rem] w-80 my-8 text-center">Parece que o monstrinho devorou a página que você estava procurando...</h2>
+            <div className="flex mobile:flex-col-reverse mobile:justify-center items-center h-[70%] mobile:h-full -mt-28 mobile:mt-0">
+                <div className="flex flex-col items-center mr-14 mobile:mr-0">
+                    <h1 className="text-white-gray text-3xl mobile:text-2xl font-semibold">Ooops!</h1>
+                    <h2 className="text-white-gray text-[1.6rem] mobile:text-base w-80 my-8 mobile:my-6 text-center">Parece que o monstrinho devorou a página que você estava procurando...</h2>
                     {
                         lastPage
                             ?
@@ -24,10 +24,10 @@ export default function NotFound() {
                     }
                 </div>
 
-                <img className="h-[404px] ml-14 pointer-events-none select-none" src="/monster-404.svg" alt="Monster 404" />
+                <img className="h-[404px] mobile:h-[300px] ml-14 mobile:ml-0 pointer-events-none select-none" src="/monster-404.svg" alt="Monster 404" />
             </div>
 
-            <Footer properties={"absolute -bottom-4"} />
+            <Footer properties={"absolute -bottom-4 mobile:hidden"} />
         </div>
     )
 }
