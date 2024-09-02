@@ -9,7 +9,7 @@ interface Button {
 
 function NavigateButton({ uri = "", value, bgColor, hoverColor }: Button) {
     return (
-        <Link to={uri} className={`h-10 px-8 text-nowrap bg-${bgColor ? bgColor : "transparent"} text-lg border-solid border-2 border-purple flex items-center justify-center text-white rounded-md hover:bg-${hoverColor ? hoverColor : "purple"} transition-all`}>
+        <Link to={uri} className={`h-12 px-8 text-nowrap bg-${bgColor ? bgColor : "transparent"} text-lg border-solid border-2 border-purple flex items-center justify-center text-white rounded-md hover:bg-${hoverColor ? hoverColor : "purple"} transition-all`}>
             {value}
         </Link>
     )
