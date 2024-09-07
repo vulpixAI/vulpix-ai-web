@@ -15,7 +15,7 @@ function NavigateButton({ uri = "", value}: Button) {
 
 function InputButton({ value }: Button) {
     return (
-        <input value={value} type="submit" className="h-9 w-full px-4 text-nowrap bg-purple text-lg flex items-center justify-center text-white rounded-md hover:bg-purple-dark transition-all cursor-pointer" />
+        <input value={value} type="submit" className="h-12 w-full px-4 text-nowrap bg-purple text-lg flex items-center justify-center text-white rounded-md hover:bg-purple-dark transition-all cursor-pointer" />
     )
 }
 

@@ -37,7 +37,8 @@ export default {
       },
       backgroundImage: {
         'header': "linear-gradient(to right, rgba(22, 23, 25, 0.84), rgba(22, 23, 25, 0.84)), url('/bg-header.jpg')",
-        'fade': "url('/fade.svg')"
+        'fade': "url('/fade.svg')",
+        'login': "url('/bg-login.png')",
       },
       screens: {
         'mobile': { 'max': '1000px' }

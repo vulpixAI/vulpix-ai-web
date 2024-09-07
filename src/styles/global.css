@@ -25,7 +25,9 @@ h2::selection,
 h3::selection,
 h4::selection,
 h5::selection,
-h6::selection {
+h6::selection,
+label::selection,
+input::selection {
     background-color: #5d5aff;
 }
 
