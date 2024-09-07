@@ -17,23 +17,22 @@ export function Footer({ properties = "" }: Footer) {
 
             <div className="w-1/2 mobile:w-full flex justify-center items-start mobile:text-center mobile:my-8">
                 <div className="flex flex-col justify-center mobile:items-center">
-                    <h5 className="text-purple font-bold text-lg mb-1 select-none">Lorem Ipsum</h5>
-                    <a href="" className="text-white-gray my-1 hover:text-purple transition-all">Lorem</a>
-                    <a href="" className="text-white-gray my-1 hover:text-purple transition-all">Lorem</a>
-                    <a href="" className="text-white-gray my-1 hover:text-purple transition-all">Lorem</a>
+                    <h5 className="text-purple font-bold text-lg mb-1 select-none">Explore Mais</h5>
+                    <a href="#home" className="text-white-gray my-1 hover:text-purple transition-all">Home</a>
+                    <a href="#galeria" className="text-white-gray my-1 hover:text-purple transition-all">Galeria</a>
+                    <a href="#planos" className="text-white-gray my-1 hover:text-purple transition-all">Planos</a>
                 </div>
 
                 <div className="flex flex-col justify-center mx-16 mobile:mx-5">
-                    <h5 className="text-purple font-bold text-lg mb-1 select-none">Lorem Ipsum</h5>
-                    <a href="" className="text-white-gray my-1 hover:text-purple transition-all">Lorem</a>
-                    <a href="" className="text-white-gray my-1 hover:text-purple transition-all">Lorem</a>
+                    <h5 className="text-purple font-bold text-lg mb-1 select-none">Legal</h5>
+                    <a href="" className="text-white-gray my-1 hover:text-purple transition-all">Termos de Serviço</a>
+                    <a href="" className="text-white-gray my-1 hover:text-purple transition-all">Política de Privacidade</a>
                 </div>
 
                 <div className="flex flex-col justify-center">
-                    <h5 className="text-purple font-bold text-lg mb-1 select-none">Lorem Ipsum</h5>
-                    <a href="" className="text-white-gray my-1 hover:text-purple transition-all">Lorem</a>
-                    <a href="" className="text-white-gray my-1 hover:text-purple transition-all">Lorem</a>
-                    <a href="" className="text-white-gray my-1 hover:text-purple transition-all">Lorem</a>
+                    <h5 className="text-purple font-bold text-lg mb-1 select-none">Suporte</h5>
+                    <a href="" className="text-white-gray my-1 hover:text-purple transition-all">Telefone</a>
+                    <a href="#perguntas" className="text-white-gray my-1 hover:text-purple transition-all">FAQ</a>
                 </div>
             </div>
 

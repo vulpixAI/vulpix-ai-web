@@ -3,24 +3,24 @@ import { default as FaqComponet } from "react-faq-component";
 const data = {
     rows: [
         {
-            title: "Lorem ipsum dolor sit amet?",
-            content: "Curabitur laoreet, mauris vel blandit fringilla, leo elit rhoncus nunc, ac sagittis leo elit vel lorem. Fusce tempor lacus ut libero posuere viverra. Nunc velit dolor, tincidunt at varius vel, laoreet vel quam."
+            title: "Como funciona a integração da Vulpix AI com as redes sociais?",
+            content: "A Vulpix AI permite que você conecte sua loja virtual diretamente com plataformas como Instagram e Facebook. Após a integração, você pode automatizar e programar suas postagens e campanhas diretamente pela nossa plataforma."
         },
         {
-            title: "Nunc maximus, magna at ultricies elementum?",
-            content: "Curabitur laoreet, mauris vel blandit fringilla, leo elit rhoncus nunc, ac sagittis leo elit vel lorem. Fusce tempor lacus ut libero posuere viverra. Nunc velit dolor, tincidunt at varius vel, laoreet vel quam."
+            title: "Preciso de conhecimentos técnicos para usar a Vulpix AI?",
+            content: "Não! Nossa plataforma é fácil de usar e foi projetada para empreendedores de todos os níveis. Com poucos cliques, você cria campanhas personalizadas e monitora seus resultados, sem complicações."
         },
         {
-            title: "Lorem ipsum dolor sit amet?",
-            content: "Curabitur laoreet, mauris vel blandit fringilla, leo elit rhoncus nunc, ac sagittis leo elit vel lorem. Fusce tempor lacus ut libero posuere viverra. Nunc velit dolor, tincidunt at varius vel, laoreet vel quam."
+            title: "Posso ajustar minhas campanhas depois de criá-las?",
+            content: "Sim, você pode editar e ajustar suas campanhas a qualquer momento, mesmo depois de programadas. A Vulpix AI oferece total flexibilidade para adaptar suas estratégias conforme as necessidades do seu negócio."
         },
         {
-            title: "Nunc maximus, magna at ultricies elementum?",
-            content: "Curabitur laoreet, mauris vel blandit fringilla, leo elit rhoncus nunc, ac sagittis leo elit vel lorem. Fusce tempor lacus ut libero posuere viverra. Nunc velit dolor, tincidunt at varius vel, laoreet vel quam."
+            title: "A Vulpix AI oferece suporte ao cliente?",
+            content: "Sim, oferecemos suporte especializado para ajudar você em todas as etapas, desde a configuração inicial até o acompanhamento de suas campanhas. Estamos disponíveis via chat, e-mail ou telefone."
         },
         {
-            title: "Lorem ipsum dolor sit amet?",
-            content: "Curabitur laoreet, mauris vel blandit fringilla, leo elit rhoncus nunc, ac sagittis leo elit vel lorem. Fusce tempor lacus ut libero posuere viverra. Nunc velit dolor, tincidunt at varius vel, laoreet vel quam."
+            title: "Quais formas de pagamento vocês aceitam?",
+            content: "Aceitamos diversas formas de pagamento, incluindo cartões de crédito, débito e boletos bancários, para facilitar sua experiência ao escolher o plano ideal para o seu negócio."
         }
     ],
 };

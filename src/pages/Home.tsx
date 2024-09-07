@@ -7,9 +7,11 @@ import { Drawer } from '../components/Drawer';
 import { Slider } from '../components/Slider';
 import { Faq } from '../components/Faq';
 import { Footer } from '../components/Footer';
+import { Timeline, Settings, Handshake } from '@mui/icons-material';
 import Hamburger from 'hamburger-react';
 import AOS from 'aos';
 import 'aos/dist/aos.css'
+
 
 export default function Home() {
     useLastPage();
@@ -81,31 +83,36 @@ export default function Home() {
 
             <section id="hero-section" className="flex mobile:flex-col justify-center pt-24 pb-48 mobile:pb-32 text-white-gray text-[1.04rem] overflow-x-hidden">
                 <div className="flex flex-col items-center -mr-12 mobile:mr-0" data-aos="fade-right" data-aos-duration="1500" data-aos-once="true">
-                    <div className="w-24 h-24 rounded-full bg-purple"></div>
-                    <h4 className="font-bold mt-10">1. Lorem Ipsum</h4>
-                    <p className="w-64 text-center mt-3">Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis rem earum quos quisquam.</p>
+                    <div className="flex items-center justify-center w-24 h-24 rounded-full bg-purple">
+                        <Handshake  sx={{fontSize: 50}}/>
+                    </div>
+                    <h4 className="font-bold mt-10">1. Cadastre e conecte seu negócio</h4>
+                    <p className="w-64 text-center mt-3">Configure sua conta e conecte suas redes sociais com apenas alguns cliques.</p>
                 </div>
 
                 <div className="flex flex-col items-center mobile:my-14" data-aos="fade-up" data-aos-duration="1500" data-aos-once="true">
-                    <div className="w-24 h-24 mx-60 rounded-full bg-purple relative
+                    <div className="flex items-center justify-center w-24 h-24 mx-60 rounded-full bg-purple relative
                     before:content-[''] mobile:before:hidden before:absolute before:-left-[8.5rem] before:top-[50%] before:-translate-y-[50%] before:-translate-x-[50%] before:w-60 before:h-[2px] before:bg-white
                     after:content-[''] mobile:after:hidden after:absolute after:-right-[8.5rem] after:top-[50%] after:-translate-y-[50%] after:translate-x-[50%] after:w-60 after:h-[2px] after:bg-white">
+                        <Settings  sx={{fontSize: 50}}/>
                     </div>
-                    <h4 className="font-bold mt-10">2. Lorem Ipsum</h4>
-                    <p className="w-64 text-center mt-3">Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis rem earum quos quisquam.</p>
+                    <h4 className="font-bold mt-10">2. Automatize suas campanhas</h4>
+                    <p className="w-64 text-center mt-3">Crie e programe postagens com textos e designs gerados por IA de forma rápida e fácil.</p>
                 </div>
 
                 <div className="flex flex-col items-center -ml-12 mobile:ml-0" data-aos="fade-left" data-aos-duration="1500" data-aos-once="true">
-                    <div className="w-24 h-24 rounded-full bg-purple"></div>
-                    <h4 className="font-bold mt-10">3. Lorem Ipsum</h4>
-                    <p className="w-64 text-center mt-3">Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis rem earum quos quisquam.</p>
+                    <div className="w-24 h-24 rounded-full bg-purple flex items-center justify-center">
+                        <Timeline  sx={{fontSize: 50}}/>
+                    </div>
+                    <h4 className="font-bold mt-10">3. Controle o sucesso em tempo real</h4>
+                    <p className="w-64 text-center mt-3">Monitore os dados de cada publicação e otimize suas estratégias com insights valiosos.</p>
                 </div>
             </section>
 
 
             <section id="galeria" className="pb-40 flex flex-col justify-center items-center overflow-x-hidden">
                 <h1 className="text-4xl text-center text-white-gray font-bold select-none mobile:text-2xl mobile:w-80" data-aos="fade-right" data-aos-duration="1500" data-aos-once="true">Construído <span className="text-purple">exclusivamente</span> para você.</h1>
-                <p className="mt-6 mb-24 text-white-gray w-[54rem] mobile:w-80 text-center mobile:text-base" data-aos="fade-right" data-aos-duration="1500" data-aos-once="true">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ullam velit quidem ipsa unde ex tenetur quia neque, nesciunt id quod necessitatibus modi sapiente nam earum cumque at? Quas, maxime illum.</p>
+                <p className="mt-6 mb-24 text-white-gray w-[54rem] mobile:w-80 text-center mobile:text-base" data-aos="fade-right" data-aos-duration="1500" data-aos-once="true">Você tem total controle sobre sua estratégia de marketing, criando conteúdos que se alinham ao seu público-alvo. A qualquer hora, ajuste suas campanhas, programe postagens e acompanhe os resultados em tempo real.</p>
                 <div data-aos="fade-right" data-aos-duration="1500" data-aos-once="true">
                     <Slider />
                 </div>
@@ -114,7 +121,7 @@ export default function Home() {
 
             <section id="planos" className="pb-32 flex flex-col items-center overflow-x-hidden">
                 <h1 className="text-4xl text-center text-white-gray font-bold select-none mobile:text-2xl" data-aos="fade-right" data-aos-duration="1500" data-aos-once="true">Comece por nossos <span className="text-purple">planos</span>.</h1>
-                <p className="mt-6 text-white-gray w-[54rem] mobile:w-80 text-center mobile:text-base" data-aos="fade-right" data-aos-duration="1500" data-aos-once="true">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ullam velit quidem ipsa unde ex tenetur quia neque, nesciunt id quod necessitatibus modi sapiente nam earum cumque at? Quas, maxime illum.</p>
+                <p className="mt-6 text-white-gray w-[54rem] mobile:w-80 text-center mobile:text-base" data-aos="fade-right" data-aos-duration="1500" data-aos-once="true">Oferecemos planos acessíveis e personalizados que atendem a diferentes necessidades, seja você um microempreendedor ou uma empresa em crescimento. Escolha o que mais se adequa ao seu objetivo e dê o primeiro passo para elevar a presença digital da sua marca.</p>
                 <div className="flex mobile:flex-col mt-20">
                     <div className="w-72 h-96 flex flex-col items-center border-solid border-purple border-2 rounded-[1.6rem]" data-aos="fade-up" data-aos-duration="1500" data-aos-once="true" data-aos-delay="150">
                         <div className="h-1/4 flex flex-col items-center justify-center text-white-gray">
