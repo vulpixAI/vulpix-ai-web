@@ -5,7 +5,7 @@ interface Button {
     value: string,
 }
 
-function NavigateButton({ uri = "", value}: Button) {
+function NavigateButton({ uri = "", value }: Button) {
     return (
         <Link to={uri} className="h-12 px-8 text-nowrap bg-transparent text-lg border-solid border-2 border-purple flex items-center justify-center text-white rounded-md hover:bg-purple transition-all">
             {value}

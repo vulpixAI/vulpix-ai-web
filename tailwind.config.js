@@ -38,14 +38,18 @@ export default {
       backgroundImage: {
         'header': "linear-gradient(to right, rgba(22, 23, 25, 0.84), rgba(22, 23, 25, 0.84)), url('/bg-header.jpg')",
         'fade': "url('/fade.svg')",
-        'login': "url('/bg-login.png')",
+        'login': "url('/bg-login.jpg')",
       },
       screens: {
         'mobile': { 'max': '1000px' }
+      },
+      clipPath: {
+        login: "polygon(0% 0%, 0% 100%, 86% 100%, 100% 0%)",
       }
     },
   },
   plugins: [
-    require("tailwindcss-animate")
+    require("tailwindcss-animate"),
+    require("tailwind-clip-path")
   ],
 }
