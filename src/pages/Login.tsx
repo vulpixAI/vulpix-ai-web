@@ -35,7 +35,7 @@ export default function Login() {
     }
 
     return (
-        <div className='h-screen bg-black overflow-hidden flex'>
+        <div className='h-screen bg-black overflow-hidden flex mobile:justify-center'>
             <ToastContainer
                 position="top-right"
                 autoClose={4000}
@@ -48,16 +48,15 @@ export default function Login() {
                 pauseOnHover
             />
 
-            <div className="h-full w-[65%] bg-login bg-cover bg-no-repeat bg-center clip-path-login">
-            </div>
-            <div className="h-full w-[40%] flex flex-col items-center justify-center">
+            <div className="h-full w-[65%] bg-login bg-cover bg-no-repeat bg-center clip-path-login mobile:hidden"></div>
+            <div className="h-full w-[40%] flex flex-col items-center justify-center mobile:w-full">
                 <div className="h-40 flex items-center justify-center flex-col mb-4">
-                    <h1 className=" text-5xl font-semibold text-white-gray text-center">Bem-vindo de volta!</h1>
+                    <h1 className=" text-5xl font-semibold text-white-gray text-center mobile:text-3xl">Bem-vindo de volta!</h1>
                     <p className="text-white-gray mt-3 text-lg">Faça seu login para prosseguir.</p>
                 </div>
                 <form
                     onSubmit={handleSubmit(loginUser)}
-                    className="h-96 w-[23rem]"
+                    className="h-96 w-[23rem] mobile:w-80"
                 >
                     <div className="flex flex-col">
                         <label className="text-white-gray mb-2 ml-3" htmlFor="inputEmail">E-mail</label>
