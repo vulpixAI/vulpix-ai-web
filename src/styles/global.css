@@ -61,3 +61,15 @@ a {
 .slick-next::before {
     color: #5d5aff !important;
 }
+
+.Toastify__progress-bar--error {
+    background-color: #5d5aff !important;
+}
+
+.Toastify__toast-body {
+    color: #c3d1dc !important;
+}
+
+.Toastify__toast-icon svg {
+    fill: #5d5aff !important
+}

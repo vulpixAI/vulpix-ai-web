@@ -12,7 +12,6 @@ import Hamburger from 'hamburger-react';
 import AOS from 'aos';
 import 'aos/dist/aos.css'
 
-
 export default function Home() {
     useLastPage();
 
@@ -84,7 +83,7 @@ export default function Home() {
             <section id="hero-section" className="flex mobile:flex-col justify-center pt-24 pb-48 mobile:pb-32 text-white-gray text-[1.04rem] overflow-x-hidden">
                 <div className="flex flex-col items-center -mr-12 mobile:mr-0" data-aos="fade-right" data-aos-duration="1500" data-aos-once="true">
                     <div className="flex items-center justify-center w-24 h-24 rounded-full bg-purple">
-                        <Handshake  sx={{fontSize: 50}}/>
+                        <Handshake sx={{ fontSize: 50 }} />
                     </div>
                     <h4 className="font-bold mt-10">1. Cadastre e conecte seu negócio</h4>
                     <p className="w-64 text-center mt-3">Configure sua conta e conecte suas redes sociais com apenas alguns cliques.</p>
@@ -94,7 +93,7 @@ export default function Home() {
                     <div className="flex items-center justify-center w-24 h-24 mx-60 rounded-full bg-purple relative
                     before:content-[''] mobile:before:hidden before:absolute before:-left-[8.5rem] before:top-[50%] before:-translate-y-[50%] before:-translate-x-[50%] before:w-60 before:h-[2px] before:bg-white
                     after:content-[''] mobile:after:hidden after:absolute after:-right-[8.5rem] after:top-[50%] after:-translate-y-[50%] after:translate-x-[50%] after:w-60 after:h-[2px] after:bg-white">
-                        <Settings  sx={{fontSize: 50}}/>
+                        <Settings sx={{ fontSize: 50 }} />
                     </div>
                     <h4 className="font-bold mt-10">2. Automatize suas campanhas</h4>
                     <p className="w-64 text-center mt-3">Crie e programe postagens com textos e designs gerados por IA de forma rápida e fácil.</p>
@@ -102,7 +101,7 @@ export default function Home() {
 
                 <div className="flex flex-col items-center -ml-12 mobile:ml-0" data-aos="fade-left" data-aos-duration="1500" data-aos-once="true">
                     <div className="w-24 h-24 rounded-full bg-purple flex items-center justify-center">
-                        <Timeline  sx={{fontSize: 50}}/>
+                        <Timeline sx={{ fontSize: 50 }} />
                     </div>
                     <h4 className="font-bold mt-10">3. Controle o sucesso em tempo real</h4>
                     <p className="w-64 text-center mt-3">Monitore os dados de cada publicação e otimize suas estratégias com insights valiosos.</p>

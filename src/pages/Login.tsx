@@ -5,8 +5,11 @@ import { Button } from "../components/Button";
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod"
-import axios from "axios";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import UseAuth from "../hooks/useAuth";
+import "react-toastify/dist/ReactToastify.css";
 
 const loginFormSchema = z.object({
     email: z.string().min(1, "O e-mail é obrigatório").email("Formato de e-mail inválido"),
@@ -18,29 +21,35 @@ type signInFormData = z.infer<typeof loginFormSchema>
 export default function Login() {
     useLastPage();
 
+    const { login }: any = UseAuth();
+    const navigate = useNavigate();
+
     const [isPasswordVisible, setPasswordVisible] = useState<Boolean>(false);
     const togglePasswordVisibility = () => setPasswordVisible(prevState => !prevState);
 
     const { register, handleSubmit, formState: { errors } } = useForm<signInFormData>({ resolver: zodResolver(loginFormSchema) });
 
-    function login(data: any) {
-        axios.post("http://localhost:8080/usuarios/login",
-            {
-                email: data.email,
-                senha: data.password
-            }
-        )
-            .then((response) => {
-                console.log(response.status);
-            })
-            .catch(error => {
-                console.log(error);
-            })
+    async function loginUser(data: any) {
+        toast.error("E-mail ou senha inválidos!");
+        await login(data.email, data.password);
+        navigate("/dashboard");
     }
 
     return (
         <div className='h-screen bg-black overflow-hidden flex'>
-            <div className="h-full w-[60%] bg-login bg-cover bg-no-repeat bg-center clip-path-login">
+            <ToastContainer
+                position="top-right"
+                autoClose={4000}
+                hideProgressBar={false}
+                closeOnClick
+                rtl={false}
+                theme="dark"
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+            />
+
+            <div className="h-full w-[65%] bg-login bg-cover bg-no-repeat bg-center clip-path-login">
             </div>
             <div className="h-full w-[40%] flex flex-col items-center justify-center">
                 <div className="h-40 flex items-center justify-center flex-col mb-4">
@@ -48,7 +57,7 @@ export default function Login() {
                     <p className="text-white-gray mt-3 text-lg">Faça seu login para prosseguir.</p>
                 </div>
                 <form
-                    onSubmit={handleSubmit(login)}
+                    onSubmit={handleSubmit(loginUser)}
                     className="h-96 w-[23rem]"
                 >
                     <div className="flex flex-col">
@@ -81,11 +90,11 @@ export default function Login() {
                         {errors.password && <span className="text-white-gray text-sm ml-3 mt-2">{errors.password.message}</span>}
                     </div>
                     <div className=" flex justify-end">
-                        <a href="" className="text-purple mt-4 mb-8 mr-3 text-sm hover:text-purple-dark">Esqueci minha senha</a>
+                        <a href="" className="text-white-gray mt-4 mb-8 mr-3 text-sm hover:text-purple transition-all">Esqueci minha senha</a>
                     </div>
                     <Button.Input value="Entrar" />
                     <div className="flex justify-center items-start">
-                        <p className="text-white-gray mt-8 whitespace-nowrap select-none">Ainda não possui uma conta? <a href="/signup" className="text-purple hover:text-purple-dark">Inscreva-se</a>.</p>
+                        <p className="text-white-gray mt-8 whitespace-nowrap select-none">Ainda não possui uma conta? <a href="/signup" className="text-purple hover:text-purple-dark transition-all">Inscreva-se</a>.</p>
                     </div>
                 </form>
             </div>

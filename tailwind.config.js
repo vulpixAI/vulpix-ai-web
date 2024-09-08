@@ -44,7 +44,7 @@ export default {
         'mobile': { 'max': '1000px' }
       },
       clipPath: {
-        login: "polygon(0% 0%, 0% 100%, 86% 100%, 100% 0%)",
+        login: "polygon(0% 0%, 0% 100%, 84% 100%, 100% 0%)",
       }
     },
   },
