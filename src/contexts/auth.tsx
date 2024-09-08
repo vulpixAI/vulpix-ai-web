@@ -16,19 +16,20 @@ export function AuthProvider({ children }: AuthProvider) {
     }, []);
 
     async function login(email: string, password: string) {
-        await axios.post("http://localhost:8080/usuarios/login",
-            {
+        try {
+            const response = await axios.post("http://localhost:8080/usuarios/login", {
                 email: email,
                 senha: password
-            }
-        )
-            .then(() => {
-                const token = Math.random().toString(36).substring(2);
-                sessionStorage.setItem("user_token", token);
-                setLoggedIn(true);
             });
 
-        return;
+            const token = Math.random().toString(36).substring(2);
+            sessionStorage.setItem("user_token", token);
+            setLoggedIn(true);
+
+            return response;
+        } catch (error) {
+            if (axios.isAxiosError(error)) return error.response;
+        }
     }
 
     function signOut() {

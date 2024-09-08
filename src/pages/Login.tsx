@@ -30,9 +30,8 @@ export default function Login() {
     const { register, handleSubmit, formState: { errors } } = useForm<signInFormData>({ resolver: zodResolver(loginFormSchema) });
 
     async function loginUser(data: any) {
-        toast.error("E-mail ou senha inválidos!");
-        await login(data.email, data.password);
-        navigate("/dashboard");
+        const response = await login(data.email, data.password);
+        response.status == 200 ? navigate("/dashboard") : toast.error("E-mail ou senha inválidos!");
     }
 
     return (
