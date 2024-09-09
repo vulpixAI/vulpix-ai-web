@@ -6,7 +6,7 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import UseAuth from "../hooks/useAuth";
 import "react-toastify/dist/ReactToastify.css";
@@ -24,15 +24,15 @@ export default function Login() {
     const { login }: any = UseAuth();
     const navigate = useNavigate();
 
-    const [isPasswordVisible, setPasswordVisible] = useState<Boolean>(false);
-    const togglePasswordVisibility = () => setPasswordVisible(prevState => !prevState);
-
     const { register, handleSubmit, formState: { errors } } = useForm<signInFormData>({ resolver: zodResolver(loginFormSchema) });
 
     async function loginUser(data: any) {
         const response = await login(data.email, data.password);
         response.status == 200 ? navigate("/dashboard") : toast.error("E-mail ou senha inválidos!");
     }
+
+    const [isPasswordVisible, setPasswordVisible] = useState<Boolean>(false);
+    const togglePasswordVisibility = () => setPasswordVisible(prevState => !prevState);
 
     return (
         <div className='h-screen bg-black overflow-hidden flex mobile:justify-center'>
@@ -92,7 +92,7 @@ export default function Login() {
                     </div>
                     <Button.Input value="Entrar" />
                     <div className="flex justify-center items-start">
-                        <p className="text-white-gray mt-8 whitespace-nowrap select-none">Ainda não possui uma conta? <a href="/signup" className="text-purple hover:text-purple-dark transition-all">Inscreva-se</a>.</p>
+                        <p className="text-white-gray mt-8 whitespace-nowrap select-none">Ainda não possui uma conta? <Link to="/signup" className="text-purple hover:text-purple-dark transition-all">Inscreva-se</Link>.</p>
                     </div>
                 </form>
             </div>
