@@ -28,7 +28,13 @@ export default function Login() {
 
     async function loginUser(data: any) {
         const response = await login(data.email, data.password);
-        response.status == 200 ? navigate("/dashboard") : toast.error("E-mail ou senha inválidos!");
+
+        if (!response) {
+            toast.error("Falha de conexão com o servidor.");
+            return;
+        }
+
+        response.status == 200 ? navigate("/dashboard") : toast.warn("E-mail ou senha inválidos.");
     }
 
     const [isPasswordVisible, setPasswordVisible] = useState<Boolean>(false);
