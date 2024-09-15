@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
 
-interface Button {
-    uri?: string
-    value: string,
+interface Button extends React.InputHTMLAttributes<InnerHTML> {
+    uri?: string;
+    value: string;
+    type?: string;
+    width?: string;
 }
 
 function NavigateButton({ uri = "", value }: Button) {
@@ -13,13 +15,20 @@ function NavigateButton({ uri = "", value }: Button) {
     )
 }
 
-function InputButton({ value }: Button) {
+function InputButton({ value, type, width = "w-full", ...props }: Button) {
     return (
-        <input value={value} type="submit" className="h-12 w-full px-4 text-nowrap bg-purple text-lg flex items-center justify-center text-white rounded-md hover:bg-purple-dark transition-all cursor-pointer" />
+        <input value={value} type={type} className={`h-12 ${width} px-4 text-nowrap bg-purple text-lg flex items-center justify-center text-white rounded-md hover:bg-purple-dark transition-all cursor-pointer`} {...props} />
+    )
+}
+
+function TransparentInputButton({ value, type, width = "w-full", ...props }: Button) {
+    return (
+        <input value={value} type={type} className={`h-12 ${width} px-4 text-nowrap bg-transparent border-solid border-purple border-2 text-lg flex items-center justify-center text-white rounded-md hover:bg-purple transition-all cursor-pointer`} {...props} />
     )
 }
 
 export const Button = {
     Navigate: NavigateButton,
-    Input: InputButton
+    Input: InputButton,
+    Transparent: TransparentInputButton
 }

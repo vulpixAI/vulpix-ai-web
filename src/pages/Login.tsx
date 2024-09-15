@@ -16,7 +16,7 @@ const loginFormSchema = z.object({
     password: z.string().min(8, "Mínimo de 8 caracteres")
 });
 
-type signInFormData = z.infer<typeof loginFormSchema>
+type loginFormData = z.infer<typeof loginFormSchema>
 
 export default function Login() {
     useLastPage();
@@ -24,7 +24,7 @@ export default function Login() {
     const { login }: any = UseAuth();
     const navigate = useNavigate();
 
-    const { register, handleSubmit, formState: { errors } } = useForm<signInFormData>({ resolver: zodResolver(loginFormSchema) });
+    const { register, handleSubmit, watch, formState: { errors } } = useForm<loginFormData>({ resolver: zodResolver(loginFormSchema) });
 
     async function loginUser(data: any) {
         const response = await login(data.email, data.password);
@@ -57,28 +57,28 @@ export default function Login() {
             <div className="h-full w-[65%] bg-login bg-cover bg-no-repeat bg-center clip-path-login mobile:hidden"></div>
             <div className="h-full w-[40%] flex flex-col items-center justify-center mobile:w-full">
                 <div className="h-40 flex items-center justify-center flex-col mb-4">
-                    <h1 className=" text-5xl font-semibold text-white-gray text-center mobile:text-3xl">Bem-vindo de volta!</h1>
-                    <p className="text-white-gray mt-3 text-lg">Faça seu login para prosseguir.</p>
+                    <h1 className=" text-5xl font-semibold text-white-gray text-center mobile:text-3xl">Bem-vindo de volta</h1>
+                    <p className="text-white-gray mt-3 text-lg">Faça seu login para prosseguir</p>
                 </div>
                 <form
                     onSubmit={handleSubmit(loginUser)}
-                    className="h-96 w-[23rem] mobile:w-80"
+                    className="w-[23rem] mobile:w-80"
                 >
                     <div className="flex flex-col">
-                        <label className="text-white-gray mb-2 ml-3" htmlFor="inputEmail">E-mail</label>
-                        <Input
-                            placeholder="Insira seu e-mail"
-                            type="text"
+                        <Input.Input
+                            value={watch('email')}
+                            placeholder="Endereço de e-mail*"
+                            type="email"
                             id="inputEmail"
                             name="email"
                             register={register}
                         />
                         {errors.email && <span className="text-white-gray text-sm ml-3 mt-2">{errors.email.message}</span>}
                     </div>
-                    <div className="flex flex-col mt-4 relative">
-                        <label className="text-white-gray mb-2 ml-3" htmlFor="inputPassword">Senha</label>
-                        <Input
-                            placeholder='Insira sua senha'
+                    <div className="flex flex-col mt-6 relative">
+                        <Input.Input
+                            value={watch('password')}
+                            placeholder='Senha*'
                             type={isPasswordVisible ? "text" : "password"}
                             id="inputPassword"
                             name="password"
@@ -86,19 +86,19 @@ export default function Login() {
                         />
                         <button
                             type="button"
-                            className="absolute right-3 top-11 text-white-gray cursor-pointer"
+                            className="absolute right-3 top-3 text-white-gray cursor-pointer"
                             onClick={togglePasswordVisibility}
                         >
                             {isPasswordVisible ? <Visibility /> : <VisibilityOff />}
                         </button>
                         {errors.password && <span className="text-white-gray text-sm ml-3 mt-2">{errors.password.message}</span>}
                     </div>
-                    <div className=" flex justify-end">
+                    <div className="flex justify-end">
                         <a href="" className="text-white-gray mt-4 mb-8 mr-3 text-sm hover:text-purple transition-all">Esqueci minha senha</a>
                     </div>
-                    <Button.Input value="Entrar" />
+                    <Button.Input value="Entrar" type="submit" />
                     <div className="flex justify-center items-start">
-                        <p className="text-white-gray mt-8 whitespace-nowrap select-none">Ainda não possui uma conta? <Link to="/signup" className="text-purple hover:text-purple-dark transition-all">Inscreva-se</Link>.</p>
+                        <p className="text-white-gray mt-8 whitespace-nowrap select-none">Ainda não possui uma conta? <Link to="/signup" className="text-purple hover:text-purple-dark transition-all">Inscreva-se</Link></p>
                     </div>
                 </form>
             </div>

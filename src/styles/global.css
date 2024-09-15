@@ -17,6 +17,21 @@ body::-webkit-scrollbar-thumb {
     border-radius: 30px;
 }
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+    -webkit-text-fill-color: #c5d2c2;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
 p::selection,
 span::selection,
 br::selection,
@@ -67,7 +82,8 @@ a {
 }
 
 .Toastify__progress-bar--error,
-.Toastify__progress-bar--warning {
+.Toastify__progress-bar--warning,
+.Toastify__progress-bar--info {
     background-color: #5d5aff !important;
 }
 

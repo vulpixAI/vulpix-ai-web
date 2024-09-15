@@ -39,12 +39,14 @@ export default {
         'header': "linear-gradient(to right, rgba(22, 23, 25, 0.84), rgba(22, 23, 25, 0.84)), url('/bg-header.jpg')",
         'fade': "url('/fade.svg')",
         'login': "url('/bg-login.jpg')",
+        'signup': "url('/bg-signup.jpg')"
       },
       screens: {
         'mobile': { 'max': '1000px' }
       },
       clipPath: {
         login: "polygon(0% 0%, 0% 100%, 84% 100%, 100% 0%)",
+        signup: "polygon(100% 0%, 100% 100%, 20% 100%, 0% 0%)"
       }
     },
   },

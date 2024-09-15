@@ -9,6 +9,7 @@ interface AuthProvider {
 
 export function AuthProvider({ children }: AuthProvider) {
     const [isLoggedIn, setLoggedIn] = useState<Boolean>(false);
+    const [userId, setUserId] = useState<String>("");
 
     useEffect(() => {
         const userToken = sessionStorage.getItem("user_token");
@@ -32,13 +33,44 @@ export function AuthProvider({ children }: AuthProvider) {
         }
     }
 
+    async function signUp(userFormData: any, empresaFormData: any, enderecoEmpresaFormData: any) {
+        try {
+            const userResponse = await axios.post("http://localhost:8080/usuarios/signup", {
+                nome: userFormData.nome,
+                sobrenome: userFormData.sobrenome,
+                email: userFormData.email,
+                telefone: userFormData.telefone.replace(/\D/g, ''),
+                senha: userFormData.password
+            });
+
+            setUserId(userResponse.data.id);
+
+            const empresaResponse = await axios.post("http://localhost:8080/empresas", {
+                razaoSocial: empresaFormData.razaoSocial,
+                nomeFantasia: empresaFormData.nomefantasia,
+                cnpj: empresaFormData.cnpj.replace(/\D/g, ''),
+                cep: enderecoEmpresaFormData.cep.replace(/\D/g, ''),
+                numero: enderecoEmpresaFormData.numero,
+                logradouro: enderecoEmpresaFormData.logradouro,
+                cidade: enderecoEmpresaFormData.cidade,
+                estado: enderecoEmpresaFormData.estado,
+                bairro: enderecoEmpresaFormData.bairro,
+                complemento: enderecoEmpresaFormData?.complemento
+            });
+
+            return empresaResponse;
+        } catch (err) {
+            if (axios.isAxiosError(err)) return err.response;
+        }
+    }
+
     function signOut() {
         sessionStorage.removeItem("user_token");
     }
 
     return (
         <AuthContext.Provider
-            value={{ isLoggedIn, login, signOut }}>
+            value={{ isLoggedIn, login, signUp, signOut }}>
             {children}
         </AuthContext.Provider>
     )
