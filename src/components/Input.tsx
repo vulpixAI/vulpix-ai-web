@@ -7,10 +7,10 @@ interface Input<T extends FieldValues> {
     type: string,
     maxLength?: number,
     id: string,
-    name?: Path<T> | any,
+    name?: Path<T>,
     register?: UseFormRegister<T>,
     onBlur?: any,
-    onChange?: any
+    onChange?: React.ChangeEventHandler
 }
 
 export function Input<T extends FieldValues>({ value, placeholder, type, maxLength, id, name, register, onBlur, onChange }: Input<T>) {

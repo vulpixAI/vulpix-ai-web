@@ -9,7 +9,6 @@ interface AuthProvider {
 
 export function AuthProvider({ children }: AuthProvider) {
     const [isLoggedIn, setLoggedIn] = useState<boolean>(false);
-    const [userId, setUserId] = useState<string>("");
 
     useEffect(() => {
         const userToken = sessionStorage.getItem("user_token");
@@ -43,8 +42,6 @@ export function AuthProvider({ children }: AuthProvider) {
                 senha: userFormData.password
             });
 
-            setUserId(userResponse.data.id);
-
             const empresaResponse = await axios.post("http://localhost:8080/empresas", {
                 razaoSocial: empresaFormData.razaoSocial,
                 nomeFantasia: empresaFormData.nomefantasia,
@@ -55,7 +52,10 @@ export function AuthProvider({ children }: AuthProvider) {
                 cidade: enderecoEmpresaFormData.cidade,
                 estado: enderecoEmpresaFormData.estado,
                 bairro: enderecoEmpresaFormData.bairro,
-                complemento: enderecoEmpresaFormData?.complemento
+                complemento: enderecoEmpresaFormData?.complemento,
+                usuario: {
+                    id: userResponse.data.id_usuario
+                }
             });
 
             return empresaResponse;

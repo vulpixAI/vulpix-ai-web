@@ -111,7 +111,7 @@ export default function SignUp() {
             .catch(err => console.error(err));
     }
 
-    async function signUpUser(data: any) {
+    async function signUpUser(data: enderecoEmpresaFormData) {
         const userFormData = formData[0];
         const empresaFormData = formData[1];
         const enderecoEmpresaFormData = data;
@@ -125,7 +125,7 @@ export default function SignUp() {
 
         if (response.status == 201) {
             toast.info("Inscrição realizada com sucesso. Acessando a tela de login...");
-            setTimeout(() => navigate("/login"), 4000)
+            setTimeout(() => navigate("/login"), 4000);
         } else {
             toast.warn("Falha ao realizar inscrição.");
         }
@@ -136,7 +136,7 @@ export default function SignUp() {
     const [isConfirmPasswordVisible, setConfirmPasswordVisible] = useState<boolean>(false);
     const toggleConfirmPasswordVisibility = () => setConfirmPasswordVisible(prevState => !prevState);
 
-    function maskTelefoneInput(e: any) {
+    function maskTelefoneInput(e: React.ChangeEvent<HTMLInputElement>) {
         const value = e.target.value.replace(/\D/g, '')
             .replace(/^(\d{2})(\d)/, '($1) $2')
             .replace(/(\d{5})(\d)/, '$1-$2');
@@ -144,7 +144,7 @@ export default function SignUp() {
         (/^\(\d{2}\) 9\d{4}-\d{4}$/).test(value) ? clearUserErrors('telefone') : setUserError('telefone', { message: 'Formato de telefone inválido' });
     }
 
-    function maskCnpjInput(e: any) {
+    function maskCnpjInput(e: React.ChangeEvent<HTMLInputElement>) {
         const value = e.target.value.replace(/\D/g, '')
             .replace(/^(\d{2})(\d)/, '$1.$2')
             .replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3')
@@ -154,7 +154,7 @@ export default function SignUp() {
         (/^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/).test(value) ? clearEmpresaErrors('cnpj') : setEmpresaError('cnpj', { message: 'Formato de CNPJ inválido' });
     }
 
-    function maskCepInput(e: any) {
+    function maskCepInput(e: React.ChangeEvent<HTMLInputElement>) {
         const value = e.target.value.replace(/\D/g, '').replace(/^(\d{5})(\d)/, '$1-$2');
         setValueEnderecoEmpresa('cep', value);
         (/^\d{5}-\d{3}$/).test(value) ? clearEnderecoEmpresaErrors('cep') : setEnderecoEmpresaError('cep', { message: 'Formato de CEP inválido' });
