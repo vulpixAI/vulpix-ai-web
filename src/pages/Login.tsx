@@ -65,7 +65,7 @@ export default function Login() {
                     className="w-[23rem] mobile:w-80"
                 >
                     <div className="flex flex-col">
-                        <Input.Input
+                        <Input
                             value={watch('email')}
                             placeholder="Endereço de e-mail*"
                             type="email"
@@ -76,7 +76,7 @@ export default function Login() {
                         {errors.email && <span className="text-white-gray text-sm ml-3 mt-2">{errors.email.message}</span>}
                     </div>
                     <div className="flex flex-col mt-6 relative">
-                        <Input.Input
+                        <Input
                             value={watch('password')}
                             placeholder='Senha*'
                             type={isPasswordVisible ? "text" : "password"}

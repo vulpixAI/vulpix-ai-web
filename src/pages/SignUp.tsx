@@ -33,6 +33,10 @@ const empresaFormSchema = z.object({
 const enderecoEmpresaFormSchema = z.object({
     cep: z.string().regex(/^\d{5}-\d{3}$/, "Formato de CEP inválido"),
     numero: z.string().min(1, "Campo obrigatório"),
+    logradouro: z.string().min(1, "Campo obrigatório"),
+    cidade: z.string().min(1, "Campo obrigatório"),
+    estado: z.string().min(1, "Campo obrigatório"),
+    bairro: z.string().min(1, "Campo obrigatório"),
     complemento: z.string().nullable()
 });
 
@@ -40,24 +44,43 @@ type userFormData = z.infer<typeof userFormSchema>
 type empresaFormData = z.infer<typeof empresaFormSchema>
 type enderecoEmpresaFormData = z.infer<typeof enderecoEmpresaFormSchema>
 
-interface CepProps {
-    logradouro: string,
-    localidade: string,
-    estado: string,
-    bairro: string
-}
-
 export default function SignUp() {
     useLastPage();
 
     const { signUp }: any = UseAuth();
     const navigate = useNavigate();
 
-    const { register: registerUser, handleSubmit: handleSubmitUser, watch: watchUser, formState: { errors: userErrors } } = useForm<userFormData>({ resolver: zodResolver(userFormSchema) });
-    const { register: registerEmpresa, handleSubmit: handleSubmitEmpresa, watch: watchEmpresa, formState: { errors: empresaErrors } } = useForm<empresaFormData>({ resolver: zodResolver(empresaFormSchema) });
-    const { register: registerEnderecoEmpresa, handleSubmit: handleSubmitEnderecoEmpresa, watch: watchEnderecoEmpresa, formState: { errors: enderecoEmpresaErrors } } = useForm<enderecoEmpresaFormData>({ resolver: zodResolver(enderecoEmpresaFormSchema) });
+    const {
+        register: registerUser,
+        handleSubmit: handleSubmitUser,
+        watch: watchUser,
+        setValue: setValueUser,
+        setError: setUserError,
+        clearErrors: clearUserErrors,
+        formState: { errors: userErrors }
+    } = useForm<userFormData>({ resolver: zodResolver(userFormSchema) });
 
-    const [step, setStep] = useState(1);
+    const {
+        register: registerEmpresa,
+        handleSubmit: handleSubmitEmpresa,
+        watch: watchEmpresa,
+        setValue: setValueEmpresa,
+        setError: setEmpresaError,
+        clearErrors: clearEmpresaErrors,
+        formState: { errors: empresaErrors }
+    } = useForm<empresaFormData>({ resolver: zodResolver(empresaFormSchema) });
+
+    const {
+        register: registerEnderecoEmpresa,
+        handleSubmit: handleSubmitEnderecoEmpresa,
+        watch: watchEnderecoEmpresa,
+        setValue: setValueEnderecoEmpresa,
+        setError: setEnderecoEmpresaError,
+        clearErrors: clearEnderecoEmpresaErrors,
+        formState: { errors: enderecoEmpresaErrors }
+    } = useForm<enderecoEmpresaFormData>({ resolver: zodResolver(enderecoEmpresaFormSchema) });
+
+    const [step, setStep] = useState<number>(1);
     const [formData, setFormData] = useState<Object[]>([]);
 
     function setPreviousStep() {
@@ -70,30 +93,28 @@ export default function SignUp() {
         setFormData([...formData, data]);
     }
 
-    const [cepData, setCepData] = useState<CepProps>();
     function getCep(cep: string) {
         axios.get(`https://viacep.com.br/ws/${cep}/json/`)
-            .then(response => setCepData(response.data))
+            .then(response => {
+                if (response.data.cep) {
+                    setValueEnderecoEmpresa('logradouro', response.data.logradouro);
+                    setValueEnderecoEmpresa('cidade', response.data.localidade);
+                    setValueEnderecoEmpresa('estado', response.data.estado);
+                    setValueEnderecoEmpresa('bairro', response.data.bairro);
+
+                    clearEnderecoEmpresaErrors('logradouro');
+                    clearEnderecoEmpresaErrors('cidade');
+                    clearEnderecoEmpresaErrors('estado');
+                    clearEnderecoEmpresaErrors('bairro');
+                }
+            })
             .catch(err => console.error(err));
     }
 
     async function signUpUser(data: any) {
-        if (!cepData?.logradouro || !cepData?.localidade || !cepData?.estado || !cepData?.bairro) {
-            toast.warn("Informações de endereço inválidas.");
-            return;
-        }
-
         const userFormData = formData[0];
         const empresaFormData = formData[1];
-        const enderecoEmpresaFormData = {
-            cep: data.cep,
-            numero: data.numero,
-            logradouro: cepData.logradouro,
-            cidade: cepData.localidade,
-            estado: cepData.estado,
-            bairro: cepData.bairro,
-            complemento: data?.complemento
-        };
+        const enderecoEmpresaFormData = data;
 
         const response = await signUp(userFormData, empresaFormData, enderecoEmpresaFormData);
 
@@ -114,6 +135,30 @@ export default function SignUp() {
     const togglePasswordVisibility = () => setPasswordVisible(prevState => !prevState);
     const [isConfirmPasswordVisible, setConfirmPasswordVisible] = useState<Boolean>(false);
     const toggleConfirmPasswordVisibility = () => setConfirmPasswordVisible(prevState => !prevState);
+
+    function maskTelefoneInput(e: any) {
+        const value = e.target.value.replace(/\D/g, '')
+            .replace(/^(\d{2})(\d)/, '($1) $2')
+            .replace(/(\d{5})(\d)/, '$1-$2');
+        setValueUser('telefone', value);
+        (/^\(\d{2}\) 9\d{4}-\d{4}$/).test(value) ? clearUserErrors('telefone') : setUserError('telefone', { message: 'Formato de telefone inválido' });
+    }
+
+    function maskCnpjInput(e: any) {
+        const value = e.target.value.replace(/\D/g, '')
+            .replace(/^(\d{2})(\d)/, '$1.$2')
+            .replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3')
+            .replace(/^(\d{2})\.(\d{3})\.(\d{3})(\d)/, '$1.$2.$3/$4')
+            .replace(/^(\d{2})\.(\d{3})\.(\d{3})\/(\d{4})(\d)/, '$1.$2.$3/$4-$5');
+        setValueEmpresa('cnpj', value);
+        (/^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/).test(value) ? clearEmpresaErrors('cnpj') : setEmpresaError('cnpj', { message: 'Formato de CNPJ inválido' });
+    }
+
+    function maskCepInput(e: any) {
+        const value = e.target.value.replace(/\D/g, '').replace(/^(\d{5})(\d)/, '$1-$2');
+        setValueEnderecoEmpresa('cep', value);
+        (/^\d{5}-\d{3}$/).test(value) ? clearEnderecoEmpresaErrors('cep') : setEnderecoEmpresaError('cep', { message: 'Formato de CEP inválido' });
+    }
 
     return (
         <div className='h-screen bg-black overflow-hidden flex mobile:justify-center'>
@@ -150,7 +195,7 @@ export default function SignUp() {
 
                         <div className="flex">
                             <div className="flex flex-col mr-1">
-                                <Input.Input
+                                <Input
                                     value={watchUser('nome')}
                                     placeholder="Nome*"
                                     type="text"
@@ -162,7 +207,7 @@ export default function SignUp() {
                             </div>
 
                             <div className="flex flex-col ml-1">
-                                <Input.Input
+                                <Input
                                     value={watchUser('sobrenome')}
                                     placeholder="Sobrenome*"
                                     type="text"
@@ -175,7 +220,7 @@ export default function SignUp() {
                         </div>
 
                         <div className="flex flex-col mt-4">
-                            <Input.Input
+                            <Input
                                 value={watchUser('email')}
                                 placeholder="Endereço de e-mail*"
                                 type="email"
@@ -187,20 +232,21 @@ export default function SignUp() {
                         </div>
 
                         <div className="flex flex-col mt-4">
-                            <Input.Mask
+                            <Input
                                 value={watchUser('telefone')}
                                 placeholder="Telefone*"
                                 type="text"
+                                maxLength={15}
                                 id="inputTelefone"
                                 name="telefone"
                                 register={registerUser}
-                                mask="(99) 99999-9999"
+                                onChange={maskTelefoneInput}
                             />
                             {userErrors.telefone && <span className="text-white-gray text-sm ml-3 mt-2">{userErrors.telefone.message}</span>}
                         </div>
 
                         <div className="flex flex-col mt-4 relative">
-                            <Input.Input
+                            <Input
                                 value={watchUser('password')}
                                 placeholder='Senha*'
                                 type={isPasswordVisible ? "text" : "password"}
@@ -219,7 +265,7 @@ export default function SignUp() {
                         </div>
 
                         <div className="flex flex-col mt-4 mb-8 relative">
-                            <Input.Input
+                            <Input
                                 value={watchUser('confirmPassword')}
                                 placeholder='Confirmar senha*'
                                 type={isConfirmPasswordVisible ? "text" : "password"}
@@ -254,7 +300,7 @@ export default function SignUp() {
                     >
 
                         <div className="flex flex-col">
-                            <Input.Input
+                            <Input
                                 value={watchEmpresa('razaoSocial')}
                                 placeholder="Razão social*"
                                 type="text"
@@ -266,7 +312,7 @@ export default function SignUp() {
                         </div>
 
                         <div className="flex flex-col mt-4">
-                            <Input.Input
+                            <Input
                                 value={watchEmpresa('nomeFantasia')}
                                 placeholder="Nome fantasia*"
                                 type="text"
@@ -278,14 +324,15 @@ export default function SignUp() {
                         </div>
 
                         <div className="flex flex-col mt-4 mb-8">
-                            <Input.Mask
+                            <Input
                                 value={watchEmpresa('cnpj')}
                                 placeholder="CNPJ*"
                                 type="text"
+                                maxLength={18}
                                 id="inputCnpj"
                                 name="cnpj"
                                 register={registerEmpresa}
-                                mask="99.999.999/9999-99"
+                                onChange={maskCnpjInput}
                             />
                             {empresaErrors.cnpj && <span className="text-white-gray text-sm ml-3 mt-2">{empresaErrors.cnpj.message}</span>}
                         </div>
@@ -310,21 +357,22 @@ export default function SignUp() {
                     >
                         <div className="flex">
                             <div className="flex flex-col mr-1">
-                                <Input.Mask
-                                    onBlurFunc={getCep}
+                                <Input
+                                    onBlur={getCep}
                                     value={watchEnderecoEmpresa('cep')}
                                     placeholder="CEP*"
                                     type="text"
+                                    maxLength={9}
                                     id="inputCep"
                                     name="cep"
                                     register={registerEnderecoEmpresa}
-                                    mask="99999-999"
+                                    onChange={maskCepInput}
                                 />
                                 {enderecoEmpresaErrors.cep && <span className="text-white-gray text-sm ml-3 mt-2">{enderecoEmpresaErrors.cep.message}</span>}
                             </div>
 
                             <div className="flex flex-col ml-1">
-                                <Input.Input
+                                <Input
                                     value={watchEnderecoEmpresa('numero')}
                                     placeholder="Número*"
                                     type="number"
@@ -337,49 +385,57 @@ export default function SignUp() {
                         </div>
 
                         <div className="flex flex-col mt-4">
-                            <Input.Input
-                                value={cepData ? cepData.logradouro : ""}
+                            <Input
+                                value={watchEnderecoEmpresa('logradouro')}
                                 placeholder="Logradouro*"
                                 type="text"
                                 id="inputLogradouro"
-                                isDisabled={true}
+                                name="logradouro"
+                                register={registerEnderecoEmpresa}
                             />
+                            {enderecoEmpresaErrors.logradouro && <span className="text-white-gray text-sm ml-3 mt-2">{enderecoEmpresaErrors.logradouro.message}</span>}
                         </div>
 
                         <div className="flex mt-4">
                             <div className="flex flex-col mr-1">
-                                <Input.Input
-                                    value={cepData ? cepData.localidade : ""}
+                                <Input
+                                    value={watchEnderecoEmpresa('cidade')}
                                     placeholder="Cidade*"
                                     type="text"
                                     id="inputCidade"
-                                    isDisabled={true}
+                                    name="cidade"
+                                    register={registerEnderecoEmpresa}
                                 />
+                                {enderecoEmpresaErrors.cidade && <span className="text-white-gray text-sm ml-3 mt-2">{enderecoEmpresaErrors.cidade.message}</span>}
                             </div>
 
                             <div className="flex flex-col ml-1">
-                                <Input.Input
-                                    value={cepData ? cepData.estado : ""}
+                                <Input
+                                    value={watchEnderecoEmpresa('estado')}
                                     placeholder="Estado*"
                                     type="text"
                                     id="inputEstado"
-                                    isDisabled={true}
+                                    name="estado"
+                                    register={registerEnderecoEmpresa}
                                 />
+                                {enderecoEmpresaErrors.estado && <span className="text-white-gray text-sm ml-3 mt-2">{enderecoEmpresaErrors.estado.message}</span>}
                             </div>
                         </div>
 
                         <div className="flex flex-col mt-4">
-                            <Input.Input
-                                value={cepData ? cepData.bairro : ""}
+                            <Input
+                                value={watchEnderecoEmpresa('bairro')}
                                 placeholder="Bairro*"
                                 type="text"
                                 id="inputBairro"
-                                isDisabled={true}
+                                name="bairro"
+                                register={registerEnderecoEmpresa}
                             />
+                            {enderecoEmpresaErrors.bairro && <span className="text-white-gray text-sm ml-3 mt-2">{enderecoEmpresaErrors.bairro.message}</span>}
                         </div>
 
                         <div className="flex flex-col mt-4 mb-8">
-                            <Input.Input
+                            <Input
                                 value={watchEnderecoEmpresa('complemento')}
                                 placeholder="Complemento"
                                 type="text"
