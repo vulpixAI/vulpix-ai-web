@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Footer } from "../components/Footer";
 
 export default function NotFound() {
-    const [lastPage, setLastPage] = useState<String | null>();
+    const [lastPage, setLastPage] = useState<string | null>();
 
     useEffect(() => {
         setLastPage(sessionStorage.getItem("lastPage"));

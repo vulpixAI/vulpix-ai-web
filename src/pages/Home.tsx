@@ -15,16 +15,16 @@ import 'aos/dist/aos.css'
 export default function Home() {
     useLastPage();
 
-    const [isScrolled, setScrolled] = useState<Boolean>(false);
+    const [isScrolled, setScrolled] = useState<boolean>(false);
     useEffect(() => {
         window.addEventListener("scroll", () => window.scrollY > 0 ? setScrolled(true) : setScrolled(false));
         AOS.init();
     }, []);
 
-    const [navBackgroundColor, setNavBackgroundColor] = useState<String>("transparent");
+    const [navBackgroundColor, setNavBackgroundColor] = useState<string>("transparent");
     useEffect(() => isScrolled ? setNavBackgroundColor("bg-gray/85 backdrop-blur-sm") : setNavBackgroundColor("transparent"), [isScrolled]);
 
-    const [isMenuOpened, setMenuOpened] = useState(false);
+    const [isMenuOpened, setMenuOpened] = useState<boolean>(false);
     useEffect(() => { isMenuOpened ? document.documentElement.style.overflow = "hidden" : document.documentElement.style.overflow = "auto" }, [isMenuOpened]);
 
     return (

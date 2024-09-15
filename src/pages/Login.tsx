@@ -37,7 +37,7 @@ export default function Login() {
         response.status == 200 ? navigate("/dashboard") : toast.warn("E-mail ou senha inválidos.");
     }
 
-    const [isPasswordVisible, setPasswordVisible] = useState<Boolean>(false);
+    const [isPasswordVisible, setPasswordVisible] = useState<boolean>(false);
     const togglePasswordVisibility = () => setPasswordVisible(prevState => !prevState);
 
     return (

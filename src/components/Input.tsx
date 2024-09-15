@@ -14,7 +14,7 @@ interface Input<T extends FieldValues> {
 }
 
 export function Input<T extends FieldValues>({ value, placeholder, type, maxLength, id, name, register, onBlur, onChange }: Input<T>) {
-    const [isOnFocus, setOnFocus] = useState<Boolean>(false);
+    const [isOnFocus, setOnFocus] = useState<boolean>(false);
 
     return (
         <div className="relative">

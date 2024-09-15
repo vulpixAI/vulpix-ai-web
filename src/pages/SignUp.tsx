@@ -81,7 +81,7 @@ export default function SignUp() {
     } = useForm<enderecoEmpresaFormData>({ resolver: zodResolver(enderecoEmpresaFormSchema) });
 
     const [step, setStep] = useState<number>(1);
-    const [formData, setFormData] = useState<Object[]>([]);
+    const [formData, setFormData] = useState<object[]>([]);
 
     function setPreviousStep() {
         step > 1 && setStep(step => step - 1);
@@ -131,9 +131,9 @@ export default function SignUp() {
         }
     }
 
-    const [isPasswordVisible, setPasswordVisible] = useState<Boolean>(false);
+    const [isPasswordVisible, setPasswordVisible] = useState<boolean>(false);
     const togglePasswordVisibility = () => setPasswordVisible(prevState => !prevState);
-    const [isConfirmPasswordVisible, setConfirmPasswordVisible] = useState<Boolean>(false);
+    const [isConfirmPasswordVisible, setConfirmPasswordVisible] = useState<boolean>(false);
     const toggleConfirmPasswordVisibility = () => setConfirmPasswordVisible(prevState => !prevState);
 
     function maskTelefoneInput(e: any) {

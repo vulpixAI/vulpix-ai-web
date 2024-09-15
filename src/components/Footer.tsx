@@ -1,5 +1,5 @@
 interface Footer {
-    properties?: String
+    properties?: string
 }
 
 export function Footer({ properties = "" }: Footer) {

@@ -4,12 +4,12 @@ import axios from "axios";
 export const AuthContext = createContext({});
 
 interface AuthProvider {
-    children: ReactNode;
+    children: ReactNode
 }
 
 export function AuthProvider({ children }: AuthProvider) {
-    const [isLoggedIn, setLoggedIn] = useState<Boolean>(false);
-    const [userId, setUserId] = useState<String>("");
+    const [isLoggedIn, setLoggedIn] = useState<boolean>(false);
+    const [userId, setUserId] = useState<string>("");
 
     useEffect(() => {
         const userToken = sessionStorage.getItem("user_token");
