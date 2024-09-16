@@ -88,6 +88,7 @@ export default function Login() {
                             type="button"
                             className="absolute right-3 top-3 text-white-gray cursor-pointer"
                             onClick={togglePasswordVisibility}
+                            tabIndex={-1}
                         >
                             {isPasswordVisible ? <Visibility /> : <VisibilityOff />}
                         </button>

@@ -125,7 +125,7 @@ export default function SignUp() {
 
         if (response.status == 201) {
             toast.info("Inscrição realizada com sucesso. Acessando a tela de login...");
-            setTimeout(() => navigate("/login"), 4000);
+            setTimeout(() => navigate("/login"), 3000);
         } else {
             toast.warn("Falha ao realizar inscrição.");
         }
@@ -179,7 +179,7 @@ export default function SignUp() {
                     <h1 className=" text-5xl font-semibold text-white-gray text-center mobile:text-3xl">
                         Crie sua conta
                     </h1>
-                    <p className="text-white-gray mt-3 text-lg">
+                    <p className="text-white-gray mt-3 text-lg text-center">
                         {step == 1 && "Insira seus dados de usuário para continuar"}
                         {step == 2 && "Forneça as informações sobre a sua empresa"}
                         {step == 3 && "Informe o endereço completo de sua empresa"}
@@ -258,6 +258,7 @@ export default function SignUp() {
                                 type="button"
                                 className="absolute right-3 top-3 text-white-gray cursor-pointer"
                                 onClick={togglePasswordVisibility}
+                                tabIndex={-1}
                             >
                                 {isPasswordVisible ? <Visibility /> : <VisibilityOff />}
                             </button>
@@ -277,6 +278,7 @@ export default function SignUp() {
                                 type="button"
                                 className="absolute right-3 top-3 text-white-gray cursor-pointer"
                                 onClick={toggleConfirmPasswordVisibility}
+                                tabIndex={-1}
                             >
                                 {isConfirmPasswordVisible ? <Visibility /> : <VisibilityOff />}
                             </button>
@@ -338,8 +340,8 @@ export default function SignUp() {
                         </div>
 
                         <div className="flex justify-between">
-                            <Button.Transparent width="w-44" value="Voltar" type="button" onClick={setPreviousStep} />
-                            <Button.Input width="w-44" value="Próximo" type="submit" />
+                            <Button.Transparent width="w-44 mobile:w-36" value="Voltar" type="button" onClick={setPreviousStep} />
+                            <Button.Input width="w-44 mobile:w-36" value="Próximo" type="submit" />
                         </div>
 
                         <div className="flex justify-center items-start">
@@ -446,8 +448,8 @@ export default function SignUp() {
                         </div>
 
                         <div className="flex justify-between">
-                            <Button.Transparent width="w-44" value="Voltar" type="button" onClick={setPreviousStep} />
-                            <Button.Input width="w-44" value="Inscrever-se" type="submit" />
+                            <Button.Transparent width="w-44 mobile:w-36" value="Voltar" type="button" onClick={setPreviousStep} />
+                            <Button.Input width="w-44 mobile:w-36" value="Inscrever-se" type="submit" />
                         </div>
 
                         <div className="flex justify-center items-start">

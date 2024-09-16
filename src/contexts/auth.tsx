@@ -33,8 +33,10 @@ export function AuthProvider({ children }: AuthProvider) {
     }
 
     async function signUp(userFormData: any, empresaFormData: any, enderecoEmpresaFormData: any) {
+        let userResponse: any = {};
+
         try {
-            const userResponse = await axios.post("http://localhost:8080/usuarios/signup", {
+            userResponse = await axios.post("http://localhost:8080/usuarios/signup", {
                 nome: userFormData.nome,
                 sobrenome: userFormData.sobrenome,
                 email: userFormData.email,
@@ -60,6 +62,7 @@ export function AuthProvider({ children }: AuthProvider) {
 
             return empresaResponse;
         } catch (err) {
+            userResponse?.data?.id_usuario && axios.delete(`http://localhost:8080/usuarios/${userResponse.data.id_usuario}`);
             if (axios.isAxiosError(err)) return err.response;
         }
     }
