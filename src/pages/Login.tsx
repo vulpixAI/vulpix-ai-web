@@ -26,7 +26,7 @@ export default function Login() {
 
     const { register, handleSubmit, watch, formState: { errors } } = useForm<loginFormData>({ resolver: zodResolver(loginFormSchema) });
 
-    async function loginUser(data: any) {
+    async function loginUser(data: loginFormData) {
         const response = await login(data.email, data.password);
 
         if (!response) {
@@ -88,6 +88,7 @@ export default function Login() {
                             type="button"
                             className="absolute right-3 top-3 text-white-gray cursor-pointer"
                             onClick={togglePasswordVisibility}
+                            tabIndex={-1}
                         >
                             {isPasswordVisible ? <Visibility /> : <VisibilityOff />}
                         </button>

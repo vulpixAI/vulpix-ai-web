@@ -9,7 +9,6 @@ interface AuthProvider {
 
 export function AuthProvider({ children }: AuthProvider) {
     const [isLoggedIn, setLoggedIn] = useState<boolean>(false);
-    const [userId, setUserId] = useState<string>("");
 
     useEffect(() => {
         const userToken = sessionStorage.getItem("user_token");
@@ -34,16 +33,16 @@ export function AuthProvider({ children }: AuthProvider) {
     }
 
     async function signUp(userFormData: any, empresaFormData: any, enderecoEmpresaFormData: any) {
+        let userResponse: any = {};
+
         try {
-            const userResponse = await axios.post("http://localhost:8080/usuarios/signup", {
+            userResponse = await axios.post("http://localhost:8080/usuarios/signup", {
                 nome: userFormData.nome,
                 sobrenome: userFormData.sobrenome,
                 email: userFormData.email,
                 telefone: userFormData.telefone.replace(/\D/g, ''),
                 senha: userFormData.password
             });
-
-            setUserId(userResponse.data.id);
 
             const empresaResponse = await axios.post("http://localhost:8080/empresas", {
                 razaoSocial: empresaFormData.razaoSocial,
@@ -55,11 +54,15 @@ export function AuthProvider({ children }: AuthProvider) {
                 cidade: enderecoEmpresaFormData.cidade,
                 estado: enderecoEmpresaFormData.estado,
                 bairro: enderecoEmpresaFormData.bairro,
-                complemento: enderecoEmpresaFormData?.complemento
+                complemento: enderecoEmpresaFormData?.complemento,
+                usuario: {
+                    id: userResponse.data.id_usuario
+                }
             });
 
             return empresaResponse;
         } catch (err) {
+            userResponse?.data?.id_usuario && axios.delete(`http://localhost:8080/usuarios/${userResponse.data.id_usuario}`);
             if (axios.isAxiosError(err)) return err.response;
         }
     }
