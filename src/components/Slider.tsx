@@ -46,16 +46,45 @@ export function Slider() {
         <div className="slider-container w-[100vw] cursor-grab">
             <div className="h-48 !w-[100%] block">
                 <SliderComponent {...settings}>
-                    <div className="h-64 !w-[30rem] mobile:!w-[21rem] mobile:ml-4 rounded-2xl bg-white"></div>
-                    <div className="h-64 !w-[30rem] mobile:!w-[21rem] mobile:ml-4 rounded-2xl bg-white"></div>
-                    <div className="h-64 !w-[30rem] mobile:!w-[21rem] mobile:ml-4 rounded-2xl bg-white"></div>
-                    <div className="h-64 !w-[30rem] mobile:!w-[21rem] mobile:ml-4 rounded-2xl bg-white"></div>
-                    <div className="h-64 !w-[30rem] mobile:!w-[21rem] mobile:ml-4 rounded-2xl bg-white"></div>
-                    <div className="h-64 !w-[30rem] mobile:!w-[21rem] mobile:ml-4 rounded-2xl bg-white"></div>
-                    <div className="h-64 !w-[30rem] mobile:!w-[21rem] mobile:ml-4 rounded-2xl bg-white"></div>
-                    <div className="h-64 !w-[30rem] mobile:!w-[21rem] mobile:ml-4 rounded-2xl bg-white"></div>
-                    <div className="h-64 !w-[30rem] mobile:!w-[21rem] mobile:ml-4 rounded-2xl bg-white"></div>
-                    <div className="h-64 !w-[30rem] mobile:!w-[21rem] mobile:ml-4 rounded-2xl bg-white"></div>
+                    <div className="h-64 !w-[26rem] mobile:!w-[21rem] mobile:ml-4 rounded-2xl overflow-hidden">
+                        <img src="/image-1-vulpix.jpeg" className="w-full h-full object-cover" />
+                    </div>
+
+                    <div className="h-64 !w-[26rem] mobile:!w-[21rem] mobile:ml-4 rounded-2xl overflow-hidden aspect-[16/9]">
+                        <img src="/image-2-vulpix.jpeg" className="w-full h-full object-cover" />
+                    </div>
+
+                    <div className="h-64 !w-[26rem] mobile:!w-[21rem] mobile:ml-4 rounded-2xl overflow-hidden">
+                        <img src="/image-3-vulpix.jpeg" className="w-full h-full" />
+                    </div>
+
+                    <div className="h-64 !w-[26rem] mobile:!w-[21rem] mobile:ml-4 rounded-2xl overflow-hidden">
+                        <img src="/image-4-vulpix.jpeg" className="w-full h-full" />
+                    </div>
+
+                    <div className="h-64 !w-[26rem] mobile:!w-[21rem] mobile:ml-4 rounded-2xl overflow-hidden">
+                        <img src="/image-5-vulpix.jpeg" className="w-full h-full" />
+                    </div>
+
+                    <div className="h-64 !w-[26rem] mobile:!w-[21rem] mobile:ml-4 rounded-2xl overflow-hidden">
+                        <img src="/image-6-vulpix.jpeg" className="w-full h-full" />
+                    </div>
+
+                    <div className="h-64 !w-[26rem] mobile:!w-[21rem] mobile:ml-4 rounded-2xl overflow-hidden">
+                        <img src="/image-7-vulpix.jpeg" className="w-full h-full" />
+                    </div>
+
+                    <div className="h-64 !w-[26rem] mobile:!w-[21rem] mobile:ml-4 rounded-2xl overflow-hidden">
+                        <img src="/image-8-vulpix.jpeg" className="w-full h-full" />
+                    </div>
+
+                    <div className="h-64 !w-[26rem] mobile:!w-[21rem] mobile:ml-4 rounded-2xl overflow-hidden">
+                        <img src="/image-9-vulpix.jpeg" className="w-full h-full" />
+                    </div>
+
+                    <div className="h-64 !w-[26rem] mobile:!w-[21rem] mobile:ml-4 rounded-2xl overflow-hidden">
+                    <img src="/image-10-vulpix.jpeg" className="w-full h-full" />
+                    </div>
                 </SliderComponent>
             </div>
         </div>
