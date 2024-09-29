@@ -1,6 +1,6 @@
 import { Menu } from "../../components/Menu";
 
-export default function Dashboard() {
+export default function Ai() {
     return (
         <div className="h-screen">
             <Menu>
