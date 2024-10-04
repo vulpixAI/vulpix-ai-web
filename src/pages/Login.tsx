@@ -3,6 +3,7 @@ import { useLastPage } from "../hooks/useLastPage";
 import { Input } from "../components/Input";
 import { Button } from "../components/Button";
 import { Visibility, VisibilityOff } from '@mui/icons-material';
+import HomeIcon from '@mui/icons-material/Home';
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -53,6 +54,8 @@ export default function Login() {
                 draggable
                 pauseOnHover
             />
+
+            <button onClick={() => navigate("/")} className="absolute top-4 right-4 text-white-gray hover:text-purple transition-all"><HomeIcon /></button>
 
             <div className="h-full w-[65%] bg-login bg-cover bg-no-repeat bg-center clip-path-login mobile:hidden"></div>
             <div className="h-full w-[40%] flex flex-col items-center justify-center mobile:w-full">
