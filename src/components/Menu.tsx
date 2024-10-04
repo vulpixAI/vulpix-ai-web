@@ -34,7 +34,7 @@ export function Menu({ children }: Menu) {
                         <DescriptionOutlinedIcon />
                     </Link>
 
-                    <Link to={"/ai"} className={`${currentPage == "ai" ? "text-purple" : "text-white-gray"} hover:scale-110 ease-in-out duration-300`}>
+                    <Link to={"/creative"} className={`${currentPage == "creative" ? "text-purple" : "text-white-gray"} hover:scale-110 ease-in-out duration-300`}>
                         <AutoAwesomeOutlinedIcon />
                     </Link>
                 </div>

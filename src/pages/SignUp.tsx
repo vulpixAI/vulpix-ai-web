@@ -8,6 +8,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate, Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
+import { SignUpProgressBar } from "../components/SignUpProgressBar";
 import UseAuth from "../hooks/useAuth";
 import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
@@ -124,6 +125,7 @@ export default function SignUp() {
         }
 
         if (response.status == 201) {
+            setStep(4);
             toast.info("Inscrição realizada com sucesso. Acessando a tela de login...");
             setTimeout(() => navigate("/login"), 3000);
         } else {
@@ -182,7 +184,7 @@ export default function SignUp() {
                     <p className="text-white-gray mt-3 text-lg text-center">
                         {step == 1 && "Insira seus dados de usuário para continuar"}
                         {step == 2 && "Forneça as informações sobre a sua empresa"}
-                        {step == 3 && "Informe o endereço completo de sua empresa"}
+                        {step >= 3 && "Informe o endereço completo de sua empresa"}
                     </p>
                 </div>
                 {
@@ -265,7 +267,7 @@ export default function SignUp() {
                             {userErrors.password && <span className="text-white-gray text-sm ml-3 mt-2">{userErrors.password.message}</span>}
                         </div>
 
-                        <div className="flex flex-col mt-4 mb-8 relative">
+                        <div className="flex flex-col mt-4 relative">
                             <Input
                                 value={watchUser('confirmPassword')}
                                 placeholder='Confirmar senha*'
@@ -285,11 +287,9 @@ export default function SignUp() {
                             {userErrors.confirmPassword && <span className="text-white-gray text-sm ml-3 mt-2">{userErrors.confirmPassword.message}</span>}
                         </div>
 
-                        <Button.Input value="Próximo" type="submit" />
+                        <SignUpProgressBar step={step} />
 
-                        <div className="flex justify-center items-start">
-                            <p className="text-white-gray mt-8 whitespace-nowrap select-none">Já possui uma conta? Faça <Link to="/login" className="text-purple hover:text-purple-dark transition-all">login</Link></p>
-                        </div>
+                        <Button.Input value="Próximo" type="submit" />
                     </form>
                 }
 
@@ -325,7 +325,7 @@ export default function SignUp() {
                             {empresaErrors.nomeFantasia && <span className="text-white-gray text-sm ml-3 mt-2">{empresaErrors.nomeFantasia.message}</span>}
                         </div>
 
-                        <div className="flex flex-col mt-4 mb-8">
+                        <div className="flex flex-col mt-4">
                             <Input
                                 value={watchEmpresa('cnpj')}
                                 placeholder="CNPJ*"
@@ -339,19 +339,17 @@ export default function SignUp() {
                             {empresaErrors.cnpj && <span className="text-white-gray text-sm ml-3 mt-2">{empresaErrors.cnpj.message}</span>}
                         </div>
 
+                        <SignUpProgressBar step={step} />
+
                         <div className="flex justify-between">
                             <Button.Transparent width="w-44 mobile:w-36" value="Voltar" type="button" onClick={setPreviousStep} />
                             <Button.Input width="w-44 mobile:w-36" value="Próximo" type="submit" />
-                        </div>
-
-                        <div className="flex justify-center items-start">
-                            <p className="text-white-gray mt-8 whitespace-nowrap select-none">Já possui uma conta? Faça <Link to="/login" className="text-purple hover:text-purple-dark transition-all">login</Link></p>
                         </div>
                     </form>
                 }
 
                 {
-                    step == 3 &&
+                    step >= 3 &&
 
                     <form
                         onSubmit={handleSubmitEnderecoEmpresa(signUpUser)}
@@ -436,7 +434,7 @@ export default function SignUp() {
                             {enderecoEmpresaErrors.bairro && <span className="text-white-gray text-sm ml-3 mt-2">{enderecoEmpresaErrors.bairro.message}</span>}
                         </div>
 
-                        <div className="flex flex-col mt-4 mb-8">
+                        <div className="flex flex-col mt-4">
                             <Input
                                 value={watchEnderecoEmpresa('complemento')}
                                 placeholder="Complemento"
@@ -447,16 +445,18 @@ export default function SignUp() {
                             />
                         </div>
 
-                        <div className="flex justify-between">
-                            <Button.Transparent width="w-44 mobile:w-36" value="Voltar" type="button" onClick={setPreviousStep} />
-                            <Button.Input width="w-44 mobile:w-36" value="Inscrever-se" type="submit" />
-                        </div>
+                        <SignUpProgressBar step={step} />
 
-                        <div className="flex justify-center items-start">
-                            <p className="text-white-gray mt-8 whitespace-nowrap select-none">Já possui uma conta? Faça <Link to="/login" className="text-purple hover:text-purple-dark transition-all">login</Link></p>
+                        <div className="flex justify-between">
+                            <Button.Transparent width="w-44 mobile:w-36" value="Voltar" type="button" onClick={setPreviousStep} disabled={step == 4 ? true : false} />
+                            <Button.Input width="w-44 mobile:w-36" value="Inscrever-se" type="submit" />
                         </div>
                     </form>
                 }
+
+                <div className="flex justify-center items-start">
+                    <p className="text-white-gray mt-8 whitespace-nowrap select-none">Já possui uma conta? <Link to="/login" className="text-purple hover:text-purple-dark transition-all">Faça login</Link></p>
+                </div>
             </div>
             <div className="h-full w-[65%] bg-signup bg-cover bg-no-repeat bg-center clip-path-signup mobile:hidden"></div>
         </div>

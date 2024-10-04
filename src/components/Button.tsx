@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
 
-interface Button extends React.InputHTMLAttributes<InnerHTML> {
-    uri?: string;
-    value: string;
-    type?: string;
-    width?: string;
+interface Button extends React.InputHTMLAttributes<any> {
+    uri?: string,
+    value: string,
+    type?: string,
+    width?: string
 }
 
 function NavigateButton({ uri = "", value }: Button) {

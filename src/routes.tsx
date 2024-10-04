@@ -6,7 +6,7 @@ import SignUp from "./pages/SignUp";
 import NotFound from "./pages/NotFound";
 import Dashboard from "./pages/Application/Dashboard";
 import Posts from "./pages/Application/Posts";
-import Ai from "./pages/Application/Ai";
+import Creative from "./pages/Application/Creative";
 
 import UseAuth from "./hooks/useAuth";
 
@@ -24,7 +24,7 @@ export default function AppRoutes() {
                 <Route path="/signup" element={<SignUp />} />
                 <Route path="/dashboard" element={<PrivatePage Item={<Dashboard />} />} />
                 <Route path="/posts" element={<PrivatePage Item={<Posts />} />} />
-                <Route path="/ai" element={<PrivatePage Item={<Ai />} />} />
+                <Route path="/creative" element={<PrivatePage Item={<Creative />} />} />
                 <Route path="*" element={<NotFound />} />
             </Routes>
         </BrowserRouter>
