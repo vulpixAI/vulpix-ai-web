@@ -46,7 +46,7 @@ export function AuthProvider({ children }: AuthProvider) {
 
             const empresaResponse = await axios.post("http://localhost:8080/empresas", {
                 razaoSocial: empresaFormData.razaoSocial,
-                nomeFantasia: empresaFormData.nomefantasia,
+                nome_fantasia: empresaFormData.nomeFantasia,
                 cnpj: empresaFormData.cnpj.replace(/\D/g, ''),
                 cep: enderecoEmpresaFormData.cep.replace(/\D/g, ''),
                 numero: enderecoEmpresaFormData.numero,
