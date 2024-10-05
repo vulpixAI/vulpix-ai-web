@@ -177,7 +177,7 @@ export default function SignUp() {
                 pauseOnHover
             />
 
-            <button onClick={() => navigate("/")} className="absolute top-4 left-4 text-white-gray hover:text-purple transition-all"><HomeIcon /></button>
+            <button onClick={() => navigate("/")} className="absolute top-4 left-4 text-white-gray hover:text-purple transition-all"><HomeIcon sx={{ fontSize: 30 }} /></button>
 
             <div className="h-full w-[40%] flex flex-col items-center justify-center mobile:w-full">
                 <div className="flex items-center justify-center flex-col mb-8">

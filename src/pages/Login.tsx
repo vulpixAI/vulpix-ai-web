@@ -55,7 +55,7 @@ export default function Login() {
                 pauseOnHover
             />
 
-            <button onClick={() => navigate("/")} className="absolute top-4 right-4 text-white-gray hover:text-purple transition-all"><HomeIcon /></button>
+            <button onClick={() => navigate("/")} className="absolute top-4 right-4 text-white-gray hover:text-purple transition-all"><HomeIcon sx={{ fontSize: 30 }} /></button>
 
             <div className="h-full w-[65%] bg-login bg-cover bg-no-repeat bg-center clip-path-login mobile:hidden"></div>
             <div className="h-full w-[40%] flex flex-col items-center justify-center mobile:w-full">
