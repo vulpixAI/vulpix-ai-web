@@ -35,7 +35,13 @@ export default function Login() {
             return;
         }
 
-        response.status == 200 ? navigate("/dashboard") : toast.warn("E-mail ou senha inválidos.");
+        if (response.status == 200 && response.data.status) {
+            navigate("/dashboard");
+        } else if (response.status == 200 && !response.data.status) {
+            navigate("/plans");
+        } else {
+            toast.warn("E-mail ou senha inválidos.");
+        }
     }
 
     const [isPasswordVisible, setPasswordVisible] = useState<boolean>(false);
