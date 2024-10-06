@@ -33,20 +33,15 @@ export function AuthProvider({ children }: AuthProvider) {
     }
 
     async function signUp(userFormData: any, empresaFormData: any, enderecoEmpresaFormData: any) {
-        let userResponse: any = {};
-
         try {
-            userResponse = await axios.post("http://localhost:8080/usuarios/signup", {
+            return await axios.post("http://localhost:8080/usuarios", {
                 nome: userFormData.nome,
                 sobrenome: userFormData.sobrenome,
                 email: userFormData.email,
                 telefone: userFormData.telefone.replace(/\D/g, ''),
-                senha: userFormData.password
-            });
-
-            const empresaResponse = await axios.post("http://localhost:8080/empresas", {
+                senha: userFormData.password,
                 razaoSocial: empresaFormData.razaoSocial,
-                nome_fantasia: empresaFormData.nomeFantasia,
+                nomeFantasia: empresaFormData.nomeFantasia,
                 cnpj: empresaFormData.cnpj.replace(/\D/g, ''),
                 cep: enderecoEmpresaFormData.cep.replace(/\D/g, ''),
                 numero: enderecoEmpresaFormData.numero,
@@ -54,15 +49,10 @@ export function AuthProvider({ children }: AuthProvider) {
                 cidade: enderecoEmpresaFormData.cidade,
                 estado: enderecoEmpresaFormData.estado,
                 bairro: enderecoEmpresaFormData.bairro,
-                complemento: enderecoEmpresaFormData?.complemento,
-                usuario: {
-                    id: userResponse.data.id_usuario
-                }
+                complemento: enderecoEmpresaFormData?.complemento
             });
-
-            return empresaResponse;
+            
         } catch (err) {
-            userResponse?.data?.id_usuario && axios.delete(`http://localhost:8080/usuarios/${userResponse.data.id_usuario}`);
             if (axios.isAxiosError(err)) return err.response;
         }
     }
