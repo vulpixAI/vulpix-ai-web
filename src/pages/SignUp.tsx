@@ -190,8 +190,8 @@ export default function SignUp() {
                         {step >= 3 && "Informe o endereço completo de sua empresa"}
                     </p>
                 </div>
-                {
-                    step == 1 &&
+
+                {step == 1 &&
 
                     <form
                         onSubmit={handleSubmitUser(setNextStep)}
@@ -296,8 +296,7 @@ export default function SignUp() {
                     </form>
                 }
 
-                {
-                    step == 2 &&
+                {step == 2 &&
 
                     <form
                         onSubmit={handleSubmitEmpresa(setNextStep)}
@@ -351,8 +350,7 @@ export default function SignUp() {
                     </form>
                 }
 
-                {
-                    step >= 3 &&
+                {step >= 3 &&
 
                     <form
                         onSubmit={handleSubmitEnderecoEmpresa(signUpUser)}
