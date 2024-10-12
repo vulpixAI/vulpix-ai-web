@@ -36,8 +36,10 @@ export default function Login() {
         }
 
         if (response.status == 200 && response.data.status) {
+            sessionStorage.setItem("bearerToken", response.data.token);
             navigate("/dashboard");
         } else if (response.status == 200 && !response.data.status) {
+            sessionStorage.setItem("bearerToken", response.data.token);
             navigate("/plans");
         } else {
             toast.warn("E-mail ou senha inválidos.");
