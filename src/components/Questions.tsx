@@ -1,56 +1,50 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "./Input";
 import { Button } from "./Button";
+import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
 
 const stepOneFormSchema = z.object({
-    sloganEmpresa: z.string().nullable(),
-    descricaoEmpresa: z.string().min(1, "Campo obrigatório"),
-    setorAtuacao: z.string().min(1, "Campo obrigatório"),
+    slogan: z.string().nullable(),
+    descricao: z.string().min(1, "Campo obrigatório"),
+    setor: z.string().min(1, "Campo obrigatório"),
     anoFundacao: z.string().min(1, "Campo obrigatório"),
-    logoEmpresa: z.string().min(1, "Campo obrigatório")
+    logotipo: z.string().min(1, "Campo obrigatório")
 });
 
 const stepTwoFormSchema = z.object({
-    campo1: z.string().min(1, "Campo obrigatório"),
-    campo2: z.string().min(1, "Campo obrigatório"),
-    campo3: z.string().min(1, "Campo obrigatório"),
-    campo4: z.string().min(1, "Campo obrigatório"),
-    campo5: z.string().min(1, "Campo obrigatório")
+    cor: z.string().min(1, "Campo obrigatório"),
+    fonte: z.string().min(1, "Campo obrigatório"),
+    estiloVisual: z.string().min(1, "Campo obrigatório"),
+    publicoAlvo: z.string().min(1, "Campo obrigatório"),
+    problemasQueResolve: z.string().min(1, "Campo obrigatório")
 });
 
 const stepThreeFormSchema = z.object({
-    campo6: z.string().min(1, "Campo obrigatório"),
-    campo7: z.string().min(1, "Campo obrigatório"),
-    campo8: z.string().min(1, "Campo obrigatório"),
-    campo9: z.string().min(1, "Campo obrigatório"),
-    campo10: z.string().min(1, "Campo obrigatório")
+    expectativaDoCliente: z.string().min(1, "Campo obrigatório"),
+    produtoEmpresa: z.string().min(1, "Campo obrigatório"),
+    diferencialSolucao: z.string().min(1, "Campo obrigatório"),
+    concorrentes: z.string().min(1, "Campo obrigatório"),
+    pontosFortes: z.string().min(1, "Campo obrigatório")
 });
 
 const stepFourFormSchema = z.object({
-    campo11: z.string().min(1, "Campo obrigatório"),
-    campo12: z.string().min(1, "Campo obrigatório"),
-    campo13: z.string().min(1, "Campo obrigatório"),
-    campo14: z.string().min(1, "Campo obrigatório"),
-    campo15: z.string().min(1, "Campo obrigatório")
+    desafiosEnfrentados: z.string().min(1, "Campo obrigatório"),
+    redesSociais: z.string().min(1, "Campo obrigatório"),
+    tonalidadeComunicacao: z.string().min(1, "Campo obrigatório"),
+    tiposConteudo: z.string().min(1, "Campo obrigatório"),
+    objetivoMarketing: z.string().min(1, "Campo obrigatório")
 });
 
 const stepFiveFormSchema = z.object({
-    campo16: z.string().min(1, "Campo obrigatório"),
-    campo17: z.string().min(1, "Campo obrigatório"),
-    campo18: z.string().min(1, "Campo obrigatório"),
-    campo19: z.string().min(1, "Campo obrigatório"),
-    campo20: z.string().min(1, "Campo obrigatório")
-});
-
-const stepSixFormSchema = z.object({
-    campo21: z.string().min(1, "Campo obrigatório"),
-    campo22: z.string().min(1, "Campo obrigatório"),
-    campo23: z.string().min(1, "Campo obrigatório"),
-    campo24: z.string().min(1, "Campo obrigatório"),
-    infoExtra: z.string().nullable()
+    resultadosEsperados: z.string().min(1, "Campo obrigatório"),
+    datasImportantes: z.string().min(1, "Campo obrigatório"),
+    estiloCriativos: z.string().min(1, "Campo obrigatório"),
+    referenciasVisuais: z.string().min(1, "Campo obrigatório"),
+    observacoesGerais: z.string().min(1, "Campo obrigatório")
 });
 
 type stepOneFormData = z.infer<typeof stepOneFormSchema>
@@ -58,11 +52,21 @@ type stepTwoFormData = z.infer<typeof stepTwoFormSchema>
 type stepThreeFormData = z.infer<typeof stepThreeFormSchema>
 type stepFourFormData = z.infer<typeof stepFourFormSchema>
 type stepFiveFormData = z.infer<typeof stepFiveFormSchema>
-type stepSixFormData = z.infer<typeof stepSixFormSchema>
 
 export function Questions() {
     const [step, setStep] = useState<number>(0);
-    const [formData, setFormData] = useState<object[]>([]);
+    const [formData, setFormData] = useState<object[] | any>([]);
+    const [isFormCompleted, setFormCompleted] = useState<boolean>(false);
+
+    useEffect(() => {
+        axios.get("http://localhost:8080/empresas/form", {
+            headers: {
+                Authorization: `Bearer ${sessionStorage.getItem("bearerToken")}`
+            }
+        }).then(response => {
+            if (response.status == 200) setFormCompleted(true);
+        })
+    }, []);
 
     const {
         register: registerStepOne,
@@ -99,28 +103,72 @@ export function Questions() {
         formState: { errors: stepFiveErrors }
     } = useForm<stepFiveFormData>({ resolver: zodResolver(stepFiveFormSchema) });
 
-    const {
-        register: registerStepSix,
-        handleSubmit: handleSubmitStepSix,
-        watch: watchStepSix,
-        formState: { errors: stepSixErrors }
-    } = useForm<stepSixFormData>({ resolver: zodResolver(stepSixFormSchema) });
-
-
     function setPreviousStep() {
         step > 1 && setStep(step => step - 1);
-        setFormData(data => data.slice(0, -1));
+        setFormData((data: string) => data.slice(0, -1));
     }
 
     function setNextStep(data: any) {
-        step < 6 && setStep(step => step + 1);
-        if (step > 0 && step < 6) setFormData([...formData, data]);
+        step < 5 && setStep(step => step + 1);
+        if (step > 0 && step < 5) setFormData([...formData, data]);
     }
 
-    async function sendForm(data: stepSixFormData) { }
+    async function sendForm(data: stepFiveFormData) {
+        const payload = {
+            slogan: formData[0].slogan,
+            descricao: formData[0].descricao,
+            setor: formData[0].setor,
+            anoFundacao: formData[0].anoFundacao,
+            logotipo: formData[0].logotipo,
+            cor: formData[1].cor,
+            fonte: formData[1].fonte,
+            estiloVisual: formData[1].estiloVisual,
+            publicoAlvo: formData[1].publicoAlvo,
+            problemasQueResolve: formData[1].problemasQueResolve,
+            expectativaDoCliente: formData[2].expectativaDoCliente,
+            produtoEmpresa: formData[2].produtoEmpresa,
+            diferencialSolucao: formData[2].diferencialSolucao,
+            concorrentes: formData[2].concorrentes,
+            pontosFortes: formData[2].pontosFortes,
+            desafiosEnfrentados: formData[3].desafiosEnfrentados,
+            redesSociais: formData[3].redesSociais,
+            tonalidadeComunicacao: formData[3].tonalidadeComunicacao,
+            tiposConteudo: formData[3].tiposConteudo,
+            objetivoMarketing: formData[3].objetivoMarketing,
+            resultadosEsperados: data.resultadosEsperados,
+            datasImportantes: data.datasImportantes,
+            estiloCriativos: data.estiloCriativos,
+            referenciasVisuais: data.referenciasVisuais,
+            observacoesGerais: data.observacoesGerais
+        }
+
+        try {
+            await axios.post(`http://localhost:8080/empresas/form`, payload, {
+                headers: {
+                    Authorization: `Bearer ${sessionStorage.getItem("bearerToken")}`,
+                }
+            });
+
+            setFormCompleted(true);
+        } catch (err) {
+            toast.error("Houve uma falha ao realizar o envio do formulário.");
+        }
+    }
 
     return (
-        <div className="flex flex-col justify-center items-center h-screen">
+        <div className={`${isFormCompleted ? "hidden" : "flex"} flex-col justify-center items-center h-screen`}>
+            <ToastContainer
+                position="top-right"
+                autoClose={4000}
+                hideProgressBar={false}
+                closeOnClick
+                rtl={false}
+                theme="dark"
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+            />
+
             <div className="flex items-center absolute top-2 left-2 select-none">
                 <img className="h-[4.5rem] pointer-events-none" src="/vulpixai-logo.jpeg" alt="Logo vulpix.AI" />
                 <h4 className="text-2xl text-white ml-[-8px] font-bold">vulpix.<span className="text-purple">AI</span></h4>
@@ -139,7 +187,7 @@ export function Questions() {
                 :
 
                 <div className="w-[70%] text-white-gray">
-                    <h4 className="mb-4">PASSO {step} DE 6</h4>
+                    <h4 className="mb-4">PASSO {step} DE 5</h4>
                     <h4>Alimente a IA com informações da sua empresa.</h4>
 
                     {step == 1 &&
@@ -147,43 +195,43 @@ export function Questions() {
                         <form onSubmit={handleSubmitStepOne(setNextStep)} className="mt-8">
                             <div className="flex flex-col mt-4">
                                 <Input
-                                    value={watchStepOne('sloganEmpresa')}
-                                    placeholder="Digite o slogan de sua empresa"
+                                    value={watchStepOne('slogan')}
+                                    placeholder="Qual é o slogan da empresa?"
                                     type="text"
-                                    id="inputSloganEmpresa"
-                                    name="sloganEmpresa"
+                                    id="inputSlogan"
+                                    name="slogan"
                                     register={registerStepOne}
                                 />
                             </div>
 
                             <div className="flex flex-col mt-4">
                                 <Input
-                                    value={watchStepOne('descricaoEmpresa')}
-                                    placeholder="Descreva brevemente sobre sua empresa*"
+                                    value={watchStepOne('descricao')}
+                                    placeholder="Descreva brevemente sobre a empresa*"
                                     type="text"
-                                    id="inputDescricaoEmpresa"
-                                    name="descricaoEmpresa"
+                                    id="inputDescricao"
+                                    name="descricao"
                                     register={registerStepOne}
                                 />
-                                {stepOneErrors.descricaoEmpresa && <span className="text-white-gray text-sm ml-3 mt-2">{stepOneErrors.descricaoEmpresa.message}</span>}
+                                {stepOneErrors.descricao && <span className="text-white-gray text-sm ml-3 mt-2">{stepOneErrors.descricao.message}</span>}
                             </div>
 
                             <div className="flex flex-col mt-4">
                                 <Input
-                                    value={watchStepOne('setorAtuacao')}
-                                    placeholder="Digite o setor de atuação*"
+                                    value={watchStepOne('setor')}
+                                    placeholder="Qual o setor de atuação da empresa?*"
                                     type="text"
-                                    id="inputSetorAtuacao"
-                                    name="setorAtuacao"
+                                    id="inputSetor"
+                                    name="setor"
                                     register={registerStepOne}
                                 />
-                                {stepOneErrors.setorAtuacao && <span className="text-white-gray text-sm ml-3 mt-2">{stepOneErrors.setorAtuacao.message}</span>}
+                                {stepOneErrors.setor && <span className="text-white-gray text-sm ml-3 mt-2">{stepOneErrors.setor.message}</span>}
                             </div>
 
                             <div className="flex flex-col mt-4">
                                 <Input
                                     value={watchStepOne('anoFundacao')}
-                                    placeholder="Digite o ano de fundação*"
+                                    placeholder="Qual o ano de fundação da empresa?*"
                                     type="text"
                                     id="inputAnoFundacao"
                                     name="anoFundacao"
@@ -194,14 +242,14 @@ export function Questions() {
 
                             <div className="flex flex-col mt-4">
                                 <Input
-                                    value={watchStepOne('logoEmpresa')}
-                                    placeholder="Descreva o visual do logotipo de sua empresa*"
+                                    value={watchStepOne('logotipo')}
+                                    placeholder="Descreva o visual do logotipo da empresa*"
                                     type="text"
-                                    id="inputLogoEmpresa"
-                                    name="logoEmpresa"
+                                    id="inputLogotipo"
+                                    name="logotipo"
                                     register={registerStepOne}
                                 />
-                                {stepOneErrors.logoEmpresa && <span className="text-white-gray text-sm ml-3 mt-2">{stepOneErrors.logoEmpresa.message}</span>}
+                                {stepOneErrors.logotipo && <span className="text-white-gray text-sm ml-3 mt-2">{stepOneErrors.logotipo.message}</span>}
                             </div>
 
                             <div className="flex justify-between mt-8">
@@ -218,62 +266,62 @@ export function Questions() {
                         <form onSubmit={handleSubmitStepTwo(setNextStep)} className="mt-8">
                             <div className="flex flex-col mt-4">
                                 <Input
-                                    value={watchStepTwo('campo1')}
-                                    placeholder="Exemplo campo 1"
+                                    value={watchStepTwo('cor')}
+                                    placeholder="Quais são as cores utilizadas pela empresa?"
                                     type="text"
-                                    id=""
-                                    name="campo1"
+                                    id="inputCor"
+                                    name="cor"
                                     register={registerStepTwo}
                                 />
-                                {stepTwoErrors.campo1 && <span className="text-white-gray text-sm ml-3 mt-2">{stepTwoErrors.campo1.message}</span>}
+                                {stepTwoErrors.cor && <span className="text-white-gray text-sm ml-3 mt-2">{stepTwoErrors.cor.message}</span>}
                             </div>
 
                             <div className="flex flex-col mt-4">
                                 <Input
-                                    value={watchStepTwo('campo2')}
-                                    placeholder="Exemplo campo 2"
+                                    value={watchStepTwo('fonte')}
+                                    placeholder="Qual é a fonte utilizada pela empresa?*"
                                     type="text"
-                                    id=""
-                                    name="campo2"
+                                    id="inputFonte"
+                                    name="fonte"
                                     register={registerStepTwo}
                                 />
-                                {stepTwoErrors.campo2 && <span className="text-white-gray text-sm ml-3 mt-2">{stepTwoErrors.campo2.message}</span>}
+                                {stepTwoErrors.fonte && <span className="text-white-gray text-sm ml-3 mt-2">{stepTwoErrors.fonte.message}</span>}
                             </div>
 
                             <div className="flex flex-col mt-4">
                                 <Input
-                                    value={watchStepTwo('campo3')}
-                                    placeholder="Exemplo campo 3"
+                                    value={watchStepTwo('estiloVisual')}
+                                    placeholder="Qual o estilo visual utilizado pela empresa?*"
                                     type="text"
-                                    id=""
-                                    name="campo3"
+                                    id="inputEstiloVisual"
+                                    name="estiloVisual"
                                     register={registerStepTwo}
                                 />
-                                {stepTwoErrors.campo3 && <span className="text-white-gray text-sm ml-3 mt-2">{stepTwoErrors.campo3.message}</span>}
+                                {stepTwoErrors.estiloVisual && <span className="text-white-gray text-sm ml-3 mt-2">{stepTwoErrors.estiloVisual.message}</span>}
                             </div>
 
                             <div className="flex flex-col mt-4">
                                 <Input
-                                    value={watchStepTwo('campo4')}
-                                    placeholder="Exemplo campo 4"
+                                    value={watchStepTwo('publicoAlvo')}
+                                    placeholder="Qual é o público alvo da empresa?*"
                                     type="text"
-                                    id=""
-                                    name="campo4"
+                                    id="inputPublicoAlvo"
+                                    name="publicoAlvo"
                                     register={registerStepTwo}
                                 />
-                                {stepTwoErrors.campo4 && <span className="text-white-gray text-sm ml-3 mt-2">{stepTwoErrors.campo4.message}</span>}
+                                {stepTwoErrors.publicoAlvo && <span className="text-white-gray text-sm ml-3 mt-2">{stepTwoErrors.publicoAlvo.message}</span>}
                             </div>
 
                             <div className="flex flex-col mt-4">
                                 <Input
-                                    value={watchStepTwo('campo5')}
-                                    placeholder="Exemplo campo 5"
+                                    value={watchStepTwo('problemasQueResolve')}
+                                    placeholder="Quais problemas a empresa resolve?*"
                                     type="text"
-                                    id=""
-                                    name="campo5"
+                                    id="inputProblemasQueResolve"
+                                    name="problemasQueResolve"
                                     register={registerStepTwo}
                                 />
-                                {stepTwoErrors.campo5 && <span className="text-white-gray text-sm ml-3 mt-2">{stepTwoErrors.campo5.message}</span>}
+                                {stepTwoErrors.problemasQueResolve && <span className="text-white-gray text-sm ml-3 mt-2">{stepTwoErrors.problemasQueResolve.message}</span>}
                             </div>
 
                             <div className="flex justify-between mt-8">
@@ -292,62 +340,62 @@ export function Questions() {
                         <form onSubmit={handleSubmitStepThree(setNextStep)} className="mt-8">
                             <div className="flex flex-col mt-4">
                                 <Input
-                                    value={watchStepThree('campo6')}
-                                    placeholder="Exemplo campo 6"
+                                    value={watchStepThree('expectativaDoCliente')}
+                                    placeholder="Quais são as expectativas do cliente?*"
                                     type="text"
-                                    id=""
-                                    name="campo6"
+                                    id="inputExpectativaDoCliente"
+                                    name="expectativaDoCliente"
                                     register={registerStepThree}
                                 />
-                                {stepThreeErrors.campo6 && <span className="text-white-gray text-sm ml-3 mt-2">{stepThreeErrors.campo6.message}</span>}
+                                {stepThreeErrors.expectativaDoCliente && <span className="text-white-gray text-sm ml-3 mt-2">{stepThreeErrors.expectativaDoCliente.message}</span>}
                             </div>
 
                             <div className="flex flex-col mt-4">
                                 <Input
-                                    value={watchStepThree('campo7')}
-                                    placeholder="Exemplo campo 7"
+                                    value={watchStepThree('produtoEmpresa')}
+                                    placeholder="Quais são os produtos da empresa?*"
                                     type="text"
-                                    id=""
-                                    name="campo7"
+                                    id="inputProdutoEmpresa"
+                                    name="produtoEmpresa"
                                     register={registerStepThree}
                                 />
-                                {stepThreeErrors.campo7 && <span className="text-white-gray text-sm ml-3 mt-2">{stepThreeErrors.campo7.message}</span>}
+                                {stepThreeErrors.produtoEmpresa && <span className="text-white-gray text-sm ml-3 mt-2">{stepThreeErrors.produtoEmpresa.message}</span>}
                             </div>
 
                             <div className="flex flex-col mt-4">
                                 <Input
-                                    value={watchStepThree('campo8')}
-                                    placeholder="Exemplo campo 8"
+                                    value={watchStepThree('diferencialSolucao')}
+                                    placeholder="Qual é o diferencial da solução da empresa?*"
                                     type="text"
-                                    id=""
-                                    name="campo8"
+                                    id="inputDiferencialSolucao"
+                                    name="diferencialSolucao"
                                     register={registerStepThree}
                                 />
-                                {stepThreeErrors.campo8 && <span className="text-white-gray text-sm ml-3 mt-2">{stepThreeErrors.campo8.message}</span>}
+                                {stepThreeErrors.diferencialSolucao && <span className="text-white-gray text-sm ml-3 mt-2">{stepThreeErrors.diferencialSolucao.message}</span>}
                             </div>
 
                             <div className="flex flex-col mt-4">
                                 <Input
-                                    value={watchStepThree('campo9')}
-                                    placeholder="Exemplo campo 9"
+                                    value={watchStepThree('concorrentes')}
+                                    placeholder="Quais são os concorrentes da empresa?*"
                                     type="text"
-                                    id=""
-                                    name="campo9"
+                                    id="inputConcorrentes"
+                                    name="concorrentes"
                                     register={registerStepThree}
                                 />
-                                {stepThreeErrors.campo9 && <span className="text-white-gray text-sm ml-3 mt-2">{stepThreeErrors.campo9.message}</span>}
+                                {stepThreeErrors.concorrentes && <span className="text-white-gray text-sm ml-3 mt-2">{stepThreeErrors.concorrentes.message}</span>}
                             </div>
 
                             <div className="flex flex-col mt-4">
                                 <Input
-                                    value={watchStepThree('campo10')}
-                                    placeholder="Exemplo campo 10"
+                                    value={watchStepThree('pontosFortes')}
+                                    placeholder="Quais são os pontos fortes da empresa?*"
                                     type="text"
-                                    id=""
-                                    name="campo10"
+                                    id="inputPontosFortes"
+                                    name="pontosFortes"
                                     register={registerStepThree}
                                 />
-                                {stepThreeErrors.campo10 && <span className="text-white-gray text-sm ml-3 mt-2">{stepThreeErrors.campo10.message}</span>}
+                                {stepThreeErrors.pontosFortes && <span className="text-white-gray text-sm ml-3 mt-2">{stepThreeErrors.pontosFortes.message}</span>}
                             </div>
 
                             <div className="flex justify-between mt-8">
@@ -366,62 +414,62 @@ export function Questions() {
                         <form onSubmit={handleSubmitStepFour(setNextStep)} className="mt-8">
                             <div className="flex flex-col mt-4">
                                 <Input
-                                    value={watchStepFour('campo11')}
-                                    placeholder="Exemplo campo 11"
+                                    value={watchStepFour('desafiosEnfrentados')}
+                                    placeholder="Quais são os desafios que são enfrentados pela empresa?*"
                                     type="text"
-                                    id=""
-                                    name="campo11"
+                                    id="inputDesafiosEnfrentados"
+                                    name="desafiosEnfrentados"
                                     register={registerStepFour}
                                 />
-                                {stepFourErrors.campo11 && <span className="text-white-gray text-sm ml-3 mt-2">{stepFourErrors.campo11.message}</span>}
+                                {stepFourErrors.desafiosEnfrentados && <span className="text-white-gray text-sm ml-3 mt-2">{stepFourErrors.desafiosEnfrentados.message}</span>}
                             </div>
 
                             <div className="flex flex-col mt-4">
                                 <Input
-                                    value={watchStepFour('campo12')}
-                                    placeholder="Exemplo campo 12"
+                                    value={watchStepFour('redesSociais')}
+                                    placeholder="Quais redes sociais a empresa utiliza?*"
                                     type="text"
-                                    id=""
-                                    name="campo12"
+                                    id="inputRedesSociais"
+                                    name="redesSociais"
                                     register={registerStepFour}
                                 />
-                                {stepFourErrors.campo12 && <span className="text-white-gray text-sm ml-3 mt-2">{stepFourErrors.campo12.message}</span>}
+                                {stepFourErrors.redesSociais && <span className="text-white-gray text-sm ml-3 mt-2">{stepFourErrors.redesSociais.message}</span>}
                             </div>
 
                             <div className="flex flex-col mt-4">
                                 <Input
-                                    value={watchStepFour('campo13')}
-                                    placeholder="Exemplo campo 13"
+                                    value={watchStepFour('tonalidadeComunicacao')}
+                                    placeholder="Qual o tom de comunicação a empresa acredita que mais se alinha ao perfil?*"
                                     type="text"
-                                    id=""
-                                    name="campo13"
+                                    id="inputTonalidadeComunicacao"
+                                    name="tonalidadeComunicacao"
                                     register={registerStepFour}
                                 />
-                                {stepFourErrors.campo13 && <span className="text-white-gray text-sm ml-3 mt-2">{stepFourErrors.campo13.message}</span>}
+                                {stepFourErrors.tonalidadeComunicacao && <span className="text-white-gray text-sm ml-3 mt-2">{stepFourErrors.tonalidadeComunicacao.message}</span>}
                             </div>
 
                             <div className="flex flex-col mt-4">
                                 <Input
-                                    value={watchStepFour('campo14')}
-                                    placeholder="Exemplo campo 14"
+                                    value={watchStepFour('tiposConteudo')}
+                                    placeholder="Quais serão os tipos de conteúdos criados?*"
                                     type="text"
-                                    id=""
-                                    name="campo14"
+                                    id="inputTiposConteudo"
+                                    name="tiposConteudo"
                                     register={registerStepFour}
                                 />
-                                {stepFourErrors.campo14 && <span className="text-white-gray text-sm ml-3 mt-2">{stepFourErrors.campo14.message}</span>}
+                                {stepFourErrors.tiposConteudo && <span className="text-white-gray text-sm ml-3 mt-2">{stepFourErrors.tiposConteudo.message}</span>}
                             </div>
 
                             <div className="flex flex-col mt-4">
                                 <Input
-                                    value={watchStepFour('campo15')}
-                                    placeholder="Exemplo campo 15"
+                                    value={watchStepFour('objetivoMarketing')}
+                                    placeholder="Qual é o objetivo de marketing da empresa?*"
                                     type="text"
-                                    id=""
-                                    name="campo15"
+                                    id="inputObjetivoMarketing"
+                                    name="objetivoMarketing"
                                     register={registerStepFour}
                                 />
-                                {stepFourErrors.campo15 && <span className="text-white-gray text-sm ml-3 mt-2">{stepFourErrors.campo15.message}</span>}
+                                {stepFourErrors.objetivoMarketing && <span className="text-white-gray text-sm ml-3 mt-2">{stepFourErrors.objetivoMarketing.message}</span>}
                             </div>
 
                             <div className="flex justify-between mt-8">
@@ -437,138 +485,65 @@ export function Questions() {
 
                     {step == 5 &&
 
-                        <form onSubmit={handleSubmitStepFive(setNextStep)} className="mt-8">
+                        <form onSubmit={handleSubmitStepFive(sendForm)} className="mt-8">
                             <div className="flex flex-col mt-4">
                                 <Input
-                                    value={watchStepFive('campo16')}
-                                    placeholder="Exemplo campo 16"
+                                    value={watchStepFive('resultadosEsperados')}
+                                    placeholder="Quais são os resultados esperados pela empresa?*"
                                     type="text"
                                     id=""
-                                    name="campo16"
+                                    name="resultadosEsperados"
                                     register={registerStepFive}
                                 />
-                                {stepFiveErrors.campo16 && <span className="text-white-gray text-sm ml-3 mt-2">{stepFiveErrors.campo16.message}</span>}
+                                {stepFiveErrors.resultadosEsperados && <span className="text-white-gray text-sm ml-3 mt-2">{stepFiveErrors.resultadosEsperados.message}</span>}
                             </div>
 
                             <div className="flex flex-col mt-4">
                                 <Input
-                                    value={watchStepFive('campo17')}
-                                    placeholder="Exemplo campo 17"
+                                    value={watchStepFive('datasImportantes')}
+                                    placeholder="Quais datas a empresa considera importante?*"
                                     type="text"
-                                    id=""
-                                    name="campo17"
+                                    id="inputDatasImportantes"
+                                    name="datasImportantes"
                                     register={registerStepFive}
                                 />
-                                {stepFiveErrors.campo17 && <span className="text-white-gray text-sm ml-3 mt-2">{stepFiveErrors.campo17.message}</span>}
+                                {stepFiveErrors.datasImportantes && <span className="text-white-gray text-sm ml-3 mt-2">{stepFiveErrors.datasImportantes.message}</span>}
                             </div>
 
                             <div className="flex flex-col mt-4">
                                 <Input
-                                    value={watchStepFive('campo18')}
-                                    placeholder="Exemplo campo 18"
+                                    value={watchStepFive('estiloCriativos')}
+                                    placeholder="A empresa tem preferência por qual estilo de imagens?*"
                                     type="text"
-                                    id=""
-                                    name="campo18"
+                                    id="inputEstiloCriativos"
+                                    name="estiloCriativos"
                                     register={registerStepFive}
                                 />
-                                {stepFiveErrors.campo18 && <span className="text-white-gray text-sm ml-3 mt-2">{stepFiveErrors.campo18.message}</span>}
+                                {stepFiveErrors.estiloCriativos && <span className="text-white-gray text-sm ml-3 mt-2">{stepFiveErrors.estiloCriativos.message}</span>}
                             </div>
 
                             <div className="flex flex-col mt-4">
                                 <Input
-                                    value={watchStepFive('campo19')}
-                                    placeholder="Exemplo campo 19"
+                                    value={watchStepFive('referenciasVisuais')}
+                                    placeholder="Quais são as referências visuais da empresa?*"
                                     type="text"
-                                    id=""
-                                    name="campo19"
+                                    id="inputReferenciasVisuais"
+                                    name="referenciasVisuais"
                                     register={registerStepFive}
                                 />
-                                {stepFiveErrors.campo19 && <span className="text-white-gray text-sm ml-3 mt-2">{stepFiveErrors.campo19.message}</span>}
+                                {stepFiveErrors.referenciasVisuais && <span className="text-white-gray text-sm ml-3 mt-2">{stepFiveErrors.referenciasVisuais.message}</span>}
                             </div>
 
                             <div className="flex flex-col mt-4">
                                 <Input
-                                    value={watchStepFive('campo20')}
-                                    placeholder="Exemplo campo 20"
-                                    type="text"
-                                    id=""
-                                    name="campo20"
-                                    register={registerStepFive}
-                                />
-                                {stepFiveErrors.campo20 && <span className="text-white-gray text-sm ml-3 mt-2">{stepFiveErrors.campo20.message}</span>}
-                            </div>
-
-                            <div className="flex justify-between mt-8">
-                                <p className="mr-24">Por favor, preencha as informações solicitadas sobre sua empresa. Esses dados são cruciais para personalizarmos nossos serviços eficazmente. Certifique-se de sua precisão.</p>
-
-                                <div className="flex">
-                                    <span className="mr-3"><Button.Transparent width="w-44" value="Voltar" type="button" onClick={setPreviousStep} /></span>
-                                    <Button.Input width="w-44" value="Próximo" type="submit" />
-                                </div>
-                            </div>
-                        </form>
-                    }
-
-                    {step == 6 &&
-
-                        <form onSubmit={handleSubmitStepSix(sendForm)} className="mt-8">
-                            <div className="flex flex-col mt-4">
-                                <Input
-                                    value={watchStepSix('campo21')}
-                                    placeholder="Exemplo campo 21"
-                                    type="text"
-                                    id=""
-                                    name="campo21"
-                                    register={registerStepSix}
-                                />
-                                {stepSixErrors.campo21 && <span className="text-white-gray text-sm ml-3 mt-2">{stepSixErrors.campo21.message}</span>}
-                            </div>
-
-                            <div className="flex flex-col mt-4">
-                                <Input
-                                    value={watchStepSix('campo22')}
-                                    placeholder="Exemplo campo 22"
-                                    type="text"
-                                    id=""
-                                    name="campo22"
-                                    register={registerStepSix}
-                                />
-                                {stepSixErrors.campo22 && <span className="text-white-gray text-sm ml-3 mt-2">{stepSixErrors.campo22.message}</span>}
-                            </div>
-
-                            <div className="flex flex-col mt-4">
-                                <Input
-                                    value={watchStepSix('campo23')}
-                                    placeholder="Exemplo campo 23"
-                                    type="text"
-                                    id=""
-                                    name="campo23"
-                                    register={registerStepSix}
-                                />
-                                {stepSixErrors.campo23 && <span className="text-white-gray text-sm ml-3 mt-2">{stepSixErrors.campo23.message}</span>}
-                            </div>
-
-                            <div className="flex flex-col mt-4">
-                                <Input
-                                    value={watchStepSix('campo24')}
-                                    placeholder="Exemplo campo 24"
-                                    type="text"
-                                    id=""
-                                    name="campo24"
-                                    register={registerStepSix}
-                                />
-                                {stepSixErrors.campo24 && <span className="text-white-gray text-sm ml-3 mt-2">{stepSixErrors.campo24.message}</span>}
-                            </div>
-
-                            <div className="flex flex-col mt-4">
-                                <Input
-                                    value={watchStepSix('infoExtra')}
+                                    value={watchStepFive('observacoesGerais')}
                                     placeholder="Algo mais que gostaria de compartilhar para personalizar ainda mais as imagens?"
                                     type="text"
-                                    id=""
-                                    name="infoExtra"
-                                    register={registerStepSix}
+                                    id="inputObservacoesGerais"
+                                    name="observacoesGerais"
+                                    register={registerStepFive}
                                 />
+                                {stepFiveErrors.observacoesGerais && <span className="text-white-gray text-sm ml-3 mt-2">{stepFiveErrors.observacoesGerais.message}</span>}
                             </div>
 
                             <div className="flex justify-between mt-8">
