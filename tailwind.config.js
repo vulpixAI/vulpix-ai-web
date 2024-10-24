@@ -20,7 +20,8 @@ export default {
       animation: {
         fadeIn: 'fadeIn 1.5s ease-in forwards',
         slideDown: 'slideDown 1.5s ease-out',
-        moveArrow: 'moveArrow 1.5s ease-in-out infinite'
+        moveArrow: 'moveArrow 1.5s ease-in-out infinite',
+        indeterminateProgressBar: 'indeterminateProgressBar 1.8s infinite'
       },
       keyframes: {
         fadeIn: {
@@ -34,6 +35,10 @@ export default {
         moveArrow: {
           '0%': { transform: 'translateY(-20px)' },
           '100%': { transform: 'translateY(0)' }
+        },
+        indeterminateProgressBar: {
+          from: { left: '-50%' },
+          to: { left: '100%' }
         }
       },
       backgroundImage: {
