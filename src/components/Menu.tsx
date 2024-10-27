@@ -8,7 +8,7 @@ import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
-import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
+import Tooltip from '@mui/material/Tooltip';
 
 interface Menu {
     children: ReactNode
@@ -35,23 +35,31 @@ export function Menu({ children }: Menu) {
                 </div>
 
                 <div className="flex flex-col items-center justify-center h-3/5">
-                    <Link to={"/dashboard"} className={`${currentPage == "dashboard" ? "text-purple" : "text-white-gray"} hover:scale-110 ease-in-out duration-300`}>
-                        <ShowChartOutlinedIcon />
-                    </Link>
+                    <Tooltip title="Dashboard" placement="right">
+                        <Link to={"/dashboard"} className={`${currentPage == "dashboard" ? "text-purple" : "text-white-gray"} hover:text-purple ease-in-out duration-300`}>
+                            <ShowChartOutlinedIcon />
+                        </Link>
+                    </Tooltip>
 
-                    <Link to={"/posts"} className={`${currentPage == "posts" ? "text-purple" : "text-white-gray"} my-14 hover:scale-110 ease-in-out duration-300`}>
-                        <DescriptionOutlinedIcon />
-                    </Link>
+                    <Tooltip title="Postagens" placement="right">
+                        <Link to={"/posts"} className={`${currentPage == "posts" ? "text-purple" : "text-white-gray"} my-14 hover:text-purple ease-in-out duration-300`}>
+                            <DescriptionOutlinedIcon />
+                        </Link>
+                    </Tooltip>
 
-                    <Link to={"/creative"} className={`${currentPage == "creative" ? "text-purple" : "text-white-gray"} hover:scale-110 ease-in-out duration-300`}>
-                        <AutoAwesomeOutlinedIcon />
-                    </Link>
+                    <Tooltip title="Inteligência Artificial" placement="right">
+                        <Link to={"/creative"} className={`${currentPage == "creative" ? "text-purple" : "text-white-gray"} hover:text-purple ease-in-out duration-300`}>
+                            <AutoAwesomeOutlinedIcon />
+                        </Link>
+                    </Tooltip>
                 </div>
 
                 <div className="flex items-center justify-center h-1/5">
-                    <button className="text-white-gray hover:scale-110 ease-in-out duration-300" onClick={openLogoutModal}>
-                        <LogoutOutlinedIcon />
-                    </button>
+                    <Tooltip title="Logout" placement="right">
+                        <button className="text-white-gray hover:text-purple ease-in-out duration-300" onClick={openLogoutModal}>
+                            <LogoutOutlinedIcon />
+                        </button>
+                    </Tooltip>
                 </div>
             </div>
 
@@ -59,16 +67,14 @@ export function Menu({ children }: Menu) {
                 <nav className="h-16 pr-8 flex justify-end items-center fixed w-full bg-black">
                     <div className="flex items-center mr-28">
                         <div className="flex">
-                            <button className="text-white-gray hover:scale-110 ease-in-out duration-300">
-                                <SettingsOutlinedIcon />
-                            </button>
-
-                            <button className="text-white-gray ml-4 hover:scale-110 ease-in-out duration-300">
-                                <PersonOutlineOutlinedIcon />
-                            </button>
+                            <Tooltip title="Configurações" placement="bottom">
+                                <button className="text-white-gray hover:text-purple ease-in-out duration-300">
+                                    <SettingsOutlinedIcon />
+                                </button>
+                            </Tooltip>
                         </div>
                         <div className="h-10 w-[1px] bg-white-gray/40 mx-8"></div>
-                        <h4 className="text-purple cursor-pointer select-none">Nome da Empresa</h4>
+                        <h4 className="text-purple select-none">Nome da Empresa</h4>
                     </div>
                 </nav>
                 <div className="w-[90%] h-[1px] bg-white-gray/40 mt-16 fixed"></div>

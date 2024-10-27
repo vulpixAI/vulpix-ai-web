@@ -29,20 +29,19 @@ export function Modal({ title, content, onConfirm, isOpen, onClose, width = 500,
                         transform: 'translate(-50%, -50%)',
                         width: width,
                         height: height,
-                        bgcolor: 'background.paper',
-                        border: '2px solid #000',
+                        bgcolor: '#222222',
                         boxShadow: 24,
                         p: 4,
                         borderRadius: 4
                     }}
                 >
-                    <button onClick={onClose} className="absolute right-3 top-3"><CloseIcon /></button>
+                    <button onClick={onClose} className="absolute right-3 top-3"><CloseIcon sx={{ color: "#ffffff" }} /></button>
 
                     <div className="w-full h-1/6">
-                        <h3 className="text-xl">{title}</h3>
+                        <h3 className="text-xl text-white">{title}</h3>
                     </div>
 
-                    <div className="w-full h-2/3 flex items-center">
+                    <div className="w-full h-2/3 flex items-center text-white">
                         {typeof content === 'string'
                             ? <p>{content}</p>
                             : content
@@ -50,7 +49,7 @@ export function Modal({ title, content, onConfirm, isOpen, onClose, width = 500,
                     </div>
 
                     <div className="w-full h-1/6 flex justify-around">
-                        <Button.Cancel type="button" value="Cancelar" width='w-52' onClick={onClose} />
+                        <Button.Transparent type="button" value="Cancelar" width='w-52' onClick={onClose} />
                         <Button.Input type="button" value="Confirmar" width='w-52' onClick={onConfirm} />
                     </div>
                 </Box>
