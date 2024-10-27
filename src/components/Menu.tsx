@@ -1,6 +1,8 @@
 import { ReactNode, useEffect, useState } from "react";
-import { useLastPage } from "../hooks/useLastPage";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { Modal } from "./Modal";
+import useLastPage from "../hooks/useLastPage";
+import UseAuth from "../hooks/useAuth";
 import ShowChartOutlinedIcon from '@mui/icons-material/ShowChartOutlined';
 import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
@@ -15,8 +17,15 @@ interface Menu {
 export function Menu({ children }: Menu) {
     useLastPage();
 
+    const navigate = useNavigate();
+    const { signOut }: any = UseAuth();
+
     useEffect(() => setCurrentPage(window.location.pathname.replace("/", "")), []);
     const [currentPage, setCurrentPage] = useState<string>("");
+
+    const [isLogoutModalOpen, setLogoutModalOpen] = useState<boolean>(false);
+    const openLogoutModal = () => setLogoutModalOpen(true);
+    const closeLogoutModal = () => setLogoutModalOpen(false);
 
     return (
         <div className="flex h-full">
@@ -40,7 +49,7 @@ export function Menu({ children }: Menu) {
                 </div>
 
                 <div className="flex items-center justify-center h-1/5">
-                    <button className="text-white-gray hover:scale-110 ease-in-out duration-300">
+                    <button className="text-white-gray hover:scale-110 ease-in-out duration-300" onClick={openLogoutModal}>
                         <LogoutOutlinedIcon />
                     </button>
                 </div>
@@ -64,10 +73,12 @@ export function Menu({ children }: Menu) {
                 </nav>
                 <div className="w-[90%] h-[1px] bg-white-gray/40 mt-16 fixed"></div>
 
-                <main>
+                <main className="h-full w-full pt-16">
                     {children}
                 </main>
             </div>
+
+            <Modal title="Fazer Logout" content="Tem certeza de que deseja sair de sua conta?" onConfirm={() => { signOut(), navigate("/login") }} isOpen={isLogoutModalOpen} onClose={closeLogoutModal} />
         </div>
     )
 }

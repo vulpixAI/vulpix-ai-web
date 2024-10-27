@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Menu } from "../../components/Menu";
-import { useLastPage } from "../../hooks/useLastPage";
 import { LoadingScreen } from "../../components/LoadingScreen";
+import useLastPage from "../../hooks/useLastPage";
 
 export default function Dashboard() {
     useLastPage();

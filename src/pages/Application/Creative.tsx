@@ -1,5 +1,5 @@
 import { Menu } from "../../components/Menu";
-import { useLastPage } from "../../hooks/useLastPage";
+import useLastPage from "../../hooks/useLastPage";
 
 export default function Creative() {
     useLastPage();

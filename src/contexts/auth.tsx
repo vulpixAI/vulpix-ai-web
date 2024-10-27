@@ -11,7 +11,7 @@ export function AuthProvider({ children }: AuthProvider) {
     const [isLoggedIn, setLoggedIn] = useState<boolean>(false);
 
     useEffect(() => {
-        const userToken = sessionStorage.getItem("user_token");
+        const userToken = sessionStorage.getItem("bearerToken");
         userToken ? setLoggedIn(true) : setLoggedIn(false)
     }, []);
 
@@ -22,8 +22,7 @@ export function AuthProvider({ children }: AuthProvider) {
                 senha: password
             });
 
-            const token = Math.random().toString(36).substring(2);
-            sessionStorage.setItem("user_token", token);
+            sessionStorage.setItem("bearerToken", response.data.token);
             setLoggedIn(true);
 
             return response;
@@ -51,14 +50,16 @@ export function AuthProvider({ children }: AuthProvider) {
                 bairro: enderecoEmpresaFormData.bairro,
                 complemento: enderecoEmpresaFormData?.complemento
             });
-            
+
         } catch (err) {
             if (axios.isAxiosError(err)) return err.response;
         }
     }
 
     function signOut() {
-        sessionStorage.removeItem("user_token");
+        sessionStorage.removeItem("isPageLoaded");
+        sessionStorage.removeItem("bearerToken");
+        setLoggedIn(false);
     }
 
     return (

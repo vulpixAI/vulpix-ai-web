@@ -27,8 +27,15 @@ function TransparentInputButton({ value, type, width = "w-full", ...props }: But
     )
 }
 
+function CancelInputButton({ value, type, width = "w-full", ...props }: Button) {
+    return (
+        <input value={value} type={type} className={`h-12 ${width} px-4 text-nowrap bg-transparent border-solid border-purple border-2 text-lg flex items-center justify-center text-purple rounded-md hover:bg-slate-300 transition-all cursor-pointer`} {...props} />
+    )
+}
+
 export const Button = {
     Navigate: NavigateButton,
     Input: InputButton,
-    Transparent: TransparentInputButton
+    Transparent: TransparentInputButton,
+    Cancel: CancelInputButton
 }

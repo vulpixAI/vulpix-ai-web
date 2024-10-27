@@ -5,9 +5,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "../../components/Input";
 import { Button } from "../../components/Button";
 import { toast, ToastContainer } from "react-toastify";
-import { useLastPage } from "../../hooks/useLastPage";
 import { useNavigate } from "react-router-dom";
 import { LoadingScreen } from "../../components/LoadingScreen";
+import useLastPage from "../../hooks/useLastPage";
 import axios from "axios";
 
 const stepOneFormSchema = z.object({

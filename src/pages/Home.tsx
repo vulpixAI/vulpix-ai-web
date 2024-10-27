@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useLastPage } from '../hooks/useLastPage';
 import { TypeAnimation } from 'react-type-animation';
 import { Button } from '../components/Button';
 import { Drawer } from '../components/Drawer';
@@ -8,6 +7,7 @@ import { Slider } from '../components/Slider';
 import { Faq } from '../components/Faq';
 import { Footer } from '../components/Footer';
 import { Timeline, Settings, Handshake } from '@mui/icons-material';
+import useLastPage from '../hooks/useLastPage';
 import Hamburger from 'hamburger-react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';

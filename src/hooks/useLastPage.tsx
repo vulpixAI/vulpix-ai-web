@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
-export function useLastPage() {
+export default function useLastPage() {
     const location = useLocation();
 
     useEffect(() => {

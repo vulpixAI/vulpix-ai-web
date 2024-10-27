@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useLastPage } from "../hooks/useLastPage";
 import { Input } from "../components/Input";
 import { Button } from "../components/Button";
 import { Visibility, VisibilityOff } from '@mui/icons-material';
@@ -11,6 +10,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import { SignUpProgressBar } from "../components/SignUpProgressBar";
 import UseAuth from "../hooks/useAuth";
+import useLastPage from "../hooks/useLastPage";
 import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
 

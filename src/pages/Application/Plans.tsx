@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { useLastPage } from "../../hooks/useLastPage";
 import { Button } from "../../components/Button";
 import { LoadingScreen } from "../../components/LoadingScreen";
 import CheckIcon from '@mui/icons-material/Check';
+import useLastPage from "../../hooks/useLastPage";
 
 export default function Plans() {
     useLastPage();
