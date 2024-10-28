@@ -14,7 +14,7 @@ import UseAuth from "./hooks/useAuth";
 
 function PrivatePage({ Item }: any) {
     const { isLoggedIn }: any = UseAuth();
-    return isLoggedIn ? Item : <Login />;
+    return isLoggedIn ? Item : <NotFound />;
 }
 
 export default function AppRoutes() {
