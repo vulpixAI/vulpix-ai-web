@@ -6,9 +6,9 @@ import SignUp from "./pages/SignUp";
 import NotFound from "./pages/NotFound";
 import Form from "./pages/Application/Form";
 import Dashboard from "./pages/Application/Dashboard";
-import Posts from "./pages/Application/Posts";
+import Post from "./pages/Application/Post";
 import Creative from "./pages/Application/Creative";
-import Plans from "./pages/Application/Plans";
+import Plan from "./pages/Application/Plan";
 
 import UseAuth from "./hooks/useAuth";
 
@@ -26,9 +26,9 @@ export default function AppRoutes() {
                 <Route path="/signup" element={<SignUp />} />
                 <Route path="/form" element={<PrivatePage Item={<Form />} />} />
                 <Route path="/dashboard" element={<PrivatePage Item={<Dashboard />} />} />
-                <Route path="/posts" element={<PrivatePage Item={<Posts />} />} />
+                <Route path="/post" element={<PrivatePage Item={<Post />} />} />
                 <Route path="/creative" element={<PrivatePage Item={<Creative />} />} />
-                <Route path="/plans" element={<PrivatePage Item={<Plans />} />} />
+                <Route path="/plan" element={<PrivatePage Item={<Plan />} />} />
                 <Route path="*" element={<NotFound />} />
             </Routes>
         </BrowserRouter>

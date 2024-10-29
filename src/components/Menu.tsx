@@ -42,7 +42,7 @@ export function Menu({ children }: Menu) {
                     </Tooltip>
 
                     <Tooltip title="Postagens" placement="right">
-                        <Link to={"/posts"} className={`${currentPage == "posts" ? "text-purple" : "text-white-gray"} my-14 hover:text-purple ease-in-out duration-300`}>
+                        <Link to={"/post"} className={`${currentPage == "post" ? "text-purple" : "text-white-gray"} my-14 hover:text-purple ease-in-out duration-300`}>
                             <DescriptionOutlinedIcon />
                         </Link>
                     </Tooltip>

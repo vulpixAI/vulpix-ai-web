@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { TypeAnimation } from 'react-type-animation';
-import { Button } from '../components/Button';
 import { Drawer } from '../components/Drawer';
 import { Slider } from '../components/Slider';
 import { Faq } from '../components/Faq';
 import { Footer } from '../components/Footer';
 import { Timeline, Settings, Handshake } from '@mui/icons-material';
+import CheckIcon from '@mui/icons-material/Check';
 import useLastPage from '../hooks/useLastPage';
 import Hamburger from 'hamburger-react';
 import AOS from 'aos';
@@ -122,53 +122,67 @@ export default function Home() {
                 <h1 className="text-4xl text-center text-white-gray font-bold select-none mobile:text-2xl" data-aos="fade-right" data-aos-duration="1500" data-aos-once="true">Comece por nossos <span className="text-purple">planos</span>.</h1>
                 <p className="mt-6 text-white-gray w-[54rem] mobile:w-80 text-center mobile:text-base" data-aos="fade-right" data-aos-duration="1500" data-aos-once="true">Oferecemos planos acessíveis e personalizados que atendem a diferentes necessidades, seja você um microempreendedor ou uma empresa em crescimento. Escolha o que mais se adequa ao seu objetivo e dê o primeiro passo para elevar a presença digital da sua marca.</p>
                 <div className="flex mobile:flex-col mt-20">
-                    <div className="w-72 h-96 flex flex-col items-center border-solid border-purple border-2 rounded-[1.6rem]" data-aos="fade-up" data-aos-duration="1500" data-aos-once="true" data-aos-delay="150">
-                        <div className="h-1/4 flex flex-col items-center justify-center text-white-gray">
-                            <h3 className="text-white-gray text-2xl font-semibold tracking-wide">Mensal</h3>
-                        </div>
+                    <Link to={"/signup"} className="hover:scale-[1.02] transition-transform">
+                        <div className="w-[300px] h-[360px] flex flex-col items-center justify-between border-solid border-white border-2 rounded-[1.6rem]" data-aos="fade-up" data-aos-duration="1500" data-aos-once="true" data-aos-delay="150">
+                            <div className="h-1/5 flex flex-col items-start justify-end text-white-gray w-full px-8">
+                                <h4 className="text-white-gray text-lg font-semibold tracking-wide">Standard</h4>
+                                <p className="text-xs">Essencial para Começar</p>
+                            </div>
 
-                        <div className="h-1/2 px-10 flex flex-col items-center text-white-gray">
-                            <span>1x</span>
-                            <span className="text-3xl font-semibold "><span className="mr-1">R$</span>106,00</span>
-                            <span className="mt-1 text-sm">valor à vista</span>
-                        </div>
+                            <div className="self-center w-4/5 h-[2px] bg-purple my-4"></div>
 
-                        <div className="h-1/4 flex items-start">
-                            <Button.Navigate uri="/signup" value="Inscrever-se" />
+                            <div className="h-[64%] px-8 flex flex-col items-start text-white-gray w-full">
+                                <h3 className="flex"><span className="text-xs mt-2 mr-[1px]">R$</span><span className="text-xl font-bold">10.00</span><span className="text-xs mt-2 ml-1">por mês</span></h3>
+                                <ul className="mt-4">
+                                    <li className="my-1"><CheckIcon sx={{ fontSize: 20, color: "#5d5aff", marginRight: 1 }} /> <span className="text-sm">Geração de Criativos com IA</span></li>
+                                    <li className="my-1"><CheckIcon sx={{ fontSize: 20, color: "#5d5aff", marginRight: 1 }} /> <span className="text-sm">Dashboard com Métricas</span></li>
+                                    <li className="my-1"><CheckIcon sx={{ fontSize: 20, color: "#5d5aff", marginRight: 1 }} /> <span className="text-sm">Suporte Básico</span></li>
+                                </ul>
+                            </div>
                         </div>
-                    </div>
+                    </Link>
 
-                    <div className="w-72 h-96 flex flex-col items-center border-solid border-purple border-2 rounded-[1.6rem] mx-16 mobile:mx-0 mobile:my-14" data-aos="fade-up" data-aos-duration="1500" data-aos-once="true" data-aos-delay="500">
-                        <div className="h-1/4 flex flex-col items-center justify-center text-white-gray">
-                            <h3 className=" text-2xl font-semibold tracking-wide">Trimestral</h3>
-                        </div>
+                    <Link to={"/signup"} className="hover:scale-[1.02] transition-transform">
+                        <div className="w-[300px] h-[360px] flex flex-col items-center justify-between border-solid border-white border-2 rounded-[1.6rem] mx-12" data-aos="fade-up" data-aos-duration="1500" data-aos-once="true" data-aos-delay="500">
+                            <div className="h-1/5 flex flex-col items-start justify-end text-white-gray w-full px-8">
+                                <h4 className="text-white-gray text-lg font-semibold tracking-wide">Premium</h4>
+                                <p className="text-xs">Ideal para Expansão</p>
+                            </div>
 
-                        <div className="h-1/2 px-10 flex flex-col items-center text-white-gray">
-                            <span>3x</span>
-                            <span className="text-3xl font-semibold"><span className="mr-1">R$</span>95,40</span>
-                            <span className="mt-1 text-sm">à vista por R$286,20</span>
-                        </div>
+                            <div className="self-center w-4/5 h-[2px] bg-purple my-4"></div>
 
-                        <div className="h-1/4 flex items-start">
-                            <Button.Navigate uri="/signup" value="Inscrever-se" />
+                            <div className="h-[64%] px-8 flex flex-col items-start text-white-gray w-full">
+                                <h3 className="flex"><span className="text-xs mt-2 mr-[1px]">R$</span><span className="text-xl font-bold">10.00</span><span className="text-xs mt-2 ml-1">por mês</span></h3>
+                                <ul className="mt-4">
+                                    <li className="my-1"><CheckIcon sx={{ fontSize: 20, color: "#5d5aff", marginRight: 1 }} /> <span className="text-sm">Tudo do plano mais Standard:</span></li>
+                                    <li className="my-1"><CheckIcon sx={{ fontSize: 20, color: "#5d5aff", marginRight: 1 }} /> <span className="text-sm">Integração com Redes Sociais</span></li>
+                                    <li className="my-1"><CheckIcon sx={{ fontSize: 20, color: "#5d5aff", marginRight: 1 }} /> <span className="text-sm">Acesso ao App</span></li>
+                                    <li className="my-1"><CheckIcon sx={{ fontSize: 20, color: "#5d5aff", marginRight: 1 }} /> <span className="text-sm">Suporte Prioritário</span></li>
+                                </ul>
+                            </div>
                         </div>
-                    </div>
+                    </Link>
 
-                    <div className="w-72 h-96 flex flex-col items-center border-solid border-purple border-2 rounded-[1.6rem]" data-aos="fade-up" data-aos-duration="1500" data-aos-once="true" data-aos-delay="750">
-                        <div className="h-1/4 flex flex-col items-center justify-center text-white-gray">
-                            <h3 className="text-white-gray text-2xl font-semibold tracking-wide">Anual</h3>
-                        </div>
+                    <Link to={"/signup"} className="hover:scale-[1.02] transition-transform">
+                        <div className="w-[300px] h-[360px] flex flex-col items-center justify-between border-solid border-white border-2 rounded-[1.6rem]" data-aos="fade-up" data-aos-duration="1500" data-aos-once="true" data-aos-delay="750">
+                            <div className="h-1/5 flex flex-col items-start justify-end text-white-gray w-full px-8">
+                                <h4 className="text-white-gray text-lg font-semibold tracking-wide">Business</h4>
+                                <p className="text-xs">Completo e Personalizado</p>
+                            </div>
 
-                        <div className="h-1/2 px-10 flex flex-col items-center text-white-gray">
-                            <span>12x</span>
-                            <span className="text-3xl font-semibold"><span className="mr-1">R$</span>84,83</span>
-                            <span className="mt-1 text-sm">à vista por R$1018,20</span>
-                        </div>
+                            <div className="self-center w-4/5 h-[2px] bg-purple my-4"></div>
 
-                        <div className="h-1/4 flex items-start">
-                            <Button.Navigate uri="/signup" value="Inscrever-se" />
+                            <div className="h-[64%] px-8 flex flex-col items-start text-white-gray w-full">
+                                <h3 className="flex"><span className="text-xs mt-2 mr-[1px]">R$</span><span className="text-xl font-bold">10.00</span><span className="text-xs mt-2 ml-1">por mês</span></h3>
+                                <ul className="mt-4">
+                                    <li className="my-1"><CheckIcon sx={{ fontSize: 20, color: "#5d5aff", marginRight: 1 }} /> <span className="text-sm">Tudo do plano mais Premium:</span></li>
+                                    <li className="my-1"><CheckIcon sx={{ fontSize: 20, color: "#5d5aff", marginRight: 1 }} /> <span className="text-sm">Agendamento de Postagens</span></li>
+                                    <li className="my-1"><CheckIcon sx={{ fontSize: 20, color: "#5d5aff", marginRight: 1 }} /> <span className="text-sm">Exportação de Dados CSV</span></li>
+                                    <li className="my-1"><CheckIcon sx={{ fontSize: 20, color: "#5d5aff", marginRight: 1 }} /> <span className="text-sm">Suporte Dedicado</span></li>
+                                </ul>
+                            </div>
                         </div>
-                    </div>
+                    </Link>
                 </div>
             </section>
 

@@ -58,6 +58,10 @@ a {
     user-select: none;
 }
 
+button {
+    all: unset;
+}
+
 .slick-prev {
     top: unset !important;
     bottom: -3rem;
