@@ -7,6 +7,7 @@ import { Button } from "../../components/Button";
 import { toast, ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { LoadingScreen } from "../../components/LoadingScreen";
+import CircularProgress from '@mui/material/CircularProgress';
 import useLastPage from "../../hooks/useLastPage";
 import axios from "axios";
 
@@ -104,6 +105,8 @@ export default function Questions() {
         formState: { errors: stepFiveErrors }
     } = useForm<stepFiveFormData>({ resolver: zodResolver(stepFiveFormSchema) });
 
+    const [isLoading, setLoading] = useState<boolean>(false);
+
     function setPreviousStep() {
         step > 1 && setStep(step => step - 1);
         setFormData((data: string) => data.slice(0, -1));
@@ -143,6 +146,8 @@ export default function Questions() {
             observacoesGerais: data.observacoesGerais
         }
 
+        setLoading(true);
+
         try {
             await axios.post(`http://localhost:8080/empresas/form`, payload, {
                 headers: {
@@ -154,6 +159,8 @@ export default function Questions() {
         } catch (err) {
             toast.error("Houve uma falha ao realizar o envio do formulário.");
         }
+
+        setLoading(false);
     }
 
     return (
@@ -187,7 +194,7 @@ export default function Questions() {
                         <div className="text-white-gray flex flex-col justify-center items-center">
                             <h1 className="text-4xl text-center">Estamos quase lá!</h1>
                             <p className="w-96 text-center my-8">Finalize a configuração de sua conta para garantir uma experiência mais precisa e personalizada. Isso permitirá que nossos serviços ofereçam ainda mais qualidade e eficiência para você.</p>
-                            <Button.Input width="w-44" value="Próximo" type="button" onClick={() => setNextStep(null)} />
+                            <Button.Purple width="w-44" type="button" onClick={() => setNextStep(null)}>Próximo</Button.Purple>
                         </div>
 
                         :
@@ -261,7 +268,7 @@ export default function Questions() {
                                     <div className="flex justify-between mt-8">
                                         <p className="mr-24">Por favor, preencha as informações solicitadas sobre sua empresa. Esses dados são cruciais para personalizarmos nossos serviços eficazmente. Certifique-se de sua precisão.</p>
                                         <div className="flex">
-                                            <Button.Input width="w-44" value="Próximo" type="submit" />
+                                            <Button.Purple width="w-44" type="submit">Próximo</Button.Purple>
                                         </div>
                                     </div>
                                 </form>
@@ -334,8 +341,8 @@ export default function Questions() {
                                         <p className="mr-24">Por favor, preencha as informações solicitadas sobre sua empresa. Esses dados são cruciais para personalizarmos nossos serviços eficazmente. Certifique-se de sua precisão.</p>
 
                                         <div className="flex">
-                                            <span className="mr-3"><Button.Transparent width="w-44" value="Voltar" type="button" onClick={setPreviousStep} /></span>
-                                            <Button.Input width="w-44" value="Próximo" type="submit" />
+                                            <span className="mr-3"><Button.Transparent width="w-44" type="button" onClick={setPreviousStep}>Voltar</Button.Transparent></span>
+                                            <Button.Purple width="w-44" type="submit">Próximo</Button.Purple>
                                         </div>
                                     </div>
                                 </form>
@@ -408,8 +415,8 @@ export default function Questions() {
                                         <p className="mr-24">Por favor, preencha as informações solicitadas sobre sua empresa. Esses dados são cruciais para personalizarmos nossos serviços eficazmente. Certifique-se de sua precisão.</p>
 
                                         <div className="flex">
-                                            <span className="mr-3"><Button.Transparent width="w-44" value="Voltar" type="button" onClick={setPreviousStep} /></span>
-                                            <Button.Input width="w-44" value="Próximo" type="submit" />
+                                            <span className="mr-3"><Button.Transparent width="w-44" type="button" onClick={setPreviousStep}>Voltar</Button.Transparent></span>
+                                            <Button.Purple width="w-44" type="submit">Próximo</Button.Purple>
                                         </div>
                                     </div>
                                 </form>
@@ -482,8 +489,8 @@ export default function Questions() {
                                         <p className="mr-24">Por favor, preencha as informações solicitadas sobre sua empresa. Esses dados são cruciais para personalizarmos nossos serviços eficazmente. Certifique-se de sua precisão.</p>
 
                                         <div className="flex">
-                                            <span className="mr-3"><Button.Transparent width="w-44" value="Voltar" type="button" onClick={setPreviousStep} /></span>
-                                            <Button.Input width="w-44" value="Próximo" type="submit" />
+                                            <span className="mr-3"><Button.Transparent width="w-44" type="button" onClick={setPreviousStep}>Voltar</Button.Transparent></span>
+                                            <Button.Purple width="w-44" type="submit">Próximo</Button.Purple>
                                         </div>
                                     </div>
                                 </form>
@@ -556,8 +563,13 @@ export default function Questions() {
                                         <p className="mr-24">Por favor, preencha as informações solicitadas sobre sua empresa. Esses dados são cruciais para personalizarmos nossos serviços eficazmente. Certifique-se de sua precisão.</p>
 
                                         <div className="flex">
-                                            <span className="mr-3"><Button.Transparent width="w-44" value="Voltar" type="button" onClick={setPreviousStep} /></span>
-                                            <Button.Input width="w-44" value="Finalizar" type="submit" />
+                                            <span className="mr-3"><Button.Transparent width="w-44" type="button" onClick={setPreviousStep} disabled={isLoading ? true : false}>Voltar</Button.Transparent></span>
+                                            <Button.Purple width="w-44" type="submit" disabled={isLoading ? true : false}>
+                                                {isLoading
+                                                    ? <CircularProgress size="24px" sx={{ color: "#ffffff" }} />
+                                                    : "Finalizar"
+                                                }
+                                            </Button.Purple>
                                         </div>
                                     </div>
                                 </form>

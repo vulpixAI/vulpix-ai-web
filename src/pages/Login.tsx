@@ -3,6 +3,7 @@ import { Input } from "../components/Input";
 import { Button } from "../components/Button";
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import HomeIcon from '@mui/icons-material/Home';
+import CircularProgress from '@mui/material/CircularProgress';
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -27,10 +28,14 @@ export default function Login() {
 
     const { register, handleSubmit, watch, formState: { errors } } = useForm<loginFormData>({ resolver: zodResolver(loginFormSchema) });
 
+    const [isLoading, setLoading] = useState<boolean>(false);
+
     async function loginUser(data: loginFormData) {
+        setLoading(true);
         const response = await login(data.email, data.password);
 
         if (!response) {
+            setLoading(false);
             toast.error("Falha de conexão com o servidor.");
             return;
         }
@@ -44,6 +49,8 @@ export default function Login() {
         } else {
             toast.warn("E-mail ou senha inválidos.");
         }
+
+        setLoading(false);
     }
 
     const [isPasswordVisible, setPasswordVisible] = useState<boolean>(false);
@@ -108,7 +115,12 @@ export default function Login() {
                     <div className="flex justify-end">
                         <a href="" className="text-white-gray mt-4 mb-8 mr-3 text-sm hover:text-purple transition-all">Esqueci minha senha</a>
                     </div>
-                    <Button.Input value="Entrar" type="submit" />
+                    <Button.Purple type="submit" disabled={isLoading ? true : false}>
+                        {isLoading
+                            ? <CircularProgress size="24px" sx={{ color: "#ffffff" }} />
+                            : "Entrar"
+                        }
+                    </Button.Purple>
                     <div className="flex justify-center items-start">
                         <p className="text-white-gray mt-8 whitespace-nowrap select-none">Ainda não possui uma conta? <Link to="/signup" className="text-purple hover:text-purple-dark transition-all">Inscreva-se</Link></p>
                     </div>

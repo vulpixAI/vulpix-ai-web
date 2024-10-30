@@ -45,7 +45,7 @@ export default function Plans() {
                                 <li className="flex items-start"> <CheckIcon sx={{ fontSize: 20, color: "#5d5aff", marginRight: 1 }} /> Aproveite as vantagens do vulpix.AI em todas as <br /> suas plataformas de venda.</li>
                             </ul>
 
-                            <Button.Input value="Próximo" type="button" width="w-52" onClick={setNextStep} />
+                            <Button.Purple type="button" width="w-52" onClick={setNextStep}>Próximo</Button.Purple>
                         </div>
                     }
 

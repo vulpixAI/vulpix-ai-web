@@ -47,8 +47,8 @@ export function Modal({ title, content, onConfirm, isOpen, onClose, width = 500 
                     </div>
 
                     <div className="w-full h-1/4 flex justify-around">
-                        <Button.Transparent type="button" value="Cancelar" width='w-52' onClick={onClose} />
-                        <Button.Input type="button" value="Confirmar" width='w-52' onClick={onConfirm} />
+                        <Button.Transparent type="button" width='w-[204px]' onClick={onClose}>Cancelar</Button.Transparent>
+                        <Button.Purple type="button" width='w-[204px]' onClick={onConfirm}>Confirmar</Button.Purple>
                     </div>
                 </Box>
             </Fade>

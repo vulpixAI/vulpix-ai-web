@@ -3,6 +3,7 @@ import { Input } from "../components/Input";
 import { Button } from "../components/Button";
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import HomeIcon from '@mui/icons-material/Home';
+import CircularProgress from '@mui/material/CircularProgress';
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -84,6 +85,7 @@ export default function SignUp() {
 
     const [step, setStep] = useState<number>(1);
     const [formData, setFormData] = useState<object[]>([]);
+    const [isLoading, setLoading] = useState<boolean>(false);
 
     function setPreviousStep() {
         step > 1 && setStep(step => step - 1);
@@ -118,9 +120,11 @@ export default function SignUp() {
         const empresaFormData = formData[1];
         const enderecoEmpresaFormData = data;
 
+        setLoading(true);
         const response = await signUp(userFormData, empresaFormData, enderecoEmpresaFormData);
 
         if (!response) {
+            setLoading(false);
             toast.error("Falha de conexão com o servidor.");
             return;
         }
@@ -132,6 +136,8 @@ export default function SignUp() {
         } else {
             toast.warn("Falha ao realizar inscrição.");
         }
+
+        setLoading(false);
     }
 
     const [isPasswordVisible, setPasswordVisible] = useState<boolean>(false);
@@ -292,7 +298,7 @@ export default function SignUp() {
 
                         <SignUpProgressBar step={step} />
 
-                        <Button.Input value="Próximo" type="submit" />
+                        <Button.Purple type="submit">Próximo</Button.Purple>
                     </form>
                 }
 
@@ -344,8 +350,8 @@ export default function SignUp() {
                         <SignUpProgressBar step={step} />
 
                         <div className="flex justify-between">
-                            <Button.Transparent width="w-44 mobile:w-36" value="Voltar" type="button" onClick={setPreviousStep} />
-                            <Button.Input width="w-44 mobile:w-36" value="Próximo" type="submit" />
+                            <Button.Transparent width="w-44 mobile:w-36" type="button" onClick={setPreviousStep}>Voltar</Button.Transparent>
+                            <Button.Purple width="w-44 mobile:w-36" type="submit">Próximo</Button.Purple>
                         </div>
                     </form>
                 }
@@ -449,8 +455,13 @@ export default function SignUp() {
                         <SignUpProgressBar step={step} />
 
                         <div className="flex justify-between">
-                            <Button.Transparent width="w-44 mobile:w-36" value="Voltar" type="button" onClick={setPreviousStep} disabled={step == 4 ? true : false} />
-                            <Button.Input width="w-44 mobile:w-36" value="Inscrever-se" type="submit" />
+                            <Button.Transparent width="w-44 mobile:w-36" type="button" onClick={setPreviousStep} disabled={isLoading ? true : false}>Voltar</Button.Transparent>
+                            <Button.Purple width="w-44 mobile:w-36" type="submit" disabled={isLoading ? true : false}>
+                                {isLoading
+                                    ? <CircularProgress size="24px" sx={{ color: "#ffffff" }} />
+                                    : "Inscrever-se"
+                                }
+                            </Button.Purple>
                         </div>
                     </form>
                 }
