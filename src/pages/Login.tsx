@@ -40,11 +40,11 @@ export default function Login() {
             return;
         }
 
-        if (response.status == 200 && response.data.estado == "AGUARDANDO_PAGAMENTO") {
-            navigate("/plans");
-        } else if (response.status == 200 && response.data.estado == "AGUARDANDO_FORMULARIO") {
+        if (response.status == 200 && response.data.status == "AGUARDANDO_PAGAMENTO") {
+            navigate("/plan");   
+        } else if (response.status == 200 && response.data.status == "AGUARDANDO_FORMULARIO") {
             navigate("/form");
-        } else if (response.status == 200 && response.data.estado == "CADASTRO_FINALIZADO") {
+        } else if (response.status == 200 && response.data.status == "CADASTRO_FINALIZADO") {
             navigate("/dashboard");
         } else {
             toast.warn("E-mail ou senha inválidos.");
