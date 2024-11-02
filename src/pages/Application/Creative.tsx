@@ -30,6 +30,8 @@ export default function Creative() {
     const [isGeneratingSubtitle, setGeneratingSubtitle] = useState<boolean>(false);
     const [subtitle, setSubtitle] = useState<string>("Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ducimus quibusdam labore voluptates natus repellendus? Quibusdam nam, ipsam minima, consectetur at, reiciendis dolore unde aliquam ullam a blanditiis atque facere neque?");
 
+    const [isPublishing, setPublishing] = useState<boolean>(false);
+
     const interactiveMessages = ["O que sua imaginação está pedindo agora?", "Pronto para criar algo incrível?", "O que vamos criar juntos hoje?", "Ideia na cabeça? Vamos transformar em imagem!", "Qual é o projeto da vez?", "Digite sua ideia... Vamos criar!"];
 
     useEffect(() => {
@@ -46,6 +48,8 @@ export default function Creative() {
         const validInputRegex = /^(?!\s*$)(?!\s).+/;
         if (!validInputRegex.test(prompt)) return;
 
+        
+
         setPrompt("");
         setSubmit(true);
         setGenerating(true);
@@ -56,6 +60,12 @@ export default function Creative() {
         setGeneratingSubtitle(true);
 
         setSubtitle("Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ducimus quibusdam labore voluptates natus repellendus? Quibusdam nam, ipsam minima, consectetur at, reiciendis dolore unde aliquam ullam a blanditiis atque facere neque?");
+    }
+
+    async function publish() {
+        setPublishing(true);
+
+        // setPublishing(false);
     }
 
     const setPreviousStep = () => step > 1 && setStep(step => step - 1);
@@ -80,10 +90,8 @@ export default function Creative() {
                                 <input type="text" className="outline-none w-full h-14 rounded-xl bg-dark-gray p-2 pl-4 pr-16 text-blue-gray placeholder:text-zinc-500" placeholder="Digite aqui seu prompt..." onChange={(e: any) => setPrompt(e.target.value)} value={prompt} />
                                 <button type="submit" className="absolute right-3 top-2 flex items-center justify-center w-10 h-10 text-white-gray bg-purple rounded-xl hover:bg-purple-dark transition-all" disabled={isGenerating ? true : false}>
                                     {isGenerating
-                                        ?
-                                        <CircularProgress size="18px" sx={{ color: "#ffffff", marginLeft: "1px" }} />
-                                        :
-                                        <AutoAwesomeOutlinedIcon />
+                                        ? <CircularProgress size="18px" sx={{ color: "#ffffff", marginLeft: "1px" }} />
+                                        : <AutoAwesomeOutlinedIcon />
                                     }
                                 </button>
                             </form>
@@ -142,14 +150,7 @@ export default function Creative() {
                                     </div>
 
                                     <div className="absolute -bottom-24 w-full flex items-center justify-between px-6">
-                                        <h3 className="text-white-gray text-xl font-medium text-center">
-                                            <TypeAnimation
-                                                sequence={['Por favor, selecione a imagem que mais lhe agradou e confirme sua escolha.']}
-                                                speed={70}
-                                                repeat={1}
-                                                cursor={false}
-                                            />
-                                        </h3>
+                                        <h3 className="text-white-gray text-xl font-medium text-center">Escolha a imagem que você mais gostou!</h3>
                                         <Button.Purple onClick={() => selectedImage && setNextStep()} width="w-52">Confirmar</Button.Purple>
                                     </div>
                                 </div>
@@ -160,15 +161,7 @@ export default function Creative() {
                     {/* Step 2 Screen */}
 
                     <div className={`flex items-center justify-center flex-col fixed top-[50%] -translate-y-[50%] h-full w-full pt-16 ${step == 2 ? "translate-x-0 opacity-100 ease-in-out duration-700" : "translate-x-60 opacity-0 pointer-events-none"}`}>
-                        <h3 className={`text-white-gray h-6 text-2xl font-medium text-center ${step == 2 ? "block" : "hidden"}`}>
-                            <TypeAnimation
-                                key={step}
-                                sequence={[300, 'Agora é a hora de confirmar a legenda para sua publicação!']}
-                                speed={70}
-                                repeat={1}
-                                cursor={false}
-                            />
-                        </h3>
+                        <h3 className="text-white-gray text-2xl font-medium text-center">Agora, confirme a legenda para prosseguir com a publicação!</h3>
 
                         {isRequestingSubtitleApi
                             ?
@@ -198,30 +191,40 @@ export default function Creative() {
 
                         <div className="flex">
                             <span className="mr-3"><Button.Transparent onClick={() => setPreviousStep()} width="w-52" disabled={isGeneratingSubtitle ? true : false}>Voltar</Button.Transparent></span>
-                            <Button.Purple onClick={() => selectedImage && setNextStep()} width="w-52" disabled={isGeneratingSubtitle ? true : false}>Confirmar</Button.Purple>
+                            <Button.Purple onClick={() => setNextStep()} width="w-52" disabled={isGeneratingSubtitle ? true : false}>Confirmar</Button.Purple>
                         </div>
 
-                        <div className="flex items-center justify-center mt-12">
-                            <p className="text-white-gray h-6 w-[672px] text-lg font-medium">
-                                <TypeAnimation
-                                    key={step}
-                                    sequence={[2900, 'Caso não tenho gostado dessa legenda, clique no botão a seguir para gerar outra:']}
-                                    speed={70}
-                                    repeat={1}
-                                    cursor={false}
-                                />
-                            </p>
+                        <div className="flex items-center justify-center mt-8">
+                            <p className="text-white-gray h-6 w-[664px] text-lg font-medium">Caso não tenha gostado dessa legenda, clique no botão ao lado para gerar outra:</p>
 
-                            <span className={`opacity-0 animate-fadeIn delay-6000 ${step == 2 ? "block" : "hidden"}`}>
-                                <button onClick={generateSubtitle} type="button" className="flex items-center justify-center w-10 h-10 text-white-gray bg-purple rounded-xl hover:bg-purple-dark transition-all" disabled={isGeneratingSubtitle ? true : false}>
-                                    {isGeneratingSubtitle
-                                        ?
-                                        <CircularProgress size="18px" sx={{ color: "#ffffff", marginLeft: "1px" }} />
-                                        :
-                                        <AutoAwesomeOutlinedIcon />
-                                    }
-                                </button>
-                            </span>
+                            <button onClick={generateSubtitle} type="button" className="flex items-center justify-center w-10 h-10 text-white-gray bg-purple rounded-xl hover:bg-purple-dark transition-all" disabled={isGeneratingSubtitle ? true : false}>
+                                {isGeneratingSubtitle
+                                    ? <CircularProgress size="18px" sx={{ color: "#ffffff", marginLeft: "1px" }} />
+                                    : <AutoAwesomeOutlinedIcon />
+                                }
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Step 3 Screen */}
+
+                    <div className={`flex items-center justify-center flex-col fixed top-[50%] -translate-y-[50%] h-full w-full pt-16 ${step == 3 ? "translate-x-0 opacity-100 ease-in-out duration-700" : "translate-x-60 opacity-0 pointer-events-none"}`}>
+                        <h3 className="text-white-gray text-2xl font-medium text-center">Hora de publicar! Mas antes, veja como será sua publicação!</h3>
+
+                        <div className="flex items-center justify-center my-12 bg-dark-gray rounded-2xl pr-6">
+                            <img className="w-[340px] h-[300px] rounded-2xl" src={selectedImage} />
+                            <p className="ml-8 text-white-gray w-[460px]">{subtitle}</p>
+                        </div>
+
+                        <div className="flex">
+                            <span className="mr-3"><Button.Transparent onClick={() => setPreviousStep()} width="w-52" disabled={isPublishing ? true : false}>Voltar</Button.Transparent></span>
+                            <Button.Purple onClick={publish} width="w-52" disabled={isPublishing ? true : false}>
+                                {isPublishing
+                                    ? <CircularProgress size="18px" sx={{ color: "#ffffff", marginLeft: "1px" }} />
+                                    : "Publicar"
+                                }
+                            </Button.Purple>
+                            <span className="ml-3"><Button.Transparent width="w-52" disabled>Agendar Publicação</Button.Transparent></span>
                         </div>
                     </div>
                 </div>
