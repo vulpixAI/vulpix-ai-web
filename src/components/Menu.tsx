@@ -29,7 +29,7 @@ export function Menu({ children }: Menu) {
 
     return (
         <div className="flex h-full">
-            <div className="h-full w-28 rounded-r-2xl bg-dark-gray fixed z-10">
+            <div className="h-full w-28 rounded-r-2xl bg-dark-gray fixed z-50">
                 <div className="flex items-center justify-center h-1/5">
                     <img className="w-[70px] select-none pointer-events-none" src="/vulpixai-logo.jpeg" alt="Logo vulpix.AI" />
                 </div>
@@ -64,7 +64,7 @@ export function Menu({ children }: Menu) {
             </div>
 
             <div className="w-full flex flex-col items-center ml-28">
-                <nav className="h-16 pr-8 flex justify-end items-center fixed w-full bg-black">
+                <nav className="h-16 pr-8 flex justify-end items-center fixed z-40 w-full bg-black">
                     <div className="flex items-center mr-28">
                         <div className="flex">
                             <Tooltip title="Configurações" placement="bottom">
@@ -79,7 +79,7 @@ export function Menu({ children }: Menu) {
                 </nav>
                 <div className="w-[90%] h-[1px] bg-white-gray/40 mt-16 fixed"></div>
 
-                <main className="h-full w-full pt-16">
+                <main className="h-full w-full">
                     {children}
                 </main>
             </div>
