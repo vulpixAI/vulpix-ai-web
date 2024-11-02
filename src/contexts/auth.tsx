@@ -17,7 +17,7 @@ export function AuthProvider({ children }: AuthProvider) {
 
     async function login(email: string, password: string) {
         try {
-            const response = await axios.post("http://localhost:8080/usuarios/login", {
+            const response = await axios.post(`${import.meta.env.VITE_API_URL}/usuarios/login`, {
                 email: email,
                 senha: password
             });
@@ -33,7 +33,7 @@ export function AuthProvider({ children }: AuthProvider) {
 
     async function signUp(userFormData: any, empresaFormData: any, enderecoEmpresaFormData: any) {
         try {
-            return await axios.post("http://localhost:8080/usuarios", {
+            return await axios.post(`${import.meta.env.VITE_API_URL}/usuarios`, {
                 nome: userFormData.nome,
                 sobrenome: userFormData.sobrenome,
                 email: userFormData.email,

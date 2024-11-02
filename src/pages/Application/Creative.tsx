@@ -66,7 +66,7 @@ export default function Creative() {
                         </form>
                     </div>
 
-                    <div className={`absolute flex flex-col ease-in-out duration-700 delay-150 ${isSubmit ? "opacity-100 top-[50%] -translate-y-[50%]" : "opacity-0"}`}>
+                    <div className={`absolute flex flex-col ease-in-out duration-700 delay-150 ${isSubmit ? "opacity-100 top-[50%] -translate-y-[50%]" : "opacity-0 pointer-events-none"}`}>
                         {isGenerating
                             ?
                             <div className="flex">

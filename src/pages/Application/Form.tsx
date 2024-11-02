@@ -149,7 +149,7 @@ export default function Questions() {
         setLoading(true);
 
         try {
-            await axios.post(`http://localhost:8080/empresas/form`, payload, {
+            await axios.post(`${import.meta.env.VITE_API_URL}/empresas/form`, payload, {
                 headers: {
                     Authorization: `Bearer ${sessionStorage.getItem("bearerToken")}`,
                 }
