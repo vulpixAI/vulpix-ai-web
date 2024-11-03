@@ -3,6 +3,7 @@ import { Skeleton } from "@mui/material";
 import { Menu } from "../../components/Menu";
 import { TypeAnimation } from 'react-type-animation';
 import { Button } from "../../components/Button";
+import { Modal } from "../../components/Modal";
 import useLastPage from "../../hooks/useLastPage";
 import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -28,9 +29,21 @@ export default function Creative() {
 
     const [isRequestingSubtitleApi, setRequestingSubtitleApi] = useState<boolean>(false);
     const [isGeneratingSubtitle, setGeneratingSubtitle] = useState<boolean>(false);
-    const [subtitle, setSubtitle] = useState<string>("Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ducimus quibusdam labore voluptates natus repellendus? Quibusdam nam, ipsam minima, consectetur at, reiciendis dolore unde aliquam ullam a blanditiis atque facere neque?");
+    const [subtitle, setSubtitle] = useState<string>("");
 
     const [isPublishing, setPublishing] = useState<boolean>(false);
+
+    const [isSuccessModalOpen, setSuccessModalOpen] = useState<boolean>(false);
+    const openSuccessModal = () => setSuccessModalOpen(true);
+    const closeSuccessModal = () => {
+        setImages({});
+        setPrompt("");
+        setSubmit(false);
+        setSelectedImage("");
+        setSubtitle("");
+        setStep(1);
+        setSuccessModalOpen(false);
+    }
 
     const interactiveMessages = ["O que sua imaginação está pedindo agora?", "Pronto para criar algo incrível?", "O que vamos criar juntos hoje?", "Ideia na cabeça? Vamos transformar em imagem!", "Qual é o projeto da vez?", "Digite sua ideia... Vamos criar!"];
 
@@ -48,8 +61,6 @@ export default function Creative() {
         const validInputRegex = /^(?!\s*$)(?!\s).+/;
         if (!validInputRegex.test(prompt)) return;
 
-        
-
         setPrompt("");
         setSubmit(true);
         setGenerating(true);
@@ -59,13 +70,17 @@ export default function Creative() {
         setRequestingSubtitleApi(true);
         setGeneratingSubtitle(true);
 
-        setSubtitle("Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ducimus quibusdam labore voluptates natus repellendus? Quibusdam nam, ipsam minima, consectetur at, reiciendis dolore unde aliquam ullam a blanditiis atque facere neque?");
+        setSubtitle("");
     }
 
     async function publish() {
         setPublishing(true);
 
-        // setPublishing(false);
+
+        setTimeout(() => {
+            openSuccessModal();
+            setPublishing(false);
+        }, 3000);
     }
 
     const setPreviousStep = () => step > 1 && setStep(step => step - 1);
@@ -75,8 +90,8 @@ export default function Creative() {
         <div className="h-screen">
             <Menu>
                 <div>
-                    <div className={`items-center flex-col h-full ${step == 1 ? "flex" : "hidden"}`}>
-                        <div className={`absolute z-20 top-[50%] -translate-y-[50%] pt-16 ${isSubmit && "-mt-48"} ease-in-out duration-700`}>
+                    <div className="flex items-center flex-col h-full">
+                        <div className={`absolute z-20 top-[50%] -translate-y-[50%] pt-16 ${isSubmit && "-mt-48"} ${step == 1 ? "translate-x-0 opacity-100 ease-in-out duration-700" : "translate-x-60 opacity-0 pointer-events-none"}`}>
                             <h1 className={`text-white-gray text-3xl font-medium mb-6 ${isSubmit && "hidden"} text-center`}>
                                 <TypeAnimation
                                     sequence={[interactiveMessages[Math.floor(Math.random() * interactiveMessages.length)]]}
@@ -97,7 +112,7 @@ export default function Creative() {
                             </form>
                         </div>
 
-                        <div className={`absolute flex flex-col ease-in-out duration-700 delay-150 pt-16 ${isSubmit ? "opacity-100 top-[50%] -translate-y-[50%]" : "opacity-0 pointer-events-none"}`}>
+                        <div className={`absolute flex flex-col ease-in-out duration-700 delay-150 pt-16 ${isSubmit ? "opacity-100 top-[50%] -translate-y-[50%]" : "opacity-0 pointer-events-none"} ${step >= 2 && "translate-x-60 !opacity-0 transition-none"}`}>
                             {isGenerating
                                 ?
                                 <div className="flex">
@@ -150,7 +165,7 @@ export default function Creative() {
                                     </div>
 
                                     <div className="absolute -bottom-24 w-full flex items-center justify-between px-6">
-                                        <h3 className="text-white-gray text-xl font-medium text-center">Escolha a imagem que você mais gostou!</h3>
+                                        <h3 className="text-white-gray text-xl font-medium text-center">Escolha a imagem que você mais gostou! 👀</h3>
                                         <Button.Purple onClick={() => selectedImage && setNextStep()} width="w-52">Confirmar</Button.Purple>
                                     </div>
                                 </div>
@@ -161,7 +176,7 @@ export default function Creative() {
                     {/* Step 2 Screen */}
 
                     <div className={`flex items-center justify-center flex-col fixed top-[50%] -translate-y-[50%] h-full w-full pt-16 ${step == 2 ? "translate-x-0 opacity-100 ease-in-out duration-700" : "translate-x-60 opacity-0 pointer-events-none"}`}>
-                        <h3 className="text-white-gray text-2xl font-medium text-center">Agora, confirme a legenda para prosseguir com a publicação!</h3>
+                        <h3 className="text-white-gray text-2xl font-medium text-center">Agora, confirme a legenda para prosseguir com a publicação! ✅</h3>
 
                         {isRequestingSubtitleApi
                             ?
@@ -209,7 +224,7 @@ export default function Creative() {
                     {/* Step 3 Screen */}
 
                     <div className={`flex items-center justify-center flex-col fixed top-[50%] -translate-y-[50%] h-full w-full pt-16 ${step == 3 ? "translate-x-0 opacity-100 ease-in-out duration-700" : "translate-x-60 opacity-0 pointer-events-none"}`}>
-                        <h3 className="text-white-gray text-2xl font-medium text-center">Hora de publicar! Mas antes, veja como será sua publicação!</h3>
+                        <h3 className="text-white-gray text-2xl font-medium text-center">✨ Está quase lá! Antes de publicar, veja como sua publicação vai ficar! ✨</h3>
 
                         <div className="flex items-center justify-center my-12 bg-dark-gray rounded-2xl pr-6">
                             <img className="w-[340px] h-[300px] rounded-2xl" src={selectedImage} />
@@ -229,6 +244,8 @@ export default function Creative() {
                     </div>
                 </div>
             </Menu>
+
+            <Modal.Info content="Sua publicação foi enviada com sucesso! 🚀" onConfirm={closeSuccessModal} isOpen={isSuccessModalOpen} onClose={closeSuccessModal} />
         </div>
     )
 }
