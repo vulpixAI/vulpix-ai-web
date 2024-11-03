@@ -5,7 +5,9 @@ import { TypeAnimation } from 'react-type-animation';
 import { Button } from "../../components/Button";
 import { Modal } from "../../components/Modal";
 import useLastPage from "../../hooks/useLastPage";
+import useTimer from "../../hooks/useTimer";
 import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import CircularProgress from '@mui/material/CircularProgress';
 import axios from "axios";
 
@@ -18,6 +20,8 @@ interface ImageResponse {
 
 export default function Creative() {
     useLastPage();
+
+    const { minutes, seconds, startTimer, resetTimer } = useTimer();
 
     const [step, setStep] = useState<number>(1);
     const [images, setImages] = useState<Partial<ImageResponse>>({});
@@ -59,6 +63,7 @@ export default function Creative() {
         const validInputRegex = /^(?!\s*$)(?!\s).+/;
         if (!validInputRegex.test(prompt)) return;
 
+        startTimer();
         setPrompt("");
         setSubmit(true);
         setGenerating(true);
@@ -89,6 +94,8 @@ export default function Creative() {
                 setErrorMessage("Houve um problema ao gerar a imagem.");
                 openErrorModal();
             });
+
+        resetTimer();
     }
 
     async function generateCaption() {
@@ -173,37 +180,46 @@ export default function Creative() {
                         <div className={`absolute flex flex-col pt-16 ${isSubmit ? "opacity-100 top-[50%] -translate-y-[50%] ease-in-out duration-700 delay-150" : "opacity-0 pointer-events-none"} ${step >= 2 && "translate-x-60 !opacity-0 transition-none"}`}>
                             {isGenerating
                                 ?
-                                <div className="flex">
-                                    <Skeleton
-                                        sx={{ bgcolor: '#222222', borderRadius: "1rem", margin: "0 16px" }}
-                                        variant="rectangular"
-                                        width={280}
-                                        height={240}
-                                    />
+                                <>
+                                    <div className="flex">
+                                        <Skeleton
+                                            sx={{ bgcolor: '#222222', borderRadius: "1rem", margin: "0 16px" }}
+                                            variant="rectangular"
+                                            width={280}
+                                            height={240}
+                                        />
 
-                                    <Skeleton
-                                        sx={{ bgcolor: '#222222', borderRadius: "1rem", margin: "0 16px" }}
-                                        variant="rectangular"
-                                        width={280}
-                                        height={240}
-                                    />
+                                        <Skeleton
+                                            sx={{ bgcolor: '#222222', borderRadius: "1rem", margin: "0 16px" }}
+                                            variant="rectangular"
+                                            width={280}
+                                            height={240}
+                                        />
 
-                                    <Skeleton
-                                        sx={{ bgcolor: '#222222', borderRadius: "1rem", margin: "0 16px" }}
-                                        variant="rectangular"
-                                        width={280}
-                                        height={240}
-                                    />
+                                        <Skeleton
+                                            sx={{ bgcolor: '#222222', borderRadius: "1rem", margin: "0 16px" }}
+                                            variant="rectangular"
+                                            width={280}
+                                            height={240}
+                                        />
 
-                                    <Skeleton
-                                        sx={{ bgcolor: '#222222', borderRadius: "1rem", margin: "0 16px" }}
-                                        variant="rectangular"
-                                        width={280}
-                                        height={240}
-                                    />
-                                </div>
+                                        <Skeleton
+                                            sx={{ bgcolor: '#222222', borderRadius: "1rem", margin: "0 16px" }}
+                                            variant="rectangular"
+                                            width={280}
+                                            height={240}
+                                        />
+                                    </div>
+                                    <div className="absolute -bottom-24 w-full flex items-center justify-between px-6 text-white-gray">
+                                        <h3 className="text-xl font-medium text-left">Isso pode demorar um pouco, pegue um café enquanto isso... ☕</h3>
+                                        <span className="text-xl pr-2 flex items-center justify-center select-none">
+                                            <AccessTimeIcon sx={{ marginRight: "4px", color: "#5d5aff" }} />
+                                            {String(minutes).padStart(2, '0')}:{String(seconds).padStart(2, '0')}
+                                        </span>
+                                    </div>
+                                </>
                                 :
-                                <div className="">
+                                <div>
                                     <div className="flex">
                                         <button className="mx-4" onClick={(e: any) => setSelectedImage(e.target.src)}>
                                             <img className={`w-[280px] h-[240px] rounded-2xl border-4 border-solid ${images.image1 == selectedImage ? "border-purple" : "border-transparent"}`} src={images.image1} />

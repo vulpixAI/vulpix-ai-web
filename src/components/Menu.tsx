@@ -49,9 +49,9 @@ export function Menu({ children }: Menu) {
                 }
 
                 setUserData(response.data);
-                setCurrentPage(window.location.pathname.replace("/", ""));
             }
         });
+        setCurrentPage(window.location.pathname.replace("/", ""));
     }, []);
 
     const [isLogoutModalOpen, setLogoutModalOpen] = useState<boolean>(false);
