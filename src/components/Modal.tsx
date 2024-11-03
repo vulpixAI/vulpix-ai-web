@@ -127,7 +127,7 @@ function ErrorModal({ content, onConfirm, isOpen, onClose, width = 430 }: Modal)
                     <button onClick={onClose} className="absolute right-4 top-4"><CloseIcon sx={{ color: "#ffffff" }} /></button>
 
                     <div className="w-full h-1/4 flex flex-col justify-center items-center">
-                        <h3 className="text-xl text-white">Ops! Algo deu errado!</h3>
+                        <h3 className="text-xl text-white">Ooops! Algo deu errado!</h3>
 
                         <div className="p-3 mt-6 border-solid border-purple border-2 rounded-full">
                             <CloseIcon sx={{

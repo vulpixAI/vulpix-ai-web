@@ -1,17 +1,33 @@
 import { useEffect, useState } from "react";
 import { Button } from "../../components/Button";
 import { LoadingScreen } from "../../components/LoadingScreen";
+import { useNavigate } from "react-router-dom";
 import CheckIcon from '@mui/icons-material/Check';
 import useLastPage from "../../hooks/useLastPage";
+import axios from "axios";
 
 export default function Plans() {
     useLastPage();
+
+    const navigate = useNavigate();
 
     const [step, setStep] = useState<number>(1);
     const [showLoadingScreen, setLoadingScreen] = useState<boolean>(true);
 
     useEffect(() => {
-        setTimeout(() => setLoadingScreen(false), 3000);
+        axios.get(`${import.meta.env.VITE_API_URL}/usuarios`, {
+            headers: {
+                Authorization: `Bearer ${sessionStorage.getItem("bearerToken")}`
+            }
+        }).then(response => {
+            if (response.data.status == "AGUARDANDO_FORMULARIO") {
+                navigate("/form");
+            } else if (response.data.status == "CADASTRO_FINALIZADO") {
+                navigate("/dashboard");
+            } else {
+                setTimeout(() => setLoadingScreen(false), 3000);
+            }
+        });
     }, []);
 
     function setNextStep() {

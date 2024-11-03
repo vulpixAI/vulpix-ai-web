@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Input } from "../components/Input";
 import { Button } from "../components/Button";
 import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { Modal } from "../components/Modal";
 import HomeIcon from '@mui/icons-material/Home';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useForm } from "react-hook-form";
@@ -52,6 +53,13 @@ export default function SignUp() {
 
     const { signUp }: any = UseAuth();
     const navigate = useNavigate();
+
+    const [isSuccessModalOpen, setSuccessModalOpen] = useState<boolean>(false);
+    const openSuccessModal = () => setSuccessModalOpen(true);
+    const closeSuccessModal = () => {
+        setSuccessModalOpen(false);
+        navigate("/login");
+    }
 
     const {
         register: registerUser,
@@ -131,8 +139,7 @@ export default function SignUp() {
 
         if (response.status == 201) {
             setStep(4);
-            toast.info("Inscrição realizada com sucesso. Acessando a tela de login...");
-            setTimeout(() => navigate("/login"), 3000);
+            openSuccessModal();
         } else {
             toast.warn("Falha ao realizar inscrição.");
         }
@@ -471,6 +478,8 @@ export default function SignUp() {
                 </div>
             </div>
             <div className="h-full w-[65%] bg-signup bg-cover bg-no-repeat bg-center clip-path-signup mobile:hidden"></div>
+
+            <Modal.Info content="Cadastro realizado com sucesso!" onConfirm={closeSuccessModal} isOpen={isSuccessModalOpen} onClose={closeSuccessModal} />
         </div>
     )
 }

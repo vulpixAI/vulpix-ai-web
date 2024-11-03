@@ -9,9 +9,15 @@ import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import Tooltip from '@mui/material/Tooltip';
+import axios from "axios";
 
 interface Menu {
     children: ReactNode
+}
+
+interface userResponse {
+    nomeFantasia: string,
+    status: string
 }
 
 export function Menu({ children }: Menu) {
@@ -20,8 +26,25 @@ export function Menu({ children }: Menu) {
     const navigate = useNavigate();
     const { signOut }: any = UseAuth();
 
-    useEffect(() => setCurrentPage(window.location.pathname.replace("/", "")), []);
+    const [userData, setUserData] = useState<Partial<userResponse>>({});
     const [currentPage, setCurrentPage] = useState<string>("");
+
+    useEffect(() => {
+        axios.get(`${import.meta.env.VITE_API_URL}/usuarios`, {
+            headers: {
+                Authorization: `Bearer ${sessionStorage.getItem("bearerToken")}`
+            }
+        }).then(response => {
+            if (response.data.status == "AGUARDANDO_PAGAMENTO") {
+                navigate("/plan");
+            } else if (response.data.status == "AGUARDANDO_FORMULARIO") {
+                navigate("/plan");
+            } else {
+                setUserData(response.data);
+                setCurrentPage(window.location.pathname.replace("/", ""));
+            }
+        });
+    }, []);
 
     const [isLogoutModalOpen, setLogoutModalOpen] = useState<boolean>(false);
     const openLogoutModal = () => setLogoutModalOpen(true);
@@ -74,7 +97,7 @@ export function Menu({ children }: Menu) {
                             </Tooltip>
                         </div>
                         <div className="h-10 w-[1px] bg-white-gray/40 mx-8"></div>
-                        <h4 className="text-purple select-none">Nome da Empresa</h4>
+                        <h4 className="text-purple select-none w-32 text-center text-nowrap">{userData.nomeFantasia}</h4>
                     </div>
                 </nav>
                 <div className="w-[90%] h-[1px] bg-white-gray/40 mt-16 fixed"></div>

@@ -4,9 +4,9 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "../../components/Input";
 import { Button } from "../../components/Button";
-import { toast, ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { LoadingScreen } from "../../components/LoadingScreen";
+import { Modal } from "../../components/Modal";
 import CircularProgress from '@mui/material/CircularProgress';
 import useLastPage from "../../hooks/useLastPage";
 import axios from "axios";
@@ -67,8 +67,31 @@ export default function Questions() {
     const [showLoadingScreen, setLoadingScreen] = useState<boolean>(true);
 
     useEffect(() => {
-        setTimeout(() => setLoadingScreen(false), 3000);
+        axios.get(`${import.meta.env.VITE_API_URL}/usuarios`, {
+            headers: {
+                Authorization: `Bearer ${sessionStorage.getItem("bearerToken")}`
+            }
+        }).then(response => {
+            if (response.data.status == "AGUARDANDO_PAGAMENTO") {
+                navigate("/plan");
+            } else if (response.data.status == "CADASTRO_FINALIZADO") {
+                navigate("/dashboard");
+            } else {
+                setTimeout(() => setLoadingScreen(false), 3000);
+            }
+        });
     }, []);
+
+    const [isSuccessModalOpen, setSuccessModalOpen] = useState<boolean>(false);
+    const openSuccessModal = () => setSuccessModalOpen(true);
+    const closeSuccessModal = () => {
+        setSuccessModalOpen(false);
+        navigate("/dashboard");
+    }
+
+    const [isErrorModalOpen, setErrorModalOpen] = useState<boolean>(false);
+    const openErrorModal = () => setErrorModalOpen(true);
+    const closeErrorModal = () => setErrorModalOpen(false);
 
     const {
         register: registerStepOne,
@@ -156,9 +179,9 @@ export default function Questions() {
                 }
             });
 
-            navigate("/dashboard");
+            openSuccessModal();
         } catch (err) {
-            toast.error("Houve uma falha ao realizar o envio do formulário.");
+            openErrorModal();
         }
 
         setLoading(false);
@@ -171,18 +194,6 @@ export default function Questions() {
                 <LoadingScreen />
                 :
                 <div className="flex flex-col justify-center items-center h-screen">
-                    <ToastContainer
-                        position="top-right"
-                        autoClose={4000}
-                        hideProgressBar={false}
-                        closeOnClick
-                        rtl={false}
-                        theme="dark"
-                        pauseOnFocusLoss
-                        draggable
-                        pauseOnHover
-                    />
-
                     <div className="flex items-center absolute top-2 left-2 select-none">
                         <img className="h-[4.5rem] pointer-events-none" src="/vulpixai-logo.jpeg" alt="Logo vulpix.AI" />
                         <h4 className="text-2xl text-white ml-[-8px] font-bold">vulpix.<span className="text-purple">AI</span></h4>
@@ -579,6 +590,9 @@ export default function Questions() {
                     }
                 </div>
             }
+
+            <Modal.Info content="Formulário cadastrado com sucesso!" onConfirm={closeSuccessModal} isOpen={isSuccessModalOpen} onClose={closeSuccessModal} />
+            <Modal.Error content="Houve um problema ao cadastrar formulário." onConfirm={closeErrorModal} isOpen={isErrorModalOpen} onClose={closeErrorModal} />
         </>
     )
 }
