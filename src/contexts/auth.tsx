@@ -57,7 +57,7 @@ export function AuthProvider({ children }: AuthProvider) {
     }
 
     function signOut() {
-        sessionStorage.removeItem("isPageLoaded");
+        sessionStorage.removeItem("hasShownLoadingScreen");
         sessionStorage.removeItem("bearerToken");
         setLoggedIn(false);
     }

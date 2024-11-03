@@ -1,4 +1,4 @@
-import { useState, useEffect, FormEvent } from "react";
+import { useState, FormEvent } from "react";
 import { Skeleton } from "@mui/material";
 import { Menu } from "../../components/Menu";
 import { TypeAnimation } from 'react-type-animation';
@@ -33,28 +33,25 @@ export default function Creative() {
 
     const [isPublishing, setPublishing] = useState<boolean>(false);
 
-    const [isSuccessModalOpen, setSuccessModalOpen] = useState<boolean>(false);
-    const openSuccessModal = () => setSuccessModalOpen(true);
-    const closeSuccessModal = () => {
+    const interactiveMessages = ["O que sua imaginação está pedindo agora?", "Pronto para criar algo incrível?", "O que vamos criar juntos hoje?", "Ideia na cabeça? Vamos transformar em imagem!", "Qual é o projeto da vez?", "Digite sua ideia... Vamos criar!"];
+
+    function resetAIInterface() {
         setImages({});
         setPrompt("");
         setSubmit(false);
         setSelectedImage("");
         setCaption("");
         setStep(1);
-        setSuccessModalOpen(false);
     }
+
+    const [isSuccessModalOpen, setSuccessModalOpen] = useState<boolean>(false);
+    const openSuccessModal = () => setSuccessModalOpen(true);
+    const closeSuccessModal = () => { resetAIInterface(), setSuccessModalOpen(false) }
 
     const [isErrorModalOpen, setErrorModalOpen] = useState<boolean>(false);
     const [errorMessage, setErrorMessage] = useState<string>("");
     const openErrorModal = () => setErrorModalOpen(true);
     const closeErrorModal = () => setErrorModalOpen(false);
-
-    const interactiveMessages = ["O que sua imaginação está pedindo agora?", "Pronto para criar algo incrível?", "O que vamos criar juntos hoje?", "Ideia na cabeça? Vamos transformar em imagem!", "Qual é o projeto da vez?", "Digite sua ideia... Vamos criar!"];
-
-    useEffect(() => {
-        setTimeout(() => setRequestingCaptionApi(false), 2500);
-    }, [isRequestingCaptionApi]);
 
     async function generateImage(event: FormEvent) {
         event.preventDefault();
@@ -64,12 +61,11 @@ export default function Creative() {
 
         setPrompt("");
         setSubmit(true);
+        setGenerating(true);
 
         const payload = {
             userRequest: prompt
         }
-
-        setGenerating(true);
 
         await axios.post(`${import.meta.env.VITE_API_URL}/posts/gerar-post`, payload, {
             headers: {
@@ -89,25 +85,46 @@ export default function Creative() {
             .catch(() => {
                 setSubmit(false);
                 setGenerating(false);
+
                 setErrorMessage("Houve um problema ao gerar a imagem.");
                 openErrorModal();
             });
     }
 
     async function generateCaption() {
+        setCaption("");
         setRequestingCaptionApi(true);
         setGeneratingCaption(true);
 
-        setCaption("");
+        const payload = {
+            userRequest: prompt
+        }
+
+        await axios.post(`${import.meta.env.VITE_API_URL}/posts/gerar-legenda`, payload, {
+            headers: {
+                Authorization: `Bearer ${sessionStorage.getItem("bearerToken")}`
+            }
+        })
+            .then(response => {
+                setCaption(response.data.legenda);
+                setRequestingCaptionApi(false);
+            })
+            .catch(() => {
+                setRequestingCaptionApi(false);
+                setGeneratingCaption(false);
+
+                setErrorMessage("Houve um problema ao gerar a legenda.");
+                openErrorModal();
+            });
     }
 
     async function publish() {
+        setPublishing(true);
+
         const payload = {
             image_url: selectedImage,
             caption: caption
         }
-
-        setPublishing(true);
 
         await axios.post(`${import.meta.env.VITE_API_URL}/posts`, payload, {
             headers: {
@@ -118,6 +135,7 @@ export default function Creative() {
             openSuccessModal();
         }).catch(() => {
             setPublishing(false);
+
             setErrorMessage("Houve um problema ao realizar a publicação.");
             openErrorModal();
         });
