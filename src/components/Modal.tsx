@@ -141,7 +141,7 @@ function ErrorModal({ content, onConfirm, isOpen, onClose, width = 430 }: Modal)
                     </div>
 
                     <div className="w-full h-1/4 flex justify-center">
-                        <Button.Purple type="button" width='w-[204px]' onClick={onConfirm}>Ok, deixa eu ver</Button.Purple>
+                        <Button.Purple type="button" width='w-[204px]' onClick={onConfirm}>Tentar Novamente</Button.Purple>
                     </div>
                 </Box>
             </Fade>

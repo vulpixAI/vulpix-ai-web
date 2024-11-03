@@ -7,6 +7,7 @@ import { Modal } from "../../components/Modal";
 import useLastPage from "../../hooks/useLastPage";
 import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined';
 import CircularProgress from '@mui/material/CircularProgress';
+import axios from "axios";
 
 interface ImageResponse {
     image1: string,
@@ -19,7 +20,6 @@ export default function Creative() {
     useLastPage();
 
     const [step, setStep] = useState<number>(1);
-
     const [images, setImages] = useState<Partial<ImageResponse>>({});
 
     const [prompt, setPrompt] = useState<string>("");
@@ -27,9 +27,9 @@ export default function Creative() {
     const [isGenerating, setGenerating] = useState<boolean>(false);
     const [selectedImage, setSelectedImage] = useState<string>("");
 
-    const [isRequestingSubtitleApi, setRequestingSubtitleApi] = useState<boolean>(false);
-    const [isGeneratingSubtitle, setGeneratingSubtitle] = useState<boolean>(false);
-    const [subtitle, setSubtitle] = useState<string>("");
+    const [caption, setCaption] = useState<string>("");
+    const [isRequestingCaptionApi, setRequestingCaptionApi] = useState<boolean>(false);
+    const [isGeneratingCaption, setGeneratingCaption] = useState<boolean>(false);
 
     const [isPublishing, setPublishing] = useState<boolean>(false);
 
@@ -40,20 +40,21 @@ export default function Creative() {
         setPrompt("");
         setSubmit(false);
         setSelectedImage("");
-        setSubtitle("");
+        setCaption("");
         setStep(1);
         setSuccessModalOpen(false);
     }
 
+    const [isErrorModalOpen, setErrorModalOpen] = useState<boolean>(false);
+    const [errorMessage, setErrorMessage] = useState<string>("");
+    const openErrorModal = () => setErrorModalOpen(true);
+    const closeErrorModal = () => setErrorModalOpen(false);
+
     const interactiveMessages = ["O que sua imaginação está pedindo agora?", "Pronto para criar algo incrível?", "O que vamos criar juntos hoje?", "Ideia na cabeça? Vamos transformar em imagem!", "Qual é o projeto da vez?", "Digite sua ideia... Vamos criar!"];
 
     useEffect(() => {
-        setTimeout(() => setGenerating(false), 5000);
-    }, [isGenerating]);
-
-    useEffect(() => {
-        setTimeout(() => setRequestingSubtitleApi(false), 2500);
-    }, [isRequestingSubtitleApi]);
+        setTimeout(() => setRequestingCaptionApi(false), 2500);
+    }, [isRequestingCaptionApi]);
 
     async function generateImage(event: FormEvent) {
         event.preventDefault();
@@ -63,24 +64,63 @@ export default function Creative() {
 
         setPrompt("");
         setSubmit(true);
+
+        const payload = {
+            userRequest: prompt
+        }
+
         setGenerating(true);
+
+        await axios.post(`${import.meta.env.VITE_API_URL}/posts/gerar-post`, payload, {
+            headers: {
+                Authorization: `Bearer ${sessionStorage.getItem("bearerToken")}`
+            }
+        })
+            .then(response => {
+                setImages({
+                    image1: response.data.imagem1,
+                    image2: response.data.imagem2,
+                    image3: response.data.imagem3,
+                    image4: response.data.imagem4
+                });
+                setCaption(response.data.legenda);
+                setGenerating(false);
+            })
+            .catch(() => {
+                setSubmit(false);
+                setGenerating(false);
+                setErrorMessage("Houve um problema ao gerar a imagem.");
+                openErrorModal();
+            });
     }
 
-    async function generateSubtitle() {
-        setRequestingSubtitleApi(true);
-        setGeneratingSubtitle(true);
+    async function generateCaption() {
+        setRequestingCaptionApi(true);
+        setGeneratingCaption(true);
 
-        setSubtitle("");
+        setCaption("");
     }
 
     async function publish() {
+        const payload = {
+            image_url: selectedImage,
+            caption: caption
+        }
+
         setPublishing(true);
 
-
-        setTimeout(() => {
-            openSuccessModal();
+        await axios.post(`${import.meta.env.VITE_API_URL}/posts`, payload, {
+            headers: {
+                Authorization: `Bearer ${sessionStorage.getItem("bearerToken")}`
+            }
+        }).then(() => {
             setPublishing(false);
-        }, 3000);
+            openSuccessModal();
+        }).catch(() => {
+            setPublishing(false);
+            setErrorMessage("Houve um problema ao realizar a publicação.");
+            openErrorModal();
+        });
     }
 
     const setPreviousStep = () => step > 1 && setStep(step => step - 1);
@@ -112,7 +152,7 @@ export default function Creative() {
                             </form>
                         </div>
 
-                        <div className={`absolute flex flex-col ease-in-out duration-700 delay-150 pt-16 ${isSubmit ? "opacity-100 top-[50%] -translate-y-[50%]" : "opacity-0 pointer-events-none"} ${step >= 2 && "translate-x-60 !opacity-0 transition-none"}`}>
+                        <div className={`absolute flex flex-col pt-16 ${isSubmit ? "opacity-100 top-[50%] -translate-y-[50%] ease-in-out duration-700 delay-150" : "opacity-0 pointer-events-none"} ${step >= 2 && "translate-x-60 !opacity-0 transition-none"}`}>
                             {isGenerating
                                 ?
                                 <div className="flex">
@@ -178,7 +218,7 @@ export default function Creative() {
                     <div className={`flex items-center justify-center flex-col fixed top-[50%] -translate-y-[50%] h-full w-full pt-16 ${step == 2 ? "translate-x-0 opacity-100 ease-in-out duration-700" : "translate-x-60 opacity-0 pointer-events-none"}`}>
                         <h3 className="text-white-gray text-2xl font-medium text-center">Agora, confirme a legenda para prosseguir com a publicação! ✅</h3>
 
-                        {isRequestingSubtitleApi
+                        {isRequestingCaptionApi
                             ?
                             <Skeleton
                                 sx={{ bgcolor: '#222222', borderRadius: "1rem", margin: "32px 0" }}
@@ -187,12 +227,12 @@ export default function Creative() {
                                 height={288}
                             />
                             :
-                            subtitle && isGeneratingSubtitle
+                            caption && isGeneratingCaption
                                 ?
                                 <div className="w-[750px] h-72 flex items-center justify-center rounded-2xl my-8 p-12 bg-dark-gray text-white-gray">
                                     <TypeAnimation
                                         key={step}
-                                        sequence={[subtitle, () => setGeneratingSubtitle(false)]}
+                                        sequence={[caption, () => setGeneratingCaption(false)]}
                                         speed={90}
                                         repeat={1}
                                         cursor={false}
@@ -200,20 +240,20 @@ export default function Creative() {
                                 </div>
                                 :
                                 <div className="w-[750px] h-72 flex items-center justify-center rounded-2xl my-8 p-12 bg-dark-gray text-white-gray">
-                                    <p>{subtitle}</p>
+                                    <p>{caption}</p>
                                 </div>
                         }
 
                         <div className="flex">
-                            <span className="mr-3"><Button.Transparent onClick={() => setPreviousStep()} width="w-52" disabled={isGeneratingSubtitle ? true : false}>Voltar</Button.Transparent></span>
-                            <Button.Purple onClick={() => setNextStep()} width="w-52" disabled={isGeneratingSubtitle ? true : false}>Confirmar</Button.Purple>
+                            <span className="mr-3"><Button.Transparent onClick={() => setPreviousStep()} width="w-52" disabled={isGeneratingCaption ? true : false}>Voltar</Button.Transparent></span>
+                            <Button.Purple onClick={() => setNextStep()} width="w-52" disabled={isGeneratingCaption ? true : false}>Confirmar</Button.Purple>
                         </div>
 
                         <div className="flex items-center justify-center mt-8">
                             <p className="text-white-gray h-6 w-[664px] text-lg font-medium">Caso não tenha gostado dessa legenda, clique no botão ao lado para gerar outra:</p>
 
-                            <button onClick={generateSubtitle} type="button" className="flex items-center justify-center w-10 h-10 text-white-gray bg-purple rounded-xl hover:bg-purple-dark transition-all" disabled={isGeneratingSubtitle ? true : false}>
-                                {isGeneratingSubtitle
+                            <button onClick={generateCaption} type="button" className="flex items-center justify-center w-10 h-10 text-white-gray bg-purple rounded-xl hover:bg-purple-dark transition-all" disabled={isGeneratingCaption ? true : false}>
+                                {isGeneratingCaption
                                     ? <CircularProgress size="18px" sx={{ color: "#ffffff", marginLeft: "1px" }} />
                                     : <AutoAwesomeOutlinedIcon />
                                 }
@@ -228,7 +268,7 @@ export default function Creative() {
 
                         <div className="flex items-center justify-center my-12 bg-dark-gray rounded-2xl pr-6">
                             <img className="w-[340px] h-[300px] rounded-2xl" src={selectedImage} />
-                            <p className="ml-8 text-white-gray w-[460px]">{subtitle}</p>
+                            <p className="ml-8 text-white-gray w-[460px]">{caption}</p>
                         </div>
 
                         <div className="flex">
@@ -246,6 +286,7 @@ export default function Creative() {
             </Menu>
 
             <Modal.Info content="Sua publicação foi enviada com sucesso! 🚀" onConfirm={closeSuccessModal} isOpen={isSuccessModalOpen} onClose={closeSuccessModal} />
+            <Modal.Error content={errorMessage} onConfirm={closeErrorModal} isOpen={isErrorModalOpen} onClose={closeErrorModal} />
         </div>
     )
 }

@@ -124,7 +124,8 @@ export default function Questions() {
             setor: formData[0].setor,
             anoFundacao: formData[0].anoFundacao,
             logotipo: formData[0].logotipo,
-            cor: formData[1].cor,
+            corPrimaria: formData[1].cor,
+            corSecundaria: formData[1].cor,
             fonte: formData[1].fonte,
             estiloVisual: formData[1].estiloVisual,
             publicoAlvo: formData[1].publicoAlvo,
@@ -151,7 +152,7 @@ export default function Questions() {
         try {
             await axios.post(`${import.meta.env.VITE_API_URL}/empresas/form`, payload, {
                 headers: {
-                    Authorization: `Bearer ${sessionStorage.getItem("bearerToken")}`,
+                    Authorization: `Bearer ${sessionStorage.getItem("bearerToken")}`
                 }
             });
 
