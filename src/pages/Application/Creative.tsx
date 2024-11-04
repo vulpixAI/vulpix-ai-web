@@ -30,6 +30,7 @@ export default function Creative() {
     const [images, setImages] = useState<Partial<ImageResponse>>({});
 
     const [prompt, setPrompt] = useState<string>("");
+    const [userRequest, setUserRequest] = useState<string>("");
     const [isSubmit, setSubmit] = useState<boolean>(false);
     const [isGenerating, setGenerating] = useState<boolean>(false);
     const [selectedImage, setSelectedImage] = useState<string>("");
@@ -58,6 +59,7 @@ export default function Creative() {
         if (!validInputRegex.test(prompt)) return;
 
         startTimer();
+        setUserRequest(prompt);
         setPrompt("");
         setSubmit(true);
         setGenerating(true);
@@ -98,7 +100,7 @@ export default function Creative() {
         setGeneratingCaption(true);
 
         const payload = {
-            userRequest: prompt
+            userRequest: userRequest
         }
 
         await axios.post(`${import.meta.env.VITE_API_URL}/posts/gerar-legenda`, payload, {
