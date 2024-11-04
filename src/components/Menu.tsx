@@ -10,47 +10,32 @@ import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import Tooltip from '@mui/material/Tooltip';
-import axios from "axios";
 
 interface Menu {
     children: ReactNode
-}
-
-interface userResponse {
-    nomeFantasia: string,
-    status: string
 }
 
 export function Menu({ children }: Menu) {
     useLastPage();
 
     const navigate = useNavigate();
-    const { signOut }: any = UseAuth();
+    const { userData, signOut }: any = UseAuth();
 
     const [showLoadingScreen, setLoadingScreen] = useState<boolean>(false);
-    const [userData, setUserData] = useState<Partial<userResponse>>({});
     const [currentPage, setCurrentPage] = useState<string>("");
 
     useEffect(() => {
-        axios.get(`${import.meta.env.VITE_API_URL}/usuarios`, {
-            headers: {
-                Authorization: `Bearer ${sessionStorage.getItem("bearerToken")}`
+        if (userData.status == "AGUARDANDO_PAGAMENTO") {
+            navigate("/plan");
+        } else if (userData.status == "AGUARDANDO_FORMULARIO") {
+            navigate("/form");
+        } else {
+            if (!sessionStorage.getItem("hasShownLoadingScreen")) {
+                sessionStorage.setItem("hasShownLoadingScreen", "true");
+                setLoadingScreen(true);
+                setTimeout(() => setLoadingScreen(false), 3000);
             }
-        }).then(response => {
-            if (response.data.status == "AGUARDANDO_PAGAMENTO") {
-                navigate("/plan");
-            } else if (response.data.status == "AGUARDANDO_FORMULARIO") {
-                navigate("/plan");
-            } else {
-                if (!sessionStorage.getItem("hasShownLoadingScreen")) {
-                    sessionStorage.setItem("hasShownLoadingScreen", "true");
-                    setLoadingScreen(true);
-                    setTimeout(() => setLoadingScreen(false), 3000);
-                }
-
-                setUserData(response.data);
-            }
-        });
+        }
         setCurrentPage(window.location.pathname.replace("/", ""));
     }, []);
 

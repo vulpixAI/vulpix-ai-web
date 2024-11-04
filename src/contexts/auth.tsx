@@ -9,10 +9,12 @@ interface AuthProvider {
 
 export function AuthProvider({ children }: AuthProvider) {
     const [isLoggedIn, setLoggedIn] = useState<boolean>(false);
+    const [userData, setUserData] = useState<object>({});
 
     useEffect(() => {
         const userToken = sessionStorage.getItem("bearerToken");
-        userToken ? setLoggedIn(true) : setLoggedIn(false)
+        userToken ? setLoggedIn(true) : setLoggedIn(false);
+        setUserData(JSON.parse(sessionStorage.getItem("userData") || ""));
     }, []);
 
     async function login(email: string, password: string) {
@@ -24,6 +26,15 @@ export function AuthProvider({ children }: AuthProvider) {
 
             sessionStorage.setItem("bearerToken", response.data.token);
             setLoggedIn(true);
+
+            await axios.get(`${import.meta.env.VITE_API_URL}/usuarios`, {
+                headers: {
+                    Authorization: `Bearer ${response.data.token}`
+                }
+            }).then(response => {
+                sessionStorage.setItem("userData", JSON.stringify(response.data));
+                setUserData(response.data);
+            });
 
             return response;
         } catch (error) {
@@ -57,6 +68,7 @@ export function AuthProvider({ children }: AuthProvider) {
     }
 
     function signOut() {
+        sessionStorage.removeItem("userData");
         sessionStorage.removeItem("hasShownLoadingScreen");
         sessionStorage.removeItem("bearerToken");
         setLoggedIn(false);
@@ -64,7 +76,7 @@ export function AuthProvider({ children }: AuthProvider) {
 
     return (
         <AuthContext.Provider
-            value={{ isLoggedIn, login, signUp, signOut }}>
+            value={{ isLoggedIn, userData, login, signUp, signOut }}>
             {children}
         </AuthContext.Provider>
     )
