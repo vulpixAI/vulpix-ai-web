@@ -11,14 +11,14 @@ export function AuthProvider({ children }: AuthProvider) {
     const [isLoggedIn, setLoggedIn] = useState<boolean>(false);
     const [userData, setUserData] = useState<object>({});
 
-    useEffect(() => sessionStorage.setItem("userData", JSON.stringify(userData)), [userData]);
+    useEffect(() => { sessionStorage.getItem("userData") && sessionStorage.setItem("userData", sessionStorage.getItem("userData") || "") }, [userData]);
 
     useEffect(() => {
         const userToken = sessionStorage.getItem("bearerToken");
 
         if (userToken) {
             setLoggedIn(true);
-            setUserData(JSON.parse(sessionStorage.getItem("userData") || ""))
+            setUserData(JSON.parse(sessionStorage.getItem("userData") || ""));
         } else {
             setLoggedIn(false);
         }
