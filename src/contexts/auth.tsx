@@ -11,6 +11,8 @@ export function AuthProvider({ children }: AuthProvider) {
     const [isLoggedIn, setLoggedIn] = useState<boolean>(false);
     const [userData, setUserData] = useState<object>({});
 
+    useEffect(() => sessionStorage.setItem("userData", JSON.stringify(userData)), [userData]);
+
     useEffect(() => {
         const userToken = sessionStorage.getItem("bearerToken");
 

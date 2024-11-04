@@ -63,6 +63,7 @@ export default function Questions() {
 
     const navigate = useNavigate();
     const { setUserData }: any = UseAuth();
+    const [userResponse, setUserResponse] = useState<object>({});
 
     const [step, setStep] = useState<number>(0);
     const [formData, setFormData] = useState<object[] | any>([]);
@@ -77,9 +78,9 @@ export default function Questions() {
             if (response.data.status == "AGUARDANDO_PAGAMENTO") {
                 navigate("/plan");
             } else if (response.data.status == "CADASTRO_FINALIZADO") {
-                setUserData(response.data);
                 navigate("/creative");
             } else {
+                setUserResponse(response.data);
                 setTimeout(() => setLoadingScreen(false), 3000);
             }
         });
@@ -87,10 +88,7 @@ export default function Questions() {
 
     const [isSuccessModalOpen, setSuccessModalOpen] = useState<boolean>(false);
     const openSuccessModal = () => setSuccessModalOpen(true);
-    const closeSuccessModal = () => {
-        setSuccessModalOpen(false);
-        navigate("/creative");
-    }
+    const closeSuccessModal = () => { setSuccessModalOpen(false), navigate("/creative") }
 
     const [isErrorModalOpen, setErrorModalOpen] = useState<boolean>(false);
     const openErrorModal = () => setErrorModalOpen(true);
@@ -182,6 +180,7 @@ export default function Questions() {
                 }
             });
 
+            setUserData(userResponse);
             openSuccessModal();
         } catch (err) {
             openErrorModal();
