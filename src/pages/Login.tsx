@@ -41,11 +41,11 @@ export default function Login() {
         }
 
         if (response.status == 200 && response.data.status == "AGUARDANDO_PAGAMENTO") {
-            navigate("/plan");   
+            navigate("/plan");
         } else if (response.status == 200 && response.data.status == "AGUARDANDO_FORMULARIO") {
             navigate("/form");
         } else if (response.status == 200 && response.data.status == "CADASTRO_FINALIZADO") {
-            navigate("/dashboard");
+            navigate("/creative");
         } else {
             toast.warn("E-mail ou senha inválidos.");
         }

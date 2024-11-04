@@ -23,7 +23,7 @@ export default function Plans() {
             if (response.data.status == "AGUARDANDO_FORMULARIO") {
                 navigate("/form");
             } else if (response.data.status == "CADASTRO_FINALIZADO") {
-                navigate("/dashboard");
+                navigate("/creative");
             } else {
                 setTimeout(() => setLoadingScreen(false), 3000);
             }

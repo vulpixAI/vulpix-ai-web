@@ -48,7 +48,7 @@ const stepFiveFormSchema = z.object({
     datasImportantes: z.string().min(1, "Campo obrigatório"),
     estiloCriativos: z.string().min(1, "Campo obrigatório"),
     referenciasVisuais: z.string().min(1, "Campo obrigatório"),
-    observacoesGerais: z.string().min(1, "Campo obrigatório")
+    observacoesGerais: z.string().nullable()
 });
 
 type stepOneFormData = z.infer<typeof stepOneFormSchema>
@@ -75,7 +75,7 @@ export default function Questions() {
             if (response.data.status == "AGUARDANDO_PAGAMENTO") {
                 navigate("/plan");
             } else if (response.data.status == "CADASTRO_FINALIZADO") {
-                navigate("/dashboard");
+                navigate("/creative");
             } else {
                 setTimeout(() => setLoadingScreen(false), 3000);
             }
@@ -86,7 +86,7 @@ export default function Questions() {
     const openSuccessModal = () => setSuccessModalOpen(true);
     const closeSuccessModal = () => {
         setSuccessModalOpen(false);
-        navigate("/dashboard");
+        navigate("/creative");
     }
 
     const [isErrorModalOpen, setErrorModalOpen] = useState<boolean>(false);

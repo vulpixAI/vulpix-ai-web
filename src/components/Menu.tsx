@@ -56,9 +56,9 @@ export function Menu({ children }: Menu) {
                         </div>
 
                         <div className="flex flex-col items-center justify-center h-3/5">
-                            <Tooltip title="Dashboard" placement="right">
-                                <Link to={"/dashboard"} className={`${currentPage == "dashboard" ? "text-purple" : "text-white-gray"} hover:text-purple ease-in-out duration-300`}>
-                                    <ShowChartOutlinedIcon />
+                            <Tooltip title="Inteligência Artificial" placement="right">
+                                <Link to={"/creative"} className={`${currentPage == "creative" ? "text-purple" : "text-white-gray"} hover:text-purple ease-in-out duration-300`}>
+                                    <AutoAwesomeOutlinedIcon />
                                 </Link>
                             </Tooltip>
 
@@ -68,9 +68,9 @@ export function Menu({ children }: Menu) {
                                 </Link>
                             </Tooltip>
 
-                            <Tooltip title="Inteligência Artificial" placement="right">
-                                <Link to={"/creative"} className={`${currentPage == "creative" ? "text-purple" : "text-white-gray"} hover:text-purple ease-in-out duration-300`}>
-                                    <AutoAwesomeOutlinedIcon />
+                            <Tooltip title="Dashboard" placement="right">
+                                <Link to={"/dashboard"} className={`${currentPage == "dashboard" ? "text-purple" : "text-white-gray"} hover:text-purple ease-in-out duration-300`}>
+                                    <ShowChartOutlinedIcon />
                                 </Link>
                             </Tooltip>
                         </div>
