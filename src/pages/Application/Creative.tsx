@@ -4,6 +4,7 @@ import { Menu } from "../../components/Menu";
 import { TypeAnimation } from 'react-type-animation';
 import { Button } from "../../components/Button";
 import { Modal } from "../../components/Modal";
+import { useNavigate } from "react-router-dom";
 import useLastPage from "../../hooks/useLastPage";
 import useTimer from "../../hooks/useTimer";
 import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined';
@@ -20,6 +21,8 @@ interface ImageResponse {
 
 export default function Creative() {
     useLastPage();
+
+    const navigate = useNavigate();
 
     const { minutes, seconds, startTimer, resetTimer } = useTimer();
 
@@ -39,18 +42,9 @@ export default function Creative() {
 
     const interactiveMessages = ["O que sua imaginação está pedindo agora?", "Pronto para criar algo incrível?", "O que vamos criar juntos hoje?", "Ideia na cabeça? Vamos transformar em imagem!", "Qual é o projeto da vez?", "Digite sua ideia... Vamos criar!"];
 
-    function resetAIInterface() {
-        setImages({});
-        setPrompt("");
-        setSubmit(false);
-        setSelectedImage("");
-        setCaption("");
-        setStep(1);
-    }
-
     const [isSuccessModalOpen, setSuccessModalOpen] = useState<boolean>(false);
     const openSuccessModal = () => setSuccessModalOpen(true);
-    const closeSuccessModal = () => { resetAIInterface(), setSuccessModalOpen(false) }
+    const closeSuccessModal = () => { navigate("/post"), setSuccessModalOpen(false) }
 
     const [isErrorModalOpen, setErrorModalOpen] = useState<boolean>(false);
     const [errorMessage, setErrorMessage] = useState<string>("");

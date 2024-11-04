@@ -73,7 +73,7 @@ export default function Plans() {
                                 <h1 className="text-4xl self-start">Escolha o melhor plano para você</h1>
 
                                 <div className="flex mt-8">
-                                    <button className="hover:scale-[1.02] transition-transform">
+                                    <a href="https://buy.stripe.com/test_8wMfZS8Tu9eQ3PW8wz" target="_blank" className="hover:scale-[1.02] transition-transform cursor-pointer">
                                         <div className="w-[300px] h-[360px] flex flex-col items-center justify-between border-solid border-white border-2 rounded-[1.6rem]">
                                             <div className="h-1/5 flex flex-col items-start justify-end text-white-gray w-full px-8">
                                                 <h4 className="text-white-gray text-lg font-semibold tracking-wide">Standard</h4>
@@ -83,7 +83,7 @@ export default function Plans() {
                                             <div className="self-center w-4/5 h-[2px] bg-purple my-4"></div>
 
                                             <div className="h-[64%] px-8 flex flex-col items-start text-white-gray w-full">
-                                                <h3 className="flex"><span className="text-xs mt-2 mr-[1px]">R$</span><span className="text-xl font-bold">10.00</span><span className="text-xs mt-2 ml-1">por mês</span></h3>
+                                                <h3 className="flex"><span className="text-xs mt-2 mr-[2px]">$</span><span className="text-xl font-bold">15,00</span><span className="text-xs mt-2 ml-1">por mês</span></h3>
                                                 <ul className="mt-4">
                                                     <li className="my-1"><CheckIcon sx={{ fontSize: 20, color: "#5d5aff", marginRight: 1 }} /> <span className="text-sm">Geração de Criativos com IA</span></li>
                                                     <li className="my-1"><CheckIcon sx={{ fontSize: 20, color: "#5d5aff", marginRight: 1 }} /> <span className="text-sm">Dashboard com Métricas</span></li>
@@ -91,9 +91,9 @@ export default function Plans() {
                                                 </ul>
                                             </div>
                                         </div>
-                                    </button>
+                                    </a>
 
-                                    <button className="hover:scale-[1.02] transition-transform">
+                                    <a href="https://buy.stripe.com/test_fZe3d6edOfDe5Y49AE" target="_blank" className="hover:scale-[1.02] transition-transform cursor-pointer">
                                         <div className="w-[300px] h-[360px] flex flex-col items-center justify-between border-solid border-white border-2 rounded-[1.6rem] mx-12">
                                             <div className="h-1/5 flex flex-col items-start justify-end text-white-gray w-full px-8">
                                                 <h4 className="text-white-gray text-lg font-semibold tracking-wide">Premium</h4>
@@ -103,7 +103,7 @@ export default function Plans() {
                                             <div className="self-center w-4/5 h-[2px] bg-purple my-4"></div>
 
                                             <div className="h-[64%] px-8 flex flex-col items-start text-white-gray w-full">
-                                                <h3 className="flex"><span className="text-xs mt-2 mr-[1px]">R$</span><span className="text-xl font-bold">10.00</span><span className="text-xs mt-2 ml-1">por mês</span></h3>
+                                                <h3 className="flex"><span className="text-xs mt-2 mr-[2px]">$</span><span className="text-xl font-bold">20,00</span><span className="text-xs mt-2 ml-1">por mês</span></h3>
                                                 <ul className="mt-4">
                                                     <li className="my-1"><CheckIcon sx={{ fontSize: 20, color: "#5d5aff", marginRight: 1 }} /> <span className="text-sm">Tudo do plano mais Standard:</span></li>
                                                     <li className="my-1"><CheckIcon sx={{ fontSize: 20, color: "#5d5aff", marginRight: 1 }} /> <span className="text-sm">Integração com Redes Sociais</span></li>
@@ -112,9 +112,9 @@ export default function Plans() {
                                                 </ul>
                                             </div>
                                         </div>
-                                    </button>
+                                    </a>
 
-                                    <button className="hover:scale-[1.02] transition-transform">
+                                    <a href="https://buy.stripe.com/test_4gwcNG9XygHi3PW4gl" target="_blank" className="hover:scale-[1.02] transition-transform cursor-pointer">
                                         <div className="w-[300px] h-[360px] flex flex-col items-center justify-between border-solid border-white border-2 rounded-[1.6rem]">
                                             <div className="h-1/5 flex flex-col items-start justify-end text-white-gray w-full px-8">
                                                 <h4 className="text-white-gray text-lg font-semibold tracking-wide">Business</h4>
@@ -124,7 +124,7 @@ export default function Plans() {
                                             <div className="self-center w-4/5 h-[2px] bg-purple my-4"></div>
 
                                             <div className="h-[64%] px-8 flex flex-col items-start text-white-gray w-full">
-                                                <h3 className="flex"><span className="text-xs mt-2 mr-[1px]">R$</span><span className="text-xl font-bold">10.00</span><span className="text-xs mt-2 ml-1">por mês</span></h3>
+                                                <h3 className="flex"><span className="text-xs mt-2 mr-[2px]">$</span><span className="text-xl font-bold">25,00</span><span className="text-xs mt-2 ml-1">por mês</span></h3>
                                                 <ul className="mt-4">
                                                     <li className="my-1"><CheckIcon sx={{ fontSize: 20, color: "#5d5aff", marginRight: 1 }} /> <span className="text-sm">Tudo do plano mais Premium:</span></li>
                                                     <li className="my-1"><CheckIcon sx={{ fontSize: 20, color: "#5d5aff", marginRight: 1 }} /> <span className="text-sm">Agendamento de Postagens</span></li>
@@ -133,7 +133,7 @@ export default function Plans() {
                                                 </ul>
                                             </div>
                                         </div>
-                                    </button>
+                                    </a>
                                 </div>
 
                                 <div className="text-sm mt-8 ">

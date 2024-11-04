@@ -4,15 +4,18 @@ html {
     overflow-x: hidden;
 }
 
-body::-webkit-scrollbar {
+body::-webkit-scrollbar,
+div::-webkit-scrollbar {
     width: 6px;
 }
 
-body::-webkit-scrollbar-track {
+body::-webkit-scrollbar-track,
+div::-webkit-scrollbar-track {
     background: #161719;
 }
 
-body::-webkit-scrollbar-thumb {
+body::-webkit-scrollbar-thumb,
+div::-webkit-scrollbar-thumb {
     background-color: #5d5aff;
     border-radius: 30px;
 }
