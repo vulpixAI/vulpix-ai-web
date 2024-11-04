@@ -109,7 +109,7 @@ export default function Creative() {
             }
         })
             .then(response => {
-                setCaption(response.data.legenda);
+                setCaption(response.data.legenda.substring(3));
                 setRequestingCaptionApi(false);
             })
             .catch(() => {
