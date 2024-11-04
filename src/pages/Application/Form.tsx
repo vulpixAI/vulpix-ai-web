@@ -9,6 +9,7 @@ import { LoadingScreen } from "../../components/LoadingScreen";
 import { Modal } from "../../components/Modal";
 import CircularProgress from '@mui/material/CircularProgress';
 import useLastPage from "../../hooks/useLastPage";
+import UseAuth from "../../hooks/useAuth";
 import axios from "axios";
 
 const stepOneFormSchema = z.object({
@@ -61,6 +62,7 @@ export default function Questions() {
     useLastPage();
 
     const navigate = useNavigate();
+    const { setUserData }: any = UseAuth();
 
     const [step, setStep] = useState<number>(0);
     const [formData, setFormData] = useState<object[] | any>([]);
@@ -75,6 +77,7 @@ export default function Questions() {
             if (response.data.status == "AGUARDANDO_PAGAMENTO") {
                 navigate("/plan");
             } else if (response.data.status == "CADASTRO_FINALIZADO") {
+                setUserData(response.data);
                 navigate("/creative");
             } else {
                 setTimeout(() => setLoadingScreen(false), 3000);

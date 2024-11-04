@@ -13,7 +13,6 @@ export function AuthProvider({ children }: AuthProvider) {
 
     useEffect(() => {
         const userToken = sessionStorage.getItem("bearerToken");
-        const data = sessionStorage.getItem("userData");
 
         if (userToken) {
             setLoggedIn(true);
@@ -21,8 +20,6 @@ export function AuthProvider({ children }: AuthProvider) {
         } else {
             setLoggedIn(false);
         }
-
-        data && setUserData(JSON.parse(data));
     }, []);
 
     async function login(email: string, password: string) {
@@ -84,7 +81,7 @@ export function AuthProvider({ children }: AuthProvider) {
 
     return (
         <AuthContext.Provider
-            value={{ isLoggedIn, userData, login, signUp, signOut }}>
+            value={{ isLoggedIn, userData, setUserData, login, signUp, signOut }}>
             {children}
         </AuthContext.Provider>
     )
