@@ -80,7 +80,7 @@ export default function Creative() {
                     image3: response.data.imagem3,
                     image4: response.data.imagem4
                 });
-                setCaption(response.data.legenda);
+                setCaption(response.data.legenda.substring(3).replace("*", ""));
                 setGenerating(false);
             })
             .catch(() => {
@@ -109,7 +109,7 @@ export default function Creative() {
             }
         })
             .then(response => {
-                setCaption(response.data.legenda.substring(3));
+                setCaption(response.data.legenda.substring(3).replace("*", ""));
                 setRequestingCaptionApi(false);
             })
             .catch(() => {
