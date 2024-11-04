@@ -13,8 +13,12 @@ export function AuthProvider({ children }: AuthProvider) {
 
     useEffect(() => {
         const userToken = sessionStorage.getItem("bearerToken");
-        userToken ? setLoggedIn(true) : setLoggedIn(false);
-        setUserData(JSON.parse(sessionStorage.getItem("userData") || ""));
+        if (userToken) {
+            setLoggedIn(true);
+            setUserData(JSON.parse(sessionStorage.getItem("userData") || ""))
+        } else {
+            setLoggedIn(false)
+        }
     }, []);
 
     async function login(email: string, password: string) {
