@@ -132,7 +132,7 @@ export default function Home() {
                             <div className="self-center w-4/5 h-[2px] bg-purple my-4"></div>
 
                             <div className="h-[64%] px-8 flex flex-col items-start text-white-gray w-full">
-                                <h3 className="flex"><span className="text-xs mt-2 mr-[1px]">R$</span><span className="text-xl font-bold">10.00</span><span className="text-xs mt-2 ml-1">por mês</span></h3>
+                                <h3 className="flex"><span className="text-xs mt-2 mr-[2px]">$</span><span className="text-xl font-bold">15,00</span><span className="text-xs mt-2 ml-1">por mês</span></h3>
                                 <ul className="mt-4">
                                     <li className="my-1"><CheckIcon sx={{ fontSize: 20, color: "#5d5aff", marginRight: 1 }} /> <span className="text-sm">Geração de Criativos com IA</span></li>
                                     <li className="my-1"><CheckIcon sx={{ fontSize: 20, color: "#5d5aff", marginRight: 1 }} /> <span className="text-sm">Dashboard com Métricas</span></li>
@@ -152,7 +152,7 @@ export default function Home() {
                             <div className="self-center w-4/5 h-[2px] bg-purple my-4"></div>
 
                             <div className="h-[64%] px-8 flex flex-col items-start text-white-gray w-full">
-                                <h3 className="flex"><span className="text-xs mt-2 mr-[1px]">R$</span><span className="text-xl font-bold">10.00</span><span className="text-xs mt-2 ml-1">por mês</span></h3>
+                                <h3 className="flex"><span className="text-xs mt-2 mr-[2px]">$</span><span className="text-xl font-bold">20,00</span><span className="text-xs mt-2 ml-1">por mês</span></h3>
                                 <ul className="mt-4">
                                     <li className="my-1"><CheckIcon sx={{ fontSize: 20, color: "#5d5aff", marginRight: 1 }} /> <span className="text-sm">Tudo do plano mais Standard:</span></li>
                                     <li className="my-1"><CheckIcon sx={{ fontSize: 20, color: "#5d5aff", marginRight: 1 }} /> <span className="text-sm">Integração com Redes Sociais</span></li>
@@ -173,7 +173,7 @@ export default function Home() {
                             <div className="self-center w-4/5 h-[2px] bg-purple my-4"></div>
 
                             <div className="h-[64%] px-8 flex flex-col items-start text-white-gray w-full">
-                                <h3 className="flex"><span className="text-xs mt-2 mr-[1px]">R$</span><span className="text-xl font-bold">10.00</span><span className="text-xs mt-2 ml-1">por mês</span></h3>
+                                <h3 className="flex"><span className="text-xs mt-2 mr-[2px]">$</span><span className="text-xl font-bold">25,00</span><span className="text-xs mt-2 ml-1">por mês</span></h3>
                                 <ul className="mt-4">
                                     <li className="my-1"><CheckIcon sx={{ fontSize: 20, color: "#5d5aff", marginRight: 1 }} /> <span className="text-sm">Tudo do plano mais Premium:</span></li>
                                     <li className="my-1"><CheckIcon sx={{ fontSize: 20, color: "#5d5aff", marginRight: 1 }} /> <span className="text-sm">Agendamento de Postagens</span></li>
