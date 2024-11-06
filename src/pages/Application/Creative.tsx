@@ -5,7 +5,6 @@ import { TypeAnimation } from 'react-type-animation';
 import { Button } from "../../components/Button";
 import { Modal } from "../../components/Modal";
 import { useNavigate } from "react-router-dom";
-import useLastPage from "../../hooks/useLastPage";
 import useTimer from "../../hooks/useTimer";
 import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
@@ -20,8 +19,6 @@ interface ImageResponse {
 }
 
 export default function Creative() {
-    useLastPage();
-
     const navigate = useNavigate();
 
     const { minutes, seconds, startTimer, resetTimer } = useTimer();

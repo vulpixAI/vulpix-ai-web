@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Menu } from "../../components/Menu";
 import { Skeleton } from "@mui/material";
-import useLastPage from "../../hooks/useLastPage";
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import InfoIcon from '@mui/icons-material/Info';
 import Tooltip from '@mui/material/Tooltip';
@@ -14,8 +13,6 @@ interface postResponse {
 }
 
 export default function Posts() {
-    useLastPage();
-
     const [posts, setPosts] = useState<postResponse | any>([]);
     const [isLoading, setLoading] = useState<boolean>(true);
     const [hasPost, setHasPost] = useState<boolean>(true);

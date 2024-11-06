@@ -3,12 +3,9 @@ import { Button } from "../../components/Button";
 import { LoadingScreen } from "../../components/LoadingScreen";
 import { useNavigate } from "react-router-dom";
 import CheckIcon from '@mui/icons-material/Check';
-import useLastPage from "../../hooks/useLastPage";
 import axios from "axios";
 
 export default function Plans() {
-    useLastPage();
-
     const navigate = useNavigate();
 
     const [step, setStep] = useState<number>(1);

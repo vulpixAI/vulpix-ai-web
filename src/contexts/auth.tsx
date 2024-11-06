@@ -9,9 +9,9 @@ interface AuthProvider {
 
 export function AuthProvider({ children }: AuthProvider) {
     const [isLoggedIn, setLoggedIn] = useState<boolean>(false);
-    const [userData, setUserData] = useState<object>({});
+    const [userData, setUserData] = useState<object | any>({});
 
-    useEffect(() => { sessionStorage.getItem("userData") && sessionStorage.setItem("userData", sessionStorage.getItem("userData") || "") }, [userData]);
+    useEffect(() => { userData.status == "CADASTRO_FINALIZADO" && sessionStorage.setItem("userData", JSON.stringify(userData)) }, [userData]);
 
     useEffect(() => {
         const userToken = sessionStorage.getItem("bearerToken");

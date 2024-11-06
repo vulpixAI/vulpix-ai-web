@@ -8,7 +8,6 @@ import { useNavigate } from "react-router-dom";
 import { LoadingScreen } from "../../components/LoadingScreen";
 import { Modal } from "../../components/Modal";
 import CircularProgress from '@mui/material/CircularProgress';
-import useLastPage from "../../hooks/useLastPage";
 import UseAuth from "../../hooks/useAuth";
 import axios from "axios";
 
@@ -59,11 +58,9 @@ type stepFourFormData = z.infer<typeof stepFourFormSchema>
 type stepFiveFormData = z.infer<typeof stepFiveFormSchema>
 
 export default function Questions() {
-    useLastPage();
-
     const navigate = useNavigate();
     const { setUserData }: any = UseAuth();
-    const [userResponse, setUserResponse] = useState<object>({});
+    const [userResponse, setUserResponse] = useState<object | any>({});
 
     const [step, setStep] = useState<number>(0);
     const [formData, setFormData] = useState<object[] | any>([]);
@@ -180,7 +177,11 @@ export default function Questions() {
                 }
             });
 
-            setUserData(userResponse);
+            setUserData({
+                nome: userResponse.nome,
+                nomeFantasia: userResponse.nomeFantasia,
+                status: "CADASTRO_FINALIZADO"
+            });
             openSuccessModal();
         } catch (err) {
             openErrorModal();

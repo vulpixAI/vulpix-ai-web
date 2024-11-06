@@ -10,7 +10,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate, Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import UseAuth from "../hooks/useAuth";
-import useLastPage from "../hooks/useLastPage";
 import "react-toastify/dist/ReactToastify.css";
 
 const loginFormSchema = z.object({
@@ -21,8 +20,6 @@ const loginFormSchema = z.object({
 type loginFormData = z.infer<typeof loginFormSchema>
 
 export default function Login() {
-    useLastPage();
-
     const { login }: any = UseAuth();
     const navigate = useNavigate();
 

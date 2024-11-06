@@ -1,12 +1,9 @@
 import { useEffect, useState } from "react";
 import { Menu } from "../../components/Menu";
-import useLastPage from "../../hooks/useLastPage";
 import useAuth from "../../hooks/useAuth";
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 
 export default function Dashboard() {
-    useLastPage();
-
     const { userData }: any = useAuth();
 
     const [greetingMessage, setGreetingMessage] = useState<string>("");

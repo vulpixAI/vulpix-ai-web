@@ -7,14 +7,11 @@ import { Faq } from '../components/Faq';
 import { Footer } from '../components/Footer';
 import { Timeline, Settings, Handshake } from '@mui/icons-material';
 import CheckIcon from '@mui/icons-material/Check';
-import useLastPage from '../hooks/useLastPage';
 import Hamburger from 'hamburger-react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
 export default function Home() {
-    useLastPage();
-
     const [isScrolled, setScrolled] = useState<boolean>(false);
     useEffect(() => {
         window.addEventListener("scroll", () => window.scrollY > 0 ? setScrolled(true) : setScrolled(false));

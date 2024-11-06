@@ -12,7 +12,6 @@ import { useNavigate, Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import { SignUpProgressBar } from "../components/SignUpProgressBar";
 import UseAuth from "../hooks/useAuth";
-import useLastPage from "../hooks/useLastPage";
 import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -49,8 +48,6 @@ type empresaFormData = z.infer<typeof empresaFormSchema>
 type enderecoEmpresaFormData = z.infer<typeof enderecoEmpresaFormSchema>
 
 export default function SignUp() {
-    useLastPage();
-
     const { signUp }: any = UseAuth();
     const navigate = useNavigate();
 
