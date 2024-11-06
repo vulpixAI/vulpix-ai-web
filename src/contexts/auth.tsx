@@ -7,22 +7,30 @@ interface AuthProvider {
     children: ReactNode
 }
 
+interface userData {
+    status: string
+}
+
 export function AuthProvider({ children }: AuthProvider) {
     const [isLoggedIn, setLoggedIn] = useState<boolean>(false);
-    const [userData, setUserData] = useState<object | any>({});
-
-    useEffect(() => { userData.status == "CADASTRO_FINALIZADO" && sessionStorage.setItem("userData", JSON.stringify(userData)) }, [userData]);
+    const [userData, setUserData] = useState<Partial<userData>>({});
 
     useEffect(() => {
-        const userToken = sessionStorage.getItem("bearerToken");
+        const bearerToken = sessionStorage.getItem("bearerToken");
 
-        if (userToken) {
+        if (bearerToken) {
             setLoggedIn(true);
             setUserData(JSON.parse(sessionStorage.getItem("userData") || ""));
         } else {
             setLoggedIn(false);
         }
     }, []);
+
+    useEffect(() => {
+        if (userData.status == "AGUARDANDO_FORMULARIO" || userData.status == "CADASTRO_FINALIZADO") {
+            sessionStorage.setItem("userData", JSON.stringify(userData));
+        }
+    }, [userData]);
 
     async function login(email: string, password: string) {
         try {

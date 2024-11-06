@@ -19,14 +19,14 @@ export function Menu({ children }: Menu) {
     const navigate = useNavigate();
     const { userData, signOut }: any = UseAuth();
 
+    const [isCorrectStatus, setCorrectStatus] = useState<boolean>(false);
     const [showLoadingScreen, setLoadingScreen] = useState<boolean>(false);
     const [currentPage, setCurrentPage] = useState<string>("");
 
     useEffect(() => {
-        if (!sessionStorage.getItem("hasShownLoadingScreen")) {
-            sessionStorage.setItem("hasShownLoadingScreen", "true");
-            setTimeout(() => setLoadingScreen(false), 3000);
-        }
+        userData.status == "CADASTRO_FINALIZADO" && setCorrectStatus(true);
+        if (!sessionStorage.getItem("hasShownLoadingScreen")) { setLoadingScreen(true), sessionStorage.setItem("hasShownLoadingScreen", "true") }
+        setTimeout(() => setLoadingScreen(false), 3000);
         setCurrentPage(window.location.pathname.replace("/", ""));
     }, []);
 
@@ -36,10 +36,8 @@ export function Menu({ children }: Menu) {
 
     return (
         <>
-            {userData.status != "CADASTRO_FINALIZADO"
+            {isCorrectStatus
                 ?
-                <NotFound />
-                :
                 showLoadingScreen
                     ?
                     <LoadingScreen />
@@ -102,6 +100,8 @@ export function Menu({ children }: Menu) {
 
                         <Modal.Dialog title="Fazer Logout" content="Tem certeza de que deseja sair de sua conta?" onConfirm={() => { signOut(), navigate("/login") }} isOpen={isLogoutModalOpen} onClose={closeLogoutModal} />
                     </div>
+                :
+                <NotFound />
             }
         </>
     )
