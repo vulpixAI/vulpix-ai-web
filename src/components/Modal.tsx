@@ -31,7 +31,8 @@ function DialogModal({ title, content, onConfirm, isOpen, onClose, width = 500 }
                         bgcolor: '#222222',
                         boxShadow: 24,
                         p: 4,
-                        borderRadius: 4
+                        borderRadius: 4,
+                        outline: 'none'
                     }}
                 >
                     <button onClick={onClose} className="absolute right-4 top-4"><CloseIcon sx={{ color: "#ffffff" }} /></button>
@@ -75,7 +76,8 @@ function InfoModal({ content, onConfirm, isOpen, onClose, width = 430 }: Modal) 
                         bgcolor: '#222222',
                         boxShadow: 24,
                         p: 4,
-                        borderRadius: 4
+                        borderRadius: 4,
+                        outline: 'none'
                     }}
                 >
                     <button onClick={onClose} className="absolute right-4 top-4"><CloseIcon sx={{ color: "#ffffff" }} /></button>
@@ -121,7 +123,8 @@ function ErrorModal({ content, onConfirm, isOpen, onClose, width = 430 }: Modal)
                         bgcolor: '#222222',
                         boxShadow: 24,
                         p: 4,
-                        borderRadius: 4
+                        borderRadius: 4,
+                        outline: 'none'
                     }}
                 >
                     <button onClick={onClose} className="absolute right-4 top-4"><CloseIcon sx={{ color: "#ffffff" }} /></button>

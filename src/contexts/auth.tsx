@@ -17,12 +17,13 @@ export function AuthProvider({ children }: AuthProvider) {
 
     useEffect(() => {
         const bearerToken = sessionStorage.getItem("bearerToken");
+        const userData = sessionStorage.getItem("userData");
 
-        if (bearerToken) {
+        if (bearerToken && userData) {
             setLoggedIn(true);
             setUserData(JSON.parse(sessionStorage.getItem("userData") || ""));
         } else {
-            setLoggedIn(false);
+            signOut();
         }
     }, []);
 
