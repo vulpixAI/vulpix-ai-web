@@ -253,7 +253,7 @@ export default function Creative() {
 
             {/* Step 2 Screen */}
 
-            <div className={`flex items-center justify-center flex-col fixed top-[50%] -translate-y-[50%] h-full w-full pt-16 ${step == 2 ? "translate-x-0 opacity-100 ease-in-out duration-700" : "translate-x-60 opacity-0 pointer-events-none"}`}>
+            <div className={`flex items-center justify-center flex-col fixed top-[50%] -translate-y-[50%] h-full w-full pt-16 pb-6 ${step == 2 ? "translate-x-0 opacity-100 ease-in-out duration-700" : "translate-x-60 opacity-0 pointer-events-none"}`}>
                 <h3 className="text-white-gray text-2xl font-medium text-center">Agora, confirme a legenda para prosseguir com a publicação! ✅</h3>
 
                 {isRequestingCaptionApi
@@ -301,7 +301,7 @@ export default function Creative() {
 
             {/* Step 3 Screen */}
 
-            <div className={`flex items-center justify-center flex-col fixed top-[50%] -translate-y-[50%] h-full w-full pt-16 ${step == 3 ? "translate-x-0 opacity-100 ease-in-out duration-700" : "translate-x-60 opacity-0 pointer-events-none"}`}>
+            <div className={`flex items-center justify-center flex-col fixed top-[50%] -translate-y-[50%] h-full w-full pt-16 pb-6 ${step == 3 ? "translate-x-0 opacity-100 ease-in-out duration-700" : "translate-x-60 opacity-0 pointer-events-none"}`}>
                 <h3 className="text-white-gray text-2xl font-medium text-center">✨ Está quase lá! Antes de publicar, veja como sua publicação vai ficar! ✨</h3>
 
                 <div className="flex items-center justify-center my-12 bg-dark-gray rounded-2xl pr-6">
@@ -320,6 +320,8 @@ export default function Creative() {
                     <span className="ml-3"><Button.Transparent width="w-52" disabled>Agendar Publicação</Button.Transparent></span>
                 </div>
             </div>
+
+            <h6 className="fixed bottom-2 text-white-gray text-xs">A vulpix.AI pode cometer erros. É sempre aconselhável revisar informações essenciais.</h6>
 
             <Modal.Info content="Sua publicação foi enviada com sucesso! 🚀" onConfirm={closeSuccessModal} isOpen={isSuccessModalOpen} onClose={closeSuccessModal} />
             <Modal.Error content={errorMessage} onConfirm={closeErrorModal} isOpen={isErrorModalOpen} onClose={closeErrorModal} />
