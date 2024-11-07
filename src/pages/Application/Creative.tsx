@@ -49,6 +49,12 @@ export default function Creative() {
     const openErrorModal = () => setErrorModalOpen(true);
     const closeErrorModal = () => setErrorModalOpen(false);
 
+    function formatCaption(caption: string) {
+        let formattedCaption = caption;
+        if (formattedCaption.substring(0, 3) == "## ") formattedCaption = caption.substring(3);
+        return formattedCaption.replace("*", "");
+    }
+
     async function generateImage(event: FormEvent) {
         event.preventDefault();
 
@@ -77,7 +83,7 @@ export default function Creative() {
                     image3: response.data.imagem3,
                     image4: response.data.imagem4
                 });
-                setCaption(response.data.legenda.substring(3).replace("*", ""));
+                setCaption(formatCaption(response.data.legenda));
                 setGenerating(false);
             })
             .catch(() => {
@@ -106,7 +112,7 @@ export default function Creative() {
             }
         })
             .then(response => {
-                setCaption(response.data.legenda.substring(3).replace("*", ""));
+                setCaption(formatCaption(response.data.legenda));
                 setRequestingCaptionApi(false);
             })
             .catch(() => {
@@ -147,7 +153,7 @@ export default function Creative() {
     return (
         <Menu>
             <div className="flex items-center flex-col h-screen">
-                <div className={`absolute z-20 top-[50%] -translate-y-[50%] pt-16 ${isSubmit && "-mt-48"} ${step == 1 ? "translate-x-0 opacity-100 ease-in-out duration-700" : "translate-x-60 opacity-0 pointer-events-none"}`}>
+                <div className={`fixed top-[50%] -translate-y-[50%] pt-16 ${isSubmit && "-mt-48"} ${step == 1 ? "translate-x-0 opacity-100 ease-in-out duration-700" : "translate-x-60 opacity-0 pointer-events-none"}`}>
                     <h1 className={`text-white-gray text-3xl font-medium mb-6 ${isSubmit && "hidden"} text-center`}>
                         <TypeAnimation
                             sequence={[interactiveMessages[Math.floor(Math.random() * interactiveMessages.length)]]}

@@ -93,7 +93,7 @@ export function Menu({ children }: Menu) {
                             </nav>
                             <div className="w-[90%] h-[1px] bg-white-gray/40 mt-16 fixed"></div>
 
-                            <main className="h-full w-full">
+                            <main className="h-full w-full flex justify-center overflow-hidden">
                                 {children}
                             </main>
                         </div>
