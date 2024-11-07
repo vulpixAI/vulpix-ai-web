@@ -164,7 +164,7 @@ export default function Creative() {
                     </h1>
 
                     <form onSubmit={generateImage} className="relative w-[1220px] mb-8">
-                        <input type="text" className="outline-none w-full h-14 rounded-xl bg-dark-gray p-2 pl-4 pr-16 text-blue-gray placeholder:text-zinc-500" placeholder="Digite aqui seu prompt..." onChange={(e: any) => setPrompt(e.target.value)} value={prompt} autoFocus />
+                        <input type="text" className="outline-none w-full h-14 rounded-xl bg-dark-gray p-2 pl-4 pr-16 text-blue-gray placeholder:text-zinc-500" placeholder="Digite aqui seu prompt..." onChange={(e: any) => setPrompt(e.target.value)} value={prompt} autoFocus disabled={isGenerating ? true : false} />
                         <button type="submit" className="absolute right-3 top-2 flex items-center justify-center w-10 h-10 text-white-gray bg-purple rounded-xl hover:bg-purple-dark transition-all" disabled={isGenerating ? true : false}>
                             {isGenerating
                                 ? <CircularProgress size="18px" sx={{ color: "#ffffff", marginLeft: "1px" }} />
