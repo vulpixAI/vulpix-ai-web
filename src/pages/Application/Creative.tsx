@@ -1,5 +1,5 @@
 import { useState, FormEvent } from "react";
-import { Skeleton } from "@mui/material";
+import { Skeleton, Tooltip } from "@mui/material";
 import { Menu } from "../../components/Menu";
 import { TypeAnimation } from 'react-type-animation';
 import { Button } from "../../components/Button";
@@ -62,7 +62,6 @@ export default function Creative() {
         if (!validInputRegex.test(prompt)) return;
 
         startTimer();
-        setUserRequest(prompt);
         setPrompt("");
         setSubmit(true);
         setGenerating(true);
@@ -89,6 +88,7 @@ export default function Creative() {
             .catch(() => {
                 setSubmit(false);
                 setGenerating(false);
+                setUserRequest("");
 
                 setErrorMessage("Houve um problema ao gerar a imagem.");
                 openErrorModal();
@@ -164,13 +164,20 @@ export default function Creative() {
                     </h1>
 
                     <form onSubmit={generateImage} className="relative w-[1220px] mb-8">
-                        <input type="text" className="outline-none w-full h-14 rounded-xl bg-dark-gray p-2 pl-4 pr-16 text-blue-gray placeholder:text-zinc-500" placeholder="Digite aqui seu prompt..." onChange={(e: any) => setPrompt(e.target.value)} value={prompt} autoFocus disabled={isGenerating ? true : false} />
-                        <button type="submit" className="absolute right-3 top-2 flex items-center justify-center w-10 h-10 text-white-gray bg-purple rounded-xl hover:bg-purple-dark transition-all" disabled={isGenerating ? true : false}>
-                            {isGenerating
-                                ? <CircularProgress size="18px" sx={{ color: "#ffffff", marginLeft: "1px" }} />
-                                : <AutoAwesomeOutlinedIcon />
-                            }
-                        </button>
+                        <input type="text" className="outline-none w-full h-14 rounded-xl bg-dark-gray p-2 pl-4 pr-16 text-blue-gray placeholder:text-zinc-500" placeholder="Digite aqui seu prompt..." onChange={(e: any) => { setPrompt(e.target.value), setUserRequest(e.target.value) }} value={prompt} autoFocus disabled={isGenerating ? true : false} />
+                        {userRequest
+                            ? <button type="submit" className="absolute right-3 top-2 flex items-center justify-center w-10 h-10 text-white-gray bg-purple rounded-xl hover:bg-purple-dark transition-all disabled:hover:bg-purple" disabled={isGenerating ? true : false}>
+                                {isGenerating
+                                    ? <CircularProgress size="18px" sx={{ color: "#ffffff", marginLeft: "1px" }} />
+                                    : <AutoAwesomeOutlinedIcon />
+                                }
+                            </button>
+                            : <Tooltip title="Seu prompt está vazio" placement="top">
+                                <button type="button" className="absolute right-3 top-2 flex items-center justify-center w-10 h-10 text-white-gray bg-purple rounded-xl disabled:opacity-75" disabled>
+                                    <AutoAwesomeOutlinedIcon />
+                                </button>
+                            </Tooltip>
+                        }
                     </form>
                 </div>
 
@@ -283,7 +290,7 @@ export default function Creative() {
                 <div className="flex items-center justify-center mt-8">
                     <p className="text-white-gray h-6 w-[664px] text-lg font-medium">Caso não tenha gostado dessa legenda, clique no botão ao lado para gerar outra:</p>
 
-                    <button onClick={generateCaption} type="button" className="flex items-center justify-center w-10 h-10 text-white-gray bg-purple rounded-xl hover:bg-purple-dark transition-all" disabled={isGeneratingCaption ? true : false}>
+                    <button onClick={generateCaption} type="button" className="flex items-center justify-center w-10 h-10 text-white-gray bg-purple rounded-xl hover:bg-purple-dark transition-all disabled:hover:bg-purple" disabled={isGeneratingCaption ? true : false}>
                         {isGeneratingCaption
                             ? <CircularProgress size="18px" sx={{ color: "#ffffff", marginLeft: "1px" }} />
                             : <AutoAwesomeOutlinedIcon />
