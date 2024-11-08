@@ -25,9 +25,15 @@ export function Menu({ children }: Menu) {
 
     useEffect(() => {
         userData.status == "CADASTRO_FINALIZADO" && setCorrectStatus(true);
-        if (!sessionStorage.getItem("hasShownLoadingScreen")) { setLoadingScreen(true), sessionStorage.setItem("hasShownLoadingScreen", "true") }
-        setTimeout(() => setLoadingScreen(false), 3000);
         setCurrentPage(window.location.pathname.replace("/", ""));
+
+        if (!sessionStorage.getItem("hasShownLoadingScreen")) {
+            setLoadingScreen(true);
+            sessionStorage.setItem("hasShownLoadingScreen", "true");
+        }
+        setTimeout(() => setLoadingScreen(false), 3000);
+
+        document.documentElement.style.overflow = "hidden";
     }, []);
 
     const [isLogoutModalOpen, setLogoutModalOpen] = useState<boolean>(false);

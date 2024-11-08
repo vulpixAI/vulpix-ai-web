@@ -1,5 +1,5 @@
 import { useState, FormEvent } from "react";
-import { Skeleton, Tooltip } from "@mui/material";
+import { Skeleton, TextareaAutosize, Tooltip } from "@mui/material";
 import { Menu } from "../../components/Menu";
 import { TypeAnimation } from 'react-type-animation';
 import { Button } from "../../components/Button";
@@ -20,12 +20,14 @@ interface ImageResponse {
 
 export default function Creative() {
     const navigate = useNavigate();
-
     const { minutes, seconds, startTimer, resetTimer } = useTimer();
 
-    const [step, setStep] = useState<number>(1);
-    const [images, setImages] = useState<Partial<ImageResponse>>({});
+    const interactiveMessages = ["O que sua imaginação está pedindo agora?", "Pronto para criar algo incrível?", "O que vamos criar juntos hoje?", "Ideia na cabeça? Vamos transformar em imagem!", "Qual é o projeto da vez?", "Digite sua ideia... Vamos criar!"];
+    const validInputRegex = /^(?!\s*$)(?!\s).+/;
 
+    const [step, setStep] = useState<number>(1);
+
+    const [images, setImages] = useState<Partial<ImageResponse>>({});
     const [prompt, setPrompt] = useState<string>("");
     const [userRequest, setUserRequest] = useState<string>("");
     const [isSubmit, setSubmit] = useState<boolean>(false);
@@ -37,8 +39,6 @@ export default function Creative() {
     const [isGeneratingCaption, setGeneratingCaption] = useState<boolean>(false);
 
     const [isPublishing, setPublishing] = useState<boolean>(false);
-
-    const interactiveMessages = ["O que sua imaginação está pedindo agora?", "Pronto para criar algo incrível?", "O que vamos criar juntos hoje?", "Ideia na cabeça? Vamos transformar em imagem!", "Qual é o projeto da vez?", "Digite sua ideia... Vamos criar!"];
 
     const [isSuccessModalOpen, setSuccessModalOpen] = useState<boolean>(false);
     const openSuccessModal = () => setSuccessModalOpen(true);
@@ -58,7 +58,6 @@ export default function Creative() {
     async function generateImage(event: FormEvent) {
         event.preventDefault();
 
-        const validInputRegex = /^(?!\s*$)(?!\s).+/;
         if (!validInputRegex.test(prompt)) return;
 
         startTimer();
@@ -89,7 +88,6 @@ export default function Creative() {
                 setSubmit(false);
                 setGenerating(false);
                 setUserRequest("");
-
                 setErrorMessage("Houve um problema ao gerar a imagem.");
                 openErrorModal();
             });
@@ -118,7 +116,6 @@ export default function Creative() {
             .catch(() => {
                 setRequestingCaptionApi(false);
                 setGeneratingCaption(false);
-
                 setErrorMessage("Houve um problema ao gerar a legenda.");
                 openErrorModal();
             });
@@ -141,7 +138,6 @@ export default function Creative() {
             openSuccessModal();
         }).catch(() => {
             setPublishing(false);
-
             setErrorMessage("Houve um problema ao realizar a publicação.");
             openErrorModal();
         });
@@ -163,21 +159,40 @@ export default function Creative() {
                         />
                     </h1>
 
-                    <form onSubmit={generateImage} className="relative w-[1220px] mb-8">
-                        <input type="text" className="outline-none w-full h-14 rounded-xl bg-dark-gray p-2 pl-4 pr-16 text-blue-gray placeholder:text-zinc-500" placeholder="Digite aqui seu prompt..." onChange={(e: any) => { setPrompt(e.target.value), setUserRequest(e.target.value) }} value={prompt} autoFocus disabled={isGenerating ? true : false} />
-                        {userRequest
-                            ? <button type="submit" className="absolute right-3 top-2 flex items-center justify-center w-10 h-10 text-white-gray bg-purple rounded-xl hover:bg-purple-dark transition-all disabled:hover:bg-purple" disabled={isGenerating ? true : false}>
-                                {isGenerating
-                                    ? <CircularProgress size="18px" sx={{ color: "#ffffff", marginLeft: "1px" }} />
-                                    : <AutoAwesomeOutlinedIcon />
+                    <form onSubmit={generateImage} className="relative flex items-center w-[1220px] mb-8 py-2 bg-dark-gray rounded-2xl">
+                        <TextareaAutosize
+                            className="outline-none w-[95%] rounded-xl bg-dark-gray p-2 pl-4 text-blue-gray placeholder:text-zinc-500 resize-none placeholder:select-none"
+                            maxRows={3} placeholder="Digite aqui seu prompt..."
+                            onChange={(e) => { setPrompt(e.target.value), setUserRequest(e.target.value) }}
+                            value={prompt}
+                            disabled={isGenerating ? true : false}
+                            onKeyDown={(e: any) => {
+                                if (e.key === 'Enter') {
+                                    if (e.shiftKey) {
+                                        return;
+                                    } else {
+                                        e.preventDefault();
+                                        e.target.form.requestSubmit();
+                                    }
                                 }
-                            </button>
-                            : <Tooltip title="Seu prompt está vazio" placement="top">
-                                <button type="button" className="absolute right-3 top-2 flex items-center justify-center w-10 h-10 text-white-gray bg-purple rounded-xl disabled:opacity-75" disabled>
-                                    <AutoAwesomeOutlinedIcon />
+                            }}
+                            autoFocus
+                        />
+                        <div className="absolute right-3 bottom-2">
+                            {validInputRegex.test(userRequest)
+                                ? <button type="submit" className="flex items-center justify-center w-10 h-10 text-white-gray bg-purple rounded-xl hover:bg-purple-dark transition-all disabled:hover:bg-purple" disabled={isGenerating ? true : false}>
+                                    {isGenerating
+                                        ? <CircularProgress size="18px" sx={{ color: "#ffffff", marginLeft: "1px" }} />
+                                        : <AutoAwesomeOutlinedIcon />
+                                    }
                                 </button>
-                            </Tooltip>
-                        }
+                                : <Tooltip title="Seu prompt está vazio" placement="top">
+                                    <button type="button" className="flex items-center justify-center w-10 h-10 text-white-gray bg-purple rounded-xl disabled:opacity-70" disabled>
+                                        <AutoAwesomeOutlinedIcon />
+                                    </button>
+                                </Tooltip>
+                            }
+                        </div>
                     </form>
                 </div>
 
