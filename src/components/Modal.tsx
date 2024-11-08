@@ -35,8 +35,6 @@ function DialogModal({ title, content, onConfirm, isOpen, onClose, width = 500 }
                         outline: 'none'
                     }}
                 >
-                    <button onClick={onClose} className="absolute right-4 top-4"><CloseIcon sx={{ color: "#ffffff" }} /></button>
-
                     <div className="w-full h-1/4 flex items-center">
                         <h3 className="text-xl text-white">{title}</h3>
                     </div>
@@ -80,8 +78,6 @@ function InfoModal({ content, onConfirm, isOpen, onClose, width = 430 }: Modal) 
                         outline: 'none'
                     }}
                 >
-                    <button onClick={onClose} className="absolute right-4 top-4"><CloseIcon sx={{ color: "#ffffff" }} /></button>
-
                     <div className="w-full h-1/4 flex flex-col justify-center items-center">
                         <h3 className="text-xl text-white">Show! Tudo finalizado!</h3>
 
@@ -127,8 +123,6 @@ function ErrorModal({ content, onConfirm, isOpen, onClose, width = 430 }: Modal)
                         outline: 'none'
                     }}
                 >
-                    <button onClick={onClose} className="absolute right-4 top-4"><CloseIcon sx={{ color: "#ffffff" }} /></button>
-
                     <div className="w-full h-1/4 flex flex-col justify-center items-center">
                         <h3 className="text-xl text-white">Ooops! Algo deu errado!</h3>
 
