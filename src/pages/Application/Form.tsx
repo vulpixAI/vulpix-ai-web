@@ -209,7 +209,7 @@ export default function Questions() {
 
                                     <form onSubmit={handleSubmitStepOne(setNextStep)} className="mt-8">
                                         <div className="flex flex-col mt-4">
-                                            <Input
+                                            <Input.Input
                                                 value={watchStepOne('slogan')}
                                                 placeholder="Qual é o slogan da empresa?"
                                                 type="text"
@@ -220,7 +220,7 @@ export default function Questions() {
                                         </div>
 
                                         <div className="flex flex-col mt-4">
-                                            <Input
+                                            <Input.Input
                                                 value={watchStepOne('descricao')}
                                                 placeholder="Descreva brevemente sobre a empresa*"
                                                 type="text"
@@ -232,7 +232,7 @@ export default function Questions() {
                                         </div>
 
                                         <div className="flex flex-col mt-4">
-                                            <Input
+                                            <Input.Input
                                                 value={watchStepOne('setor')}
                                                 placeholder="Qual o setor de atuação da empresa?*"
                                                 type="text"
@@ -244,7 +244,7 @@ export default function Questions() {
                                         </div>
 
                                         <div className="flex flex-col mt-4">
-                                            <Input
+                                            <Input.Input
                                                 value={watchStepOne('anoFundacao')}
                                                 placeholder="Qual o ano de fundação da empresa?*"
                                                 type="text"
@@ -256,7 +256,7 @@ export default function Questions() {
                                         </div>
 
                                         <div className="flex flex-col mt-4">
-                                            <Input
+                                            <Input.Input
                                                 value={watchStepOne('logotipo')}
                                                 placeholder="Descreva o visual do logotipo da empresa*"
                                                 type="text"
@@ -280,7 +280,7 @@ export default function Questions() {
 
                                     <form onSubmit={handleSubmitStepTwo(setNextStep)} className="mt-8">
                                         <div className="flex flex-col mt-4">
-                                            <Input
+                                            <Input.Input
                                                 value={watchStepTwo('cor')}
                                                 placeholder="Quais são as cores utilizadas pela empresa?"
                                                 type="text"
@@ -292,7 +292,7 @@ export default function Questions() {
                                         </div>
 
                                         <div className="flex flex-col mt-4">
-                                            <Input
+                                            <Input.Input
                                                 value={watchStepTwo('fonte')}
                                                 placeholder="Qual é a fonte utilizada pela empresa?*"
                                                 type="text"
@@ -304,7 +304,7 @@ export default function Questions() {
                                         </div>
 
                                         <div className="flex flex-col mt-4">
-                                            <Input
+                                            <Input.Input
                                                 value={watchStepTwo('estiloVisual')}
                                                 placeholder="Qual o estilo visual utilizado pela empresa?*"
                                                 type="text"
@@ -316,7 +316,7 @@ export default function Questions() {
                                         </div>
 
                                         <div className="flex flex-col mt-4">
-                                            <Input
+                                            <Input.Input
                                                 value={watchStepTwo('publicoAlvo')}
                                                 placeholder="Qual é o público alvo da empresa?*"
                                                 type="text"
@@ -328,7 +328,7 @@ export default function Questions() {
                                         </div>
 
                                         <div className="flex flex-col mt-4">
-                                            <Input
+                                            <Input.Input
                                                 value={watchStepTwo('problemasQueResolve')}
                                                 placeholder="Quais problemas a empresa resolve?*"
                                                 type="text"
@@ -354,7 +354,7 @@ export default function Questions() {
 
                                     <form onSubmit={handleSubmitStepThree(setNextStep)} className="mt-8">
                                         <div className="flex flex-col mt-4">
-                                            <Input
+                                            <Input.Input
                                                 value={watchStepThree('expectativaDoCliente')}
                                                 placeholder="Quais são as expectativas do cliente?*"
                                                 type="text"
@@ -366,7 +366,7 @@ export default function Questions() {
                                         </div>
 
                                         <div className="flex flex-col mt-4">
-                                            <Input
+                                            <Input.Input
                                                 value={watchStepThree('produtoEmpresa')}
                                                 placeholder="Quais são os produtos da empresa?*"
                                                 type="text"
@@ -378,7 +378,7 @@ export default function Questions() {
                                         </div>
 
                                         <div className="flex flex-col mt-4">
-                                            <Input
+                                            <Input.Input
                                                 value={watchStepThree('diferencialSolucao')}
                                                 placeholder="Qual é o diferencial da solução da empresa?*"
                                                 type="text"
@@ -390,7 +390,7 @@ export default function Questions() {
                                         </div>
 
                                         <div className="flex flex-col mt-4">
-                                            <Input
+                                            <Input.Input
                                                 value={watchStepThree('concorrentes')}
                                                 placeholder="Quais são os concorrentes da empresa?*"
                                                 type="text"
@@ -402,7 +402,7 @@ export default function Questions() {
                                         </div>
 
                                         <div className="flex flex-col mt-4">
-                                            <Input
+                                            <Input.Input
                                                 value={watchStepThree('pontosFortes')}
                                                 placeholder="Quais são os pontos fortes da empresa?*"
                                                 type="text"
@@ -428,7 +428,7 @@ export default function Questions() {
 
                                     <form onSubmit={handleSubmitStepFour(setNextStep)} className="mt-8">
                                         <div className="flex flex-col mt-4">
-                                            <Input
+                                            <Input.Input
                                                 value={watchStepFour('desafiosEnfrentados')}
                                                 placeholder="Quais são os desafios que são enfrentados pela empresa?*"
                                                 type="text"
@@ -440,7 +440,7 @@ export default function Questions() {
                                         </div>
 
                                         <div className="flex flex-col mt-4">
-                                            <Input
+                                            <Input.Input
                                                 value={watchStepFour('redesSociais')}
                                                 placeholder="Quais redes sociais a empresa utiliza?*"
                                                 type="text"
@@ -452,7 +452,7 @@ export default function Questions() {
                                         </div>
 
                                         <div className="flex flex-col mt-4">
-                                            <Input
+                                            <Input.Input
                                                 value={watchStepFour('tonalidadeComunicacao')}
                                                 placeholder="Qual o tom de comunicação a empresa acredita que mais se alinha ao perfil?*"
                                                 type="text"
@@ -464,7 +464,7 @@ export default function Questions() {
                                         </div>
 
                                         <div className="flex flex-col mt-4">
-                                            <Input
+                                            <Input.Input
                                                 value={watchStepFour('tiposConteudo')}
                                                 placeholder="Quais serão os tipos de conteúdos criados?*"
                                                 type="text"
@@ -476,7 +476,7 @@ export default function Questions() {
                                         </div>
 
                                         <div className="flex flex-col mt-4">
-                                            <Input
+                                            <Input.Input
                                                 value={watchStepFour('objetivoMarketing')}
                                                 placeholder="Qual é o objetivo de marketing da empresa?*"
                                                 type="text"
@@ -502,7 +502,7 @@ export default function Questions() {
 
                                     <form onSubmit={handleSubmitStepFive(sendForm)} className="mt-8">
                                         <div className="flex flex-col mt-4">
-                                            <Input
+                                            <Input.Input
                                                 value={watchStepFive('resultadosEsperados')}
                                                 placeholder="Quais são os resultados esperados pela empresa?*"
                                                 type="text"
@@ -514,7 +514,7 @@ export default function Questions() {
                                         </div>
 
                                         <div className="flex flex-col mt-4">
-                                            <Input
+                                            <Input.Input
                                                 value={watchStepFive('datasImportantes')}
                                                 placeholder="Quais datas a empresa considera importante?*"
                                                 type="text"
@@ -526,7 +526,7 @@ export default function Questions() {
                                         </div>
 
                                         <div className="flex flex-col mt-4">
-                                            <Input
+                                            <Input.Input
                                                 value={watchStepFive('estiloCriativos')}
                                                 placeholder="A empresa tem preferência por qual estilo de imagens?*"
                                                 type="text"
@@ -538,7 +538,7 @@ export default function Questions() {
                                         </div>
 
                                         <div className="flex flex-col mt-4">
-                                            <Input
+                                            <Input.Input
                                                 value={watchStepFive('referenciasVisuais')}
                                                 placeholder="Quais são as referências visuais da empresa?*"
                                                 type="text"
@@ -550,7 +550,7 @@ export default function Questions() {
                                         </div>
 
                                         <div className="flex flex-col mt-4">
-                                            <Input
+                                            <Input.Input
                                                 value={watchStepFive('observacoesGerais')}
                                                 placeholder="Algo mais que gostaria de compartilhar para personalizar ainda mais as imagens?"
                                                 type="text"

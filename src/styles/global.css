@@ -6,12 +6,14 @@ html {
 
 body::-webkit-scrollbar,
 div::-webkit-scrollbar,
-textarea::-webkit-scrollbar {
+textarea::-webkit-scrollbar,
+ul::-webkit-scrollbar {
     width: 6px;
 }
 
 body::-webkit-scrollbar-track,
-div::-webkit-scrollbar-track {
+div::-webkit-scrollbar-track,
+ul::-webkit-scrollbar-track {
     background: #161719;
 }
 
@@ -21,7 +23,8 @@ textarea::-webkit-scrollbar-track {
 
 body::-webkit-scrollbar-thumb,
 div::-webkit-scrollbar-thumb,
-textarea::-webkit-scrollbar-thumb {
+textarea::-webkit-scrollbar-thumb,
+ul::-webkit-scrollbar-thumb {
     background-color: #5d5aff;
     border-radius: 30px;
 }

@@ -5,18 +5,12 @@ import { TypeAnimation } from 'react-type-animation';
 import { Button } from "../../components/Button";
 import { Modal } from "../../components/Modal";
 import { useNavigate } from "react-router-dom";
+import { Dayjs } from "dayjs";
+import { Input } from "../../components/Input";
 import useTimer from "../../hooks/useTimer";
 import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import CircularProgress from '@mui/material/CircularProgress';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
-import { TimePicker } from '@mui/x-date-pickers/TimePicker';
-import { ThemeProvider } from '@mui/material/styles';
-import { calendarTheme } from "../../styles/calendarTheme";
-import dayjs, { Dayjs } from "dayjs";
-import 'dayjs/locale/pt-br';
 import axios from "axios";
 
 interface ImageResponse {
@@ -60,8 +54,32 @@ export default function Creative() {
     const [isSchedulingModalOpen, setSchedulingModalOpen] = useState<boolean>(false);
     const openSchedulingModal = () => setSchedulingModalOpen(true);
     const closeSchedulingModal = () => setSchedulingModalOpen(false);
-    const [scheduledDate, setScheduleDate] = useState<Dayjs | null>(null);
-    const [scheduledTime, setScheduleTime] = useState<Dayjs | null>(null);
+    const [scheduledDate, setScheduledDate] = useState<Dayjs | any>(null);
+    const [scheduledTime, setScheduledTime] = useState<Dayjs | any>(null);
+    const [formattedDateTime, setFormattedDateTime] = useState<string | null>(null);
+
+    function padZero(number: number | any) {
+        return number < 10 ? `0${number}` : number;
+    }
+
+    function schedulePublishing() {
+        if (!scheduledDate || !scheduledTime) return;
+
+        let day = new Date(scheduledDate).getDate();
+        let month = new Date(scheduledDate).getMonth() + 1;
+        let year = new Date(scheduledDate).getFullYear();
+        let hour = new Date(scheduledTime).getHours();
+        let minute = new Date(scheduledTime).getMinutes();
+
+        setFormattedDateTime(`${year}-${padZero(month)}-${padZero(day)}T${padZero(hour)}:${padZero(minute)}:00-03:00`);
+        setSchedulingModalOpen(false);
+    }
+
+    function deleteScheduling() {
+        setFormattedDateTime(null);
+        setScheduledDate(null);
+        setScheduledTime(null);
+    }
 
     function formatCaption(caption: string) {
         let formattedCaption = caption;
@@ -140,7 +158,8 @@ export default function Creative() {
 
         const payload = {
             image_url: selectedImage,
-            caption: caption
+            caption: caption,
+            data_agendamento: formattedDateTime
         }
 
         await axios.post(`${import.meta.env.VITE_API_URL}/posts`, payload, {
@@ -335,10 +354,14 @@ export default function Creative() {
             <div className={`flex items-center justify-center flex-col fixed top-[50%] -translate-y-[50%] h-full w-full pt-16 pb-6 ${step == 3 ? "translate-x-0 opacity-100 ease-in-out duration-700" : "translate-x-60 opacity-0 pointer-events-none"}`}>
                 <h3 className="text-white-gray text-2xl font-medium text-center">✨ Está quase lá! Antes de publicar, veja como sua publicação vai ficar! ✨</h3>
 
-                <div className="flex items-center justify-center my-12 bg-dark-gray rounded-2xl pr-6">
+                <div className={`flex items-center justify-center bg-dark-gray rounded-2xl pr-6 ${formattedDateTime != null ? "mt-12" : "my-12"}`}>
                     <img className="w-[340px] h-[300px] rounded-2xl" src={selectedImage} />
                     <p className="ml-8 text-white-gray w-[460px]">{caption}</p>
                 </div>
+
+                <h6 className={`my-8 text-white-gray ${formattedDateTime != null ? "block" : "hidden"}`}>
+                    📆 Sua publicação será agendada para a data {scheduledDate && padZero(new Date(scheduledDate).getDate())}/{scheduledDate && padZero(new Date(scheduledDate).getMonth()) + 1}/{scheduledDate && new Date(scheduledDate).getFullYear()} às {scheduledTime && padZero(new Date(scheduledTime).getHours())}h{scheduledTime && padZero(new Date(scheduledTime).getMinutes())}.
+                </h6>
 
                 <div className="flex">
                     <span className="mr-3"><Button.Transparent onClick={() => setPreviousStep()} width="w-52" disabled={isPublishing ? true : false}>Voltar</Button.Transparent></span>
@@ -348,7 +371,11 @@ export default function Creative() {
                             : "Publicar"
                         }
                     </Button.Purple>
-                    <span className="ml-3"><Button.Transparent width="w-52" onClick={openSchedulingModal}>Agendar Publicação</Button.Transparent></span>
+                    <span className="ml-3">
+                        <Button.Transparent width="w-52" onClick={() => formattedDateTime != null ? deleteScheduling() : openSchedulingModal()}>
+                            {formattedDateTime != null ? "Excluir Agendamento" : "Agendar Publicação"}
+                        </Button.Transparent>
+                    </span>
                 </div>
             </div>
 
@@ -359,66 +386,12 @@ export default function Creative() {
 
             {/* Publishing Scheduling Modal */}
 
-            <Modal.Dialog title="Agendar Publicação" onConfirm={closeSchedulingModal} isOpen={isSchedulingModalOpen} onClose={closeSchedulingModal} width={520}>
+            <Modal.Dialog title="Agendar Publicação" onConfirm={schedulePublishing} isOpen={isSchedulingModalOpen} onClose={closeSchedulingModal} width={520}>
                 <div className="flex flex-col justify-center items-center w-full">
-                    <h4 className="mb-8">📆 Quer agendar sua publicação? Escolha o dia e hora! 🚀</h4>
+                    <h4 className="mb-8">📆 Quer agendar sua publicação? Escolha o dia e a hora! 🚀</h4>
                     <div className="flex">
-                        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
-                            <ThemeProvider theme={calendarTheme}>
-                                <DesktopDatePicker
-                                    onChange={(date: Dayjs | null) => setScheduleDate(date)}
-                                    minDate={dayjs()}
-                                    sx={{
-                                        '& .MuiInputBase-root': {
-                                            color: '#c3d1dc'
-                                        },
-                                        '& .MuiOutlinedInput-notchedOutline': {
-                                            borderColor: '#5d5aff'
-                                        },
-                                        '& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
-                                            borderColor: '#5d5aff'
-                                        },
-                                        '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                                            borderColor: '#5d5aff'
-                                        },
-                                        '& .MuiOutlinedInput-root.Mui-focused': {
-                                            boxShadow: 'none'
-                                        },
-                                        '& .MuiIconButton-root': {
-                                            color: '#5d5aff'
-                                        },
-                                        width: "166px",
-                                        marginRight: "8px"
-                                    }} />
-                            </ThemeProvider>
-                        </LocalizationProvider>
-
-                        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
-                            <TimePicker
-                                onChange={(time: Dayjs | null) => setScheduleTime(time)}
-                                sx={{
-                                    '& .MuiInputBase-root': {
-                                        color: '#c3d1dc'
-                                    },
-                                    '& .MuiOutlinedInput-notchedOutline': {
-                                        borderColor: '#5d5aff'
-                                    },
-                                    '& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
-                                        borderColor: '#5d5aff'
-                                    },
-                                    '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                                        borderColor: '#5d5aff'
-                                    },
-                                    '& .MuiOutlinedInput-root.Mui-focused': {
-                                        boxShadow: 'none'
-                                    },
-                                    '& .MuiIconButton-root': {
-                                        color: '#5d5aff'
-                                    },
-                                    width: "166px",
-                                    marginLeft: "8px"
-                                }} />
-                        </LocalizationProvider>
+                        <Input.DatePicker value={scheduledDate} onChange={(date: Dayjs | any) => setScheduledDate(date)} />
+                        <Input.TimePicker value={scheduledTime} onChange={(time: Dayjs | any) => setScheduledTime(time)} />
                     </div>
                 </div>
             </Modal.Dialog>

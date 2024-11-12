@@ -1,7 +1,15 @@
 import { useState } from 'react';
 import { UseFormRegister, FieldValues, Path } from 'react-hook-form';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import { TimePicker as TimePickerComponent } from '@mui/x-date-pickers/TimePicker';
+import { ThemeProvider } from '@mui/material/styles';
+import { datePickerTheme, timePickerTheme } from "../styles/themes";
+import dayjs, { Dayjs } from "dayjs";
+import 'dayjs/locale/pt-br';
 
-interface Input<T extends FieldValues> {
+interface GenericInput<T extends FieldValues> {
     value: string | null,
     placeholder: string,
     type: string,
@@ -13,7 +21,12 @@ interface Input<T extends FieldValues> {
     onChange?: React.ChangeEventHandler
 }
 
-export function Input<T extends FieldValues>({ value, placeholder, type, maxLength, id, name, register, onBlur, onChange }: Input<T>) {
+interface DateTimePicker {
+    value: Dayjs | null,
+    onChange: any
+}
+
+function GenericInput<T extends FieldValues>({ value, placeholder, type, maxLength, id, name, register, onBlur, onChange }: GenericInput<T>) {
     const [isOnFocus, setOnFocus] = useState<boolean>(false);
 
     return (
@@ -48,4 +61,85 @@ export function Input<T extends FieldValues>({ value, placeholder, type, maxLeng
             />
         </div>
     )
+}
+
+function DatePicker({ onChange, value }: DateTimePicker) {
+    return (
+        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
+            <ThemeProvider theme={datePickerTheme}>
+                <DesktopDatePicker
+                    {...(onChange ? { onChange: onChange } : {})}
+                    value={value}
+                    minDate={dayjs()}
+                    sx={{
+                        '& .MuiInputBase-root': {
+                            color: '#ffffff'
+                        },
+                        '& .MuiOutlinedInput-notchedOutline': {
+                            borderColor: '#5d5aff'
+                        },
+                        '& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
+                            borderColor: '#5d5aff'
+                        },
+                        '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                            borderColor: '#5d5aff'
+                        },
+                        '& .MuiOutlinedInput-root.Mui-focused': {
+                            boxShadow: 'none'
+                        },
+                        '& .MuiIconButton-root': {
+                            color: '#5d5aff',
+                            '&:hover': {
+                                backgroundColor: 'transparent'
+                            }
+                        },
+                        width: "166px",
+                        marginRight: "8px"
+                    }} />
+            </ThemeProvider>
+        </LocalizationProvider>
+    )
+}
+
+function TimePicker({ onChange, value }: DateTimePicker) {
+    return (
+        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
+            <ThemeProvider theme={timePickerTheme}>
+                <TimePickerComponent
+                    {...(onChange ? { onChange: onChange } : {})}
+                    value={value}
+                    sx={{
+                        '& .MuiInputBase-root': {
+                            color: '#ffffff'
+                        },
+                        '& .MuiOutlinedInput-notchedOutline': {
+                            borderColor: '#5d5aff'
+                        },
+                        '& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
+                            borderColor: '#5d5aff'
+                        },
+                        '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                            borderColor: '#5d5aff'
+                        },
+                        '& .MuiOutlinedInput-root.Mui-focused': {
+                            boxShadow: 'none'
+                        },
+                        '& .MuiIconButton-root': {
+                            color: '#5d5aff !important',
+                            '&:hover': {
+                                backgroundColor: 'transparent'
+                            }
+                        },
+                        width: "166px",
+                        marginLeft: "8px"
+                    }} />
+            </ThemeProvider>
+        </LocalizationProvider>
+    )
+}
+
+export const Input = {
+    Input: GenericInput,
+    DatePicker: DatePicker,
+    TimePicker: TimePicker
 }

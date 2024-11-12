@@ -210,7 +210,7 @@ export default function SignUp() {
 
                         <div className="flex">
                             <div className="flex flex-col mr-1">
-                                <Input
+                                <Input.Input
                                     value={watchUser('nome')}
                                     placeholder="Nome*"
                                     type="text"
@@ -222,7 +222,7 @@ export default function SignUp() {
                             </div>
 
                             <div className="flex flex-col ml-1">
-                                <Input
+                                <Input.Input
                                     value={watchUser('sobrenome')}
                                     placeholder="Sobrenome*"
                                     type="text"
@@ -235,7 +235,7 @@ export default function SignUp() {
                         </div>
 
                         <div className="flex flex-col mt-4">
-                            <Input
+                            <Input.Input
                                 value={watchUser('email')}
                                 placeholder="Endereço de e-mail*"
                                 type="email"
@@ -247,7 +247,7 @@ export default function SignUp() {
                         </div>
 
                         <div className="flex flex-col mt-4">
-                            <Input
+                            <Input.Input
                                 value={watchUser('telefone')}
                                 placeholder="Telefone*"
                                 type="text"
@@ -261,7 +261,7 @@ export default function SignUp() {
                         </div>
 
                         <div className="flex flex-col mt-4 relative">
-                            <Input
+                            <Input.Input
                                 value={watchUser('password')}
                                 placeholder='Senha*'
                                 type={isPasswordVisible ? "text" : "password"}
@@ -281,7 +281,7 @@ export default function SignUp() {
                         </div>
 
                         <div className="flex flex-col mt-4 relative">
-                            <Input
+                            <Input.Input
                                 value={watchUser('confirmPassword')}
                                 placeholder='Confirmar senha*'
                                 type={isConfirmPasswordVisible ? "text" : "password"}
@@ -314,7 +314,7 @@ export default function SignUp() {
                     >
 
                         <div className="flex flex-col">
-                            <Input
+                            <Input.Input
                                 value={watchEmpresa('razaoSocial')}
                                 placeholder="Razão social*"
                                 type="text"
@@ -326,7 +326,7 @@ export default function SignUp() {
                         </div>
 
                         <div className="flex flex-col mt-4">
-                            <Input
+                            <Input.Input
                                 value={watchEmpresa('nomeFantasia')}
                                 placeholder="Nome fantasia*"
                                 type="text"
@@ -338,7 +338,7 @@ export default function SignUp() {
                         </div>
 
                         <div className="flex flex-col mt-4">
-                            <Input
+                            <Input.Input
                                 value={watchEmpresa('cnpj')}
                                 placeholder="CNPJ*"
                                 type="text"
@@ -368,7 +368,7 @@ export default function SignUp() {
                     >
                         <div className="flex">
                             <div className="flex flex-col mr-1">
-                                <Input
+                                <Input.Input
                                     onBlur={getCep}
                                     value={watchEnderecoEmpresa('cep')}
                                     placeholder="CEP*"
@@ -383,7 +383,7 @@ export default function SignUp() {
                             </div>
 
                             <div className="flex flex-col ml-1">
-                                <Input
+                                <Input.Input
                                     value={watchEnderecoEmpresa('numero')}
                                     placeholder="Número*"
                                     type="number"
@@ -396,7 +396,7 @@ export default function SignUp() {
                         </div>
 
                         <div className="flex flex-col mt-4">
-                            <Input
+                            <Input.Input
                                 value={watchEnderecoEmpresa('logradouro')}
                                 placeholder="Logradouro*"
                                 type="text"
@@ -409,7 +409,7 @@ export default function SignUp() {
 
                         <div className="flex mt-4">
                             <div className="flex flex-col mr-1">
-                                <Input
+                                <Input.Input
                                     value={watchEnderecoEmpresa('cidade')}
                                     placeholder="Cidade*"
                                     type="text"
@@ -421,7 +421,7 @@ export default function SignUp() {
                             </div>
 
                             <div className="flex flex-col ml-1">
-                                <Input
+                                <Input.Input
                                     value={watchEnderecoEmpresa('estado')}
                                     placeholder="Estado*"
                                     type="text"
@@ -434,7 +434,7 @@ export default function SignUp() {
                         </div>
 
                         <div className="flex flex-col mt-4">
-                            <Input
+                            <Input.Input
                                 value={watchEnderecoEmpresa('bairro')}
                                 placeholder="Bairro*"
                                 type="text"
@@ -446,7 +446,7 @@ export default function SignUp() {
                         </div>
 
                         <div className="flex flex-col mt-4">
-                            <Input
+                            <Input.Input
                                 value={watchEnderecoEmpresa('complemento')}
                                 placeholder="Complemento"
                                 type="text"
