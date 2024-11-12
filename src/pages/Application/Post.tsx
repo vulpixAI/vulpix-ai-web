@@ -34,7 +34,7 @@ export default function Posts() {
 
     return (
         <Menu>
-            <div className="flex flex-col items-center h-screen overflow-hidden">
+            <div className="flex flex-col items-center h-screen w-full overflow-hidden">
                 <div className="h-1/5 pt-16 w-full flex justify-end items-center">
                     <button className="text-white-gray bg-dark-gray flex items-center justify-center py-2 px-4 mr-12 rounded-2xl select-none disabled:cursor-no-drop" disabled={hasPost ? false : true}><CalendarTodayIcon sx={{ marginRight: "8px" }} /> Sep 16, 2024 - Nov 04, 2024</button>
                 </div>

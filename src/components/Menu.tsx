@@ -104,7 +104,7 @@ export function Menu({ children }: Menu) {
                             </main>
                         </div>
 
-                        <Modal.Dialog title="Fazer Logout" content="Tem certeza de que deseja sair de sua conta?" onConfirm={() => { signOut(), navigate("/login") }} isOpen={isLogoutModalOpen} onClose={closeLogoutModal} />
+                        <Modal.Dialog title="Fazer Logout" children="Tem certeza de que deseja sair de sua conta?" onConfirm={() => { signOut(), navigate("/login") }} isOpen={isLogoutModalOpen} onClose={closeLogoutModal} />
                     </div>
                 :
                 <NotFound />

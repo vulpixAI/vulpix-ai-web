@@ -6,14 +6,14 @@ import CloseIcon from '@mui/icons-material/Close';
 
 interface Modal {
     title?: string,
-    content: string | ReactNode,
+    children: string | ReactNode,
     onConfirm: () => void,
     isOpen: boolean,
     onClose: () => void,
     width?: number
 }
 
-function DialogModal({ title, content, onConfirm, isOpen, onClose, width = 500 }: Modal) {
+function DialogModal({ title, children, onConfirm, isOpen, onClose, width = 500 }: Modal) {
     return (
         <ModalComponent
             open={isOpen}
@@ -40,9 +40,9 @@ function DialogModal({ title, content, onConfirm, isOpen, onClose, width = 500 }
                     </div>
 
                     <div className="w-full h-1/2 flex items-center text-white my-10">
-                        {typeof content === 'string'
-                            ? <p>{content}</p>
-                            : content
+                        {typeof children === 'string'
+                            ? <p>{children}</p>
+                            : children
                         }
                     </div>
 
@@ -56,7 +56,7 @@ function DialogModal({ title, content, onConfirm, isOpen, onClose, width = 500 }
     )
 }
 
-function InfoModal({ content, onConfirm, isOpen, onClose, width = 430 }: Modal) {
+function InfoModal({ children, onConfirm, isOpen, onClose, width = 430 }: Modal) {
     return (
         <ModalComponent
             open={isOpen}
@@ -89,7 +89,7 @@ function InfoModal({ content, onConfirm, isOpen, onClose, width = 430 }: Modal) 
                     </div>
 
                     <div className="w-full h-1/2 flex justify-center items-center text-white my-6">
-                        <p className="text-center">{content}</p>
+                        <p className="text-center">{children}</p>
                     </div>
 
                     <div className="w-full h-1/4 flex justify-center">
@@ -101,7 +101,7 @@ function InfoModal({ content, onConfirm, isOpen, onClose, width = 430 }: Modal) 
     )
 }
 
-function ErrorModal({ content, onConfirm, isOpen, onClose, width = 430 }: Modal) {
+function ErrorModal({ children, onConfirm, isOpen, onClose, width = 430 }: Modal) {
     return (
         <ModalComponent
             open={isOpen}
@@ -134,7 +134,7 @@ function ErrorModal({ content, onConfirm, isOpen, onClose, width = 430 }: Modal)
                     </div>
 
                     <div className="w-full h-1/2 flex justify-center items-center text-white my-6">
-                        <p className="text-center">{content}</p>
+                        <p className="text-center">{children}</p>
                     </div>
 
                     <div className="w-full h-1/4 flex justify-center">

@@ -9,6 +9,14 @@ import useTimer from "../../hooks/useTimer";
 import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import CircularProgress from '@mui/material/CircularProgress';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import { TimePicker } from '@mui/x-date-pickers/TimePicker';
+import { ThemeProvider } from '@mui/material/styles';
+import { calendarTheme } from "../../styles/calendarTheme";
+import dayjs, { Dayjs } from "dayjs";
+import 'dayjs/locale/pt-br';
 import axios from "axios";
 
 interface ImageResponse {
@@ -48,6 +56,12 @@ export default function Creative() {
     const [errorMessage, setErrorMessage] = useState<string>("");
     const openErrorModal = () => setErrorModalOpen(true);
     const closeErrorModal = () => setErrorModalOpen(false);
+
+    const [isSchedulingModalOpen, setSchedulingModalOpen] = useState<boolean>(false);
+    const openSchedulingModal = () => setSchedulingModalOpen(true);
+    const closeSchedulingModal = () => setSchedulingModalOpen(false);
+    const [scheduledDate, setScheduleDate] = useState<Dayjs | null>(null);
+    const [scheduledTime, setScheduleTime] = useState<Dayjs | null>(null);
 
     function formatCaption(caption: string) {
         let formattedCaption = caption;
@@ -187,9 +201,11 @@ export default function Creative() {
                                     }
                                 </button>
                                 : <Tooltip title="Seu prompt está vazio" placement="top">
-                                    <button type="button" className="flex items-center justify-center w-10 h-10 text-white-gray bg-purple rounded-xl disabled:opacity-70" disabled>
-                                        <AutoAwesomeOutlinedIcon />
-                                    </button>
+                                    <span>
+                                        <button type="button" className="flex items-center justify-center w-10 h-10 text-white-gray bg-purple rounded-xl disabled:opacity-70" disabled>
+                                            <AutoAwesomeOutlinedIcon />
+                                        </button>
+                                    </span>
                                 </Tooltip>
                             }
                         </div>
@@ -332,14 +348,80 @@ export default function Creative() {
                             : "Publicar"
                         }
                     </Button.Purple>
-                    <span className="ml-3"><Button.Transparent width="w-52" disabled>Agendar Publicação</Button.Transparent></span>
+                    <span className="ml-3"><Button.Transparent width="w-52" onClick={openSchedulingModal}>Agendar Publicação</Button.Transparent></span>
                 </div>
             </div>
 
             <h6 className="fixed bottom-2 text-white-gray text-xs">A vulpix.AI pode cometer erros. É sempre aconselhável revisar informações essenciais.</h6>
 
-            <Modal.Info content="Sua publicação foi enviada com sucesso! 🚀" onConfirm={closeSuccessModal} isOpen={isSuccessModalOpen} onClose={closeSuccessModal} />
-            <Modal.Error content={errorMessage} onConfirm={closeErrorModal} isOpen={isErrorModalOpen} onClose={closeErrorModal} />
+            <Modal.Info children="Sua publicação foi enviada com sucesso! 🚀" onConfirm={closeSuccessModal} isOpen={isSuccessModalOpen} onClose={closeSuccessModal} />
+            <Modal.Error children={errorMessage} onConfirm={closeErrorModal} isOpen={isErrorModalOpen} onClose={closeErrorModal} />
+
+            {/* Publishing Scheduling Modal */}
+
+            <Modal.Dialog title="Agendar Publicação" onConfirm={closeSchedulingModal} isOpen={isSchedulingModalOpen} onClose={closeSchedulingModal} width={520}>
+                <div className="flex flex-col justify-center items-center w-full">
+                    <h4 className="mb-8">📆 Quer agendar sua publicação? Escolha o dia e hora! 🚀</h4>
+                    <div className="flex">
+                        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
+                            <ThemeProvider theme={calendarTheme}>
+                                <DesktopDatePicker
+                                    onChange={(date: Dayjs | null) => setScheduleDate(date)}
+                                    minDate={dayjs()}
+                                    sx={{
+                                        '& .MuiInputBase-root': {
+                                            color: '#c3d1dc'
+                                        },
+                                        '& .MuiOutlinedInput-notchedOutline': {
+                                            borderColor: '#5d5aff'
+                                        },
+                                        '& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
+                                            borderColor: '#5d5aff'
+                                        },
+                                        '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                                            borderColor: '#5d5aff'
+                                        },
+                                        '& .MuiOutlinedInput-root.Mui-focused': {
+                                            boxShadow: 'none'
+                                        },
+                                        '& .MuiIconButton-root': {
+                                            color: '#5d5aff'
+                                        },
+                                        width: "166px",
+                                        marginRight: "8px"
+                                    }} />
+                            </ThemeProvider>
+                        </LocalizationProvider>
+
+                        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
+                            <TimePicker
+                                onChange={(time: Dayjs | null) => setScheduleTime(time)}
+                                sx={{
+                                    '& .MuiInputBase-root': {
+                                        color: '#c3d1dc'
+                                    },
+                                    '& .MuiOutlinedInput-notchedOutline': {
+                                        borderColor: '#5d5aff'
+                                    },
+                                    '& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
+                                        borderColor: '#5d5aff'
+                                    },
+                                    '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                                        borderColor: '#5d5aff'
+                                    },
+                                    '& .MuiOutlinedInput-root.Mui-focused': {
+                                        boxShadow: 'none'
+                                    },
+                                    '& .MuiIconButton-root': {
+                                        color: '#5d5aff'
+                                    },
+                                    width: "166px",
+                                    marginLeft: "8px"
+                                }} />
+                        </LocalizationProvider>
+                    </div>
+                </div>
+            </Modal.Dialog>
         </Menu>
     )
 }

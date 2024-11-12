@@ -583,8 +583,8 @@ export default function Questions() {
                 <NotFound />
             }
 
-            <Modal.Info content="Formulário cadastrado com sucesso!" onConfirm={closeSuccessModal} isOpen={isSuccessModalOpen} onClose={closeSuccessModal} />
-            <Modal.Error content="Houve um problema ao cadastrar formulário." onConfirm={closeErrorModal} isOpen={isErrorModalOpen} onClose={closeErrorModal} />
+            <Modal.Info children="Formulário cadastrado com sucesso!" onConfirm={closeSuccessModal} isOpen={isSuccessModalOpen} onClose={closeSuccessModal} />
+            <Modal.Error children="Houve um problema ao cadastrar formulário." onConfirm={closeErrorModal} isOpen={isErrorModalOpen} onClose={closeErrorModal} />
         </>
     )
 }

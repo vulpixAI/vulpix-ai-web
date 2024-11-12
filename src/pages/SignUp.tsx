@@ -476,7 +476,7 @@ export default function SignUp() {
             </div>
             <div className="h-full w-[65%] bg-signup bg-cover bg-no-repeat bg-center clip-path-signup mobile:hidden"></div>
 
-            <Modal.Info content="Cadastro realizado com sucesso!" onConfirm={closeSuccessModal} isOpen={isSuccessModalOpen} onClose={closeSuccessModal} />
+            <Modal.Info children="Cadastro realizado com sucesso!" onConfirm={closeSuccessModal} isOpen={isSuccessModalOpen} onClose={closeSuccessModal} />
         </div>
     )
 }
