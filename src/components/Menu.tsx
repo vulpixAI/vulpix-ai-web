@@ -2,6 +2,7 @@ import { ReactNode, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Modal } from "./Modal";
 import { LoadingScreen } from "./LoadingScreen";
+import { Settings } from "./Settings";
 import UseAuth from "../hooks/useAuth";
 import ShowChartOutlinedIcon from '@mui/icons-material/ShowChartOutlined';
 import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined';
@@ -39,6 +40,10 @@ export function Menu({ children }: Menu) {
     const [isLogoutModalOpen, setLogoutModalOpen] = useState<boolean>(false);
     const openLogoutModal = () => setLogoutModalOpen(true);
     const closeLogoutModal = () => setLogoutModalOpen(false);
+
+    const [isSettingsModalOpen, setSettingsModalOpen] = useState<boolean>(false);
+    const openSettingsModal = () => setSettingsModalOpen(true);
+    const closeSettingsModal = () => setSettingsModalOpen(false);
 
     return (
         <>
@@ -88,7 +93,7 @@ export function Menu({ children }: Menu) {
                                 <div className="flex items-center mr-28">
                                     <div className="flex">
                                         <Tooltip title="Configurações" placement="bottom">
-                                            <button className="text-white-gray hover:text-purple ease-in-out duration-300">
+                                            <button className="text-white-gray hover:text-purple ease-in-out duration-300" onClick={openSettingsModal}>
                                                 <SettingsOutlinedIcon />
                                             </button>
                                         </Tooltip>
@@ -109,6 +114,8 @@ export function Menu({ children }: Menu) {
                 :
                 <NotFound />
             }
+
+            <Settings isOpen={isSettingsModalOpen} onClose={closeSettingsModal} />
         </>
     )
 }
