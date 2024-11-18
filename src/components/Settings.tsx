@@ -8,6 +8,7 @@ import InstagramIcon from '@mui/icons-material/Instagram';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import CircularProgress from '@mui/material/CircularProgress';
 import axios from "axios";
+import UseAuth from "../hooks/useAuth";
 
 interface Settings {
     isOpen: boolean,
@@ -28,6 +29,8 @@ interface ConnectionData {
 }
 
 export function Settings({ isOpen, onClose }: Settings) {
+    const { setMediaConnected }: any = UseAuth();
+
     const [menuState, setMenuState] = useState<MenuState>({ account: true, connection: false });
     const handleOptionChange = (option: string) => setMenuState({ account: false, connection: false, [option]: true });
 
@@ -78,6 +81,8 @@ export function Settings({ isOpen, onClose }: Settings) {
                     Authorization: `Bearer ${sessionStorage.getItem("bearerToken")}`
                 }
             }).then(() => {
+                sessionStorage.setItem("mediaConnected", "true");
+                setMediaConnected(true);
                 setMessage("Conexão realizada com sucesso! 🚀");
                 openSuccessModal();
             }).catch(() => {

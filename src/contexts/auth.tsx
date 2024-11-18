@@ -14,10 +14,14 @@ interface userData {
 export function AuthProvider({ children }: AuthProvider) {
     const [isLoggedIn, setLoggedIn] = useState<boolean>(false);
     const [userData, setUserData] = useState<Partial<userData>>({});
+    const [isMediaConnected, setMediaConnected] = useState<boolean>(false);
 
     useEffect(() => {
         const bearerToken = sessionStorage.getItem("bearerToken");
         const userData = sessionStorage.getItem("userData");
+        const mediaConnected = sessionStorage.getItem("mediaConnected");
+
+        mediaConnected && setMediaConnected(JSON.parse(sessionStorage.getItem("mediaConnected") || ""));
 
         if (bearerToken && userData) {
             setLoggedIn(true);
@@ -32,6 +36,28 @@ export function AuthProvider({ children }: AuthProvider) {
             sessionStorage.setItem("userData", JSON.stringify(userData));
         }
     }, [userData]);
+
+    async function verifyConnection(token: string) {
+        await axios.get(`${import.meta.env.VITE_API_URL}/integracoes/possui-integracao`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }).then(response => {
+            sessionStorage.setItem("mediaConnected", JSON.stringify(response.data));
+            setMediaConnected(response.data);
+        });
+    }
+
+    async function getUserData(token: string) {
+        await axios.get(`${import.meta.env.VITE_API_URL}/usuarios`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }).then(response => {
+            sessionStorage.setItem("userData", JSON.stringify(response.data));
+            setUserData(response.data);
+        });
+    }
 
     async function login(email: string, password: string) {
         try {
@@ -51,6 +77,9 @@ export function AuthProvider({ children }: AuthProvider) {
                 sessionStorage.setItem("userData", JSON.stringify(response.data));
                 setUserData(response.data);
             });
+
+            getUserData(response.data.token)
+            verifyConnection(response.data.token);
 
             return response;
         } catch (error) {
@@ -84,6 +113,7 @@ export function AuthProvider({ children }: AuthProvider) {
     }
 
     function signOut() {
+        sessionStorage.removeItem("mediaConnected");
         sessionStorage.removeItem("userData");
         sessionStorage.removeItem("hasShownLoadingScreen");
         sessionStorage.removeItem("bearerToken");
@@ -92,7 +122,7 @@ export function AuthProvider({ children }: AuthProvider) {
 
     return (
         <AuthContext.Provider
-            value={{ isLoggedIn, userData, setUserData, login, signUp, signOut }}>
+            value={{ isLoggedIn, isMediaConnected, setMediaConnected, userData, setUserData, login, signUp, signOut }}>
             {children}
         </AuthContext.Provider>
     )

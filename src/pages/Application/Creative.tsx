@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { Dayjs } from "dayjs";
 import { Input } from "../../components/Input";
 import useTimer from "../../hooks/useTimer";
+import UseAuth from "../../hooks/useAuth";
 import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -23,6 +24,7 @@ interface ImageResponse {
 export default function Creative() {
     const navigate = useNavigate();
     const { minutes, seconds, startTimer, resetTimer } = useTimer();
+    const { isMediaConnected }: any = UseAuth();
 
     const interactiveMessages = ["O que sua imaginação está pedindo agora?", "Pronto para criar algo incrível?", "O que vamos criar juntos hoje?", "Ideia na cabeça? Vamos transformar em imagem!", "Qual é o projeto da vez?", "Digite sua ideia... Vamos criar!"];
     const validInputRegex = /^(?!\s*$)(?!\s).+/;
@@ -275,26 +277,33 @@ export default function Creative() {
                         :
                         <div>
                             <div className="flex">
-                                <button className="mx-4" onClick={(e: any) => setSelectedImage(e.target.src)}>
+                                <button className="mx-4" onClick={(e: any) => setSelectedImage(e.target.src)} disabled={isMediaConnected ? false : true}>
                                     <img className={`w-[280px] h-[240px] rounded-2xl border-4 border-solid ${images.image1 == selectedImage ? "border-purple" : "border-transparent"}`} src={images.image1} />
                                 </button>
 
-                                <button className="mx-4" onClick={(e: any) => setSelectedImage(e.target.src)}>
+                                <button className="mx-4" onClick={(e: any) => setSelectedImage(e.target.src)} disabled={isMediaConnected ? false : true}>
                                     <img className={`w-[280px] h-[240px] rounded-2xl border-4 border-solid ${images.image2 == selectedImage ? "border-purple" : "border-transparent"}`} src={images.image2} />
                                 </button>
 
-                                <button className="mx-4" onClick={(e: any) => setSelectedImage(e.target.src)}>
+                                <button className="mx-4" onClick={(e: any) => setSelectedImage(e.target.src)} disabled={isMediaConnected ? false : true}>
                                     <img className={`w-[280px] h-[240px] rounded-2xl border-4 border-solid ${images.image3 == selectedImage ? "border-purple" : "border-transparent"}`} src={images.image3} />
                                 </button>
 
-                                <button className="mx-4" onClick={(e: any) => setSelectedImage(e.target.src)}>
+                                <button className="mx-4" onClick={(e: any) => setSelectedImage(e.target.src)} disabled={isMediaConnected ? false : true}>
                                     <img className={`w-[280px] h-[240px] rounded-2xl border-4 border-solid ${images.image4 == selectedImage ? "border-purple" : "border-transparent"}`} src={images.image4} />
                                 </button>
                             </div>
 
-                            <div className="absolute -bottom-24 w-full flex items-center justify-between px-6">
-                                <h3 className="text-white-gray text-xl font-medium text-center">Escolha a imagem que você mais gostou! 👀</h3>
-                                <Button.Purple onClick={() => selectedImage && setNextStep()} width="w-52">Confirmar</Button.Purple>
+                            <div className={`absolute -bottom-24 w-full flex items-center px-6 ${isMediaConnected ? "justify-between" : "justify-center"}`}>
+                                {isMediaConnected
+                                    ?
+                                    <>
+                                        <h3 className="text-white-gray text-xl font-medium text-center">Escolha a imagem que você mais gostou! 👀</h3>
+                                        <Button.Purple onClick={() => selectedImage && setNextStep()} width="w-52">Confirmar</Button.Purple>
+                                    </>
+                                    :
+                                    <h3 className="text-white-gray text-xl font-medium text-center w-[80%]">Imagens geradas com sucesso! Mas parece que você ainda não se conectou em nenhuma rede social. Sem estresse! Vá em <b>Configurações {'>'} Conexões</b>, faça a conexão, e pronto, é só continuar. 😉</h3>
+                                }
                             </div>
                         </div>
                     }
