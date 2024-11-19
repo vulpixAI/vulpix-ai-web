@@ -6,9 +6,10 @@ import { Settings } from "./Settings";
 import UseAuth from "../hooks/useAuth";
 import ShowChartOutlinedIcon from '@mui/icons-material/ShowChartOutlined';
 import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined';
-import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
+import GridViewIcon from '@mui/icons-material/GridView';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
+import CropOriginalIcon from '@mui/icons-material/CropOriginal';
 import Tooltip from '@mui/material/Tooltip';
 import NotFound from "../pages/NotFound";
 
@@ -61,19 +62,25 @@ export function Menu({ children }: Menu) {
 
                             <div className="flex flex-col items-center justify-center h-3/5">
                                 <Tooltip title="Inteligência Artificial" placement="right">
-                                    <Link to={"/creative"} className={`${currentPage == "creative" ? "text-purple" : "text-white-gray"} hover:text-purple ease-in-out duration-300`}>
+                                    <Link to={"/creative"} className={`${currentPage.includes("creative") ? "text-purple" : "text-white-gray"} hover:text-purple ease-in-out duration-300`}>
                                         <AutoAwesomeOutlinedIcon />
                                     </Link>
                                 </Tooltip>
 
+                                <Tooltip title="Criativos Gerados" placement="right">
+                                    <Link to={"/image"} className={`${currentPage.includes("image") ? "text-purple" : "text-white-gray"} mt-14 hover:text-purple ease-in-out duration-300`}>
+                                        <CropOriginalIcon />
+                                    </Link>
+                                </Tooltip>
+
                                 <Tooltip title="Postagens" placement="right">
-                                    <Link to={"/post"} className={`${currentPage == "post" ? "text-purple" : "text-white-gray"} my-14 hover:text-purple ease-in-out duration-300`}>
-                                        <DescriptionOutlinedIcon />
+                                    <Link to={"/post"} className={`${currentPage.includes("post") ? "text-purple" : "text-white-gray"} my-14 hover:text-purple ease-in-out duration-300`}>
+                                        <GridViewIcon />
                                     </Link>
                                 </Tooltip>
 
                                 <Tooltip title="Dashboard" placement="right">
-                                    <Link to={"/dashboard"} className={`${currentPage == "dashboard" ? "text-purple" : "text-white-gray"} hover:text-purple ease-in-out duration-300`}>
+                                    <Link to={"/dashboard"} className={`${currentPage.includes("dashboard") ? "text-purple" : "text-white-gray"} hover:text-purple ease-in-out duration-300`}>
                                         <ShowChartOutlinedIcon />
                                     </Link>
                                 </Tooltip>

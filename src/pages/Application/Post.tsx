@@ -13,7 +13,7 @@ interface postResponse {
 }
 
 export default function Posts() {
-    const [posts, setPosts] = useState<postResponse | any>([]);
+    const [posts, setPosts] = useState<postResponse[]>([]);
     const [isLoading, setLoading] = useState<boolean>(true);
     const [hasPost, setHasPost] = useState<boolean>(true);
 
@@ -81,7 +81,7 @@ export default function Posts() {
                         </>
                         :
                         hasPost
-                            ? posts.map((post: postResponse, index: any) =>
+                            ? posts.map((post: postResponse, index: number) =>
                                 <div className={`relative flex items-center justify-between ${index != 0 && index != 1 && "mt-12"} bg-dark-gray rounded-2xl pr-6 mx-4 w-[41rem]`}>
                                     <img className="w-[340px] h-[300px] rounded-2xl" src={post.media_url} />
                                     <p className="flex justify-start ml-8 text-white-gray w-[460px] h-[122px] overflow-hidden">{post.caption}</p>
