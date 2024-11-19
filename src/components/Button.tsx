@@ -26,7 +26,7 @@ function PurpleButton({ type, width = "w-full", children, ...props }: Button) {
 
 function TransparentButton({ type, width = "w-full", children, ...props }: Button) {
     return (
-        <button type={type} className={`h-12 ${width} text-nowrap bg-transparent border-solid border-purple border-2 text-lg flex items-center justify-center text-white rounded-md hover:bg-purple transition-all cursor-pointer select-none disabled:cursor-no-drop`} {...props}>
+        <button type={type} className={`h-12 ${width} text-nowrap bg-transparent border-solid border-purple border-2 text-lg flex items-center justify-center text-white rounded-md hover:bg-purple transition-all cursor-pointer select-none disabled:cursor-no-drop disabled:opacity-70 disabled:hover:bg-transparent`} {...props}>
             {children}
         </button>
     )

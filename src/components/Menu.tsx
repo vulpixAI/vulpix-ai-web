@@ -62,13 +62,13 @@ export function Menu({ children }: Menu) {
 
                             <div className="flex flex-col items-center justify-center h-3/5">
                                 <Tooltip title="Inteligência Artificial" placement="right">
-                                    <Link to={"/creative"} className={`${currentPage.includes("creative") ? "text-purple" : "text-white-gray"} hover:text-purple ease-in-out duration-300`}>
+                                    <Link to={"/creative"} className={`${(currentPage.includes("creative") && currentPage != "creative-list") ? "text-purple" : "text-white-gray"} hover:text-purple ease-in-out duration-300`}>
                                         <AutoAwesomeOutlinedIcon />
                                     </Link>
                                 </Tooltip>
 
                                 <Tooltip title="Criativos Gerados" placement="right">
-                                    <Link to={"/image"} className={`${currentPage.includes("image") ? "text-purple" : "text-white-gray"} mt-14 hover:text-purple ease-in-out duration-300`}>
+                                    <Link to={"/creative-list"} className={`${currentPage.includes("creative-list") ? "text-purple" : "text-white-gray"} mt-14 hover:text-purple ease-in-out duration-300`}>
                                         <CropOriginalIcon />
                                     </Link>
                                 </Tooltip>

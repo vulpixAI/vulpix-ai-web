@@ -9,7 +9,7 @@ import Dashboard from "./pages/Application/Dashboard";
 import Post from "./pages/Application/Post";
 import Creative from "./pages/Application/Creative";
 import Plan from "./pages/Application/Plan";
-import Image from "./pages/Application/Image";
+import CreativeList from "./pages/Application/CreativeList";
 
 import UseAuth from "./hooks/useAuth";
 
@@ -30,7 +30,7 @@ export default function AppRoutes() {
                 <Route path="/post" element={<PrivatePage Item={<Post />} />} />
                 <Route path="/creative/:id?" element={<PrivatePage Item={<Creative />} />} />
                 <Route path="/plan" element={<PrivatePage Item={<Plan />} />} />
-                <Route path="/image" element={<PrivatePage Item={<Image />} />} />
+                <Route path="/creative-list" element={<PrivatePage Item={<CreativeList />} />} />
                 <Route path="*" element={<NotFound />} />
             </Routes>
         </BrowserRouter>

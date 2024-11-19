@@ -1,10 +1,10 @@
-import { useState, FormEvent } from "react";
+import { useState, useEffect, FormEvent } from "react";
 import { Skeleton, TextareaAutosize, Tooltip } from "@mui/material";
 import { Menu } from "../../components/Menu";
 import { TypeAnimation } from 'react-type-animation';
 import { Button } from "../../components/Button";
 import { Modal } from "../../components/Modal";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Dayjs } from "dayjs";
 import { Input } from "../../components/Input";
 import useTimer from "../../hooks/useTimer";
@@ -14,7 +14,7 @@ import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import CircularProgress from '@mui/material/CircularProgress';
 import axios from "axios";
 
-interface ImageResponse {
+interface CreativeResponse {
     image1: string,
     image2: string,
     image3: string,
@@ -23,6 +23,7 @@ interface ImageResponse {
 
 export default function Creative() {
     const navigate = useNavigate();
+    const { id } = useParams();
     const { minutes, seconds, startTimer, resetTimer } = useTimer();
     const { isMediaConnected }: any = UseAuth();
 
@@ -31,12 +32,12 @@ export default function Creative() {
 
     const [step, setStep] = useState<number>(1);
 
-    const [images, setImages] = useState<Partial<ImageResponse>>({});
+    const [creatives, setCreatives] = useState<Partial<CreativeResponse>>({});
     const [prompt, setPrompt] = useState<string>("");
     const [userRequest, setUserRequest] = useState<string>("");
     const [isSubmit, setSubmit] = useState<boolean>(false);
     const [isGenerating, setGenerating] = useState<boolean>(false);
-    const [selectedImage, setSelectedImage] = useState<string>("");
+    const [selectedCreative, setSelectedCreative] = useState<string>("");
 
     const [caption, setCaption] = useState<string>("");
     const [isRequestingCaptionApi, setRequestingCaptionApi] = useState<boolean>(false);
@@ -59,6 +60,27 @@ export default function Creative() {
     const [scheduledDate, setScheduledDate] = useState<Dayjs | any>(null);
     const [scheduledTime, setScheduledTime] = useState<Dayjs | any>(null);
     const [formattedDateTime, setFormattedDateTime] = useState<string | null>(null);
+
+    const [isCreativeFromCreativeList, setCreativeFromCreativeList] = useState<boolean>(false);
+    useEffect(() => {
+        const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+        if (id) {
+            if (uuidRegex.test(id)) {
+                axios.get(`${import.meta.env.VITE_API_URL}/criativos/${id}`, {
+                    headers: {
+                        Authorization: `Bearer ${sessionStorage.getItem("bearerToken")}`
+                    }
+                }).then(response => {
+                    setStep(2);
+                    setCreativeFromCreativeList(true);
+                    setSelectedCreative(response.data.imageUrl);
+                    setUserRequest(JSON.parse(response.data.prompt).userRequest);
+                    generateCaption(JSON.parse(response.data.prompt).userRequest);
+                });
+            }
+        }
+    }, []);
 
     function padZero(number: number | any) {
         return number < 10 ? `0${number}` : number;
@@ -89,7 +111,7 @@ export default function Creative() {
         return formattedCaption.replace("*", "");
     }
 
-    async function generateImage(event: FormEvent) {
+    async function generateCreative(event: FormEvent) {
         event.preventDefault();
 
         if (!validInputRegex.test(prompt)) return;
@@ -109,7 +131,7 @@ export default function Creative() {
             }
         })
             .then(response => {
-                setImages({
+                setCreatives({
                     image1: response.data.imagem1,
                     image2: response.data.imagem2,
                     image3: response.data.imagem3,
@@ -122,20 +144,20 @@ export default function Creative() {
                 setSubmit(false);
                 setGenerating(false);
                 setUserRequest("");
-                setErrorMessage("Houve um problema ao gerar a imagem.");
+                setErrorMessage("Houve um problema ao gerar os criativos.");
                 openErrorModal();
             });
 
         resetTimer();
     }
 
-    async function generateCaption() {
+    async function generateCaption(prompt?: string) {
         setCaption("");
         setRequestingCaptionApi(true);
         setGeneratingCaption(true);
 
         const payload = {
-            userRequest: userRequest
+            userRequest: prompt ? prompt : userRequest
         }
 
         await axios.post(`${import.meta.env.VITE_API_URL}/posts/gerar-legenda`, payload, {
@@ -159,7 +181,7 @@ export default function Creative() {
         setPublishing(true);
 
         const payload = {
-            image_url: selectedImage,
+            image_url: selectedCreative,
             caption: caption,
             data_agendamento: formattedDateTime
         }
@@ -194,7 +216,7 @@ export default function Creative() {
                         />
                     </h1>
 
-                    <form onSubmit={generateImage} className="relative flex items-center w-[1220px] mb-8 py-2 bg-dark-gray rounded-2xl">
+                    <form onSubmit={generateCreative} className="relative flex items-center w-[1220px] mb-8 py-2 bg-dark-gray rounded-2xl">
                         <TextareaAutosize
                             className="outline-none w-[95%] rounded-xl bg-dark-gray p-2 pl-4 text-blue-gray placeholder:text-zinc-500 resize-none placeholder:select-none"
                             maxRows={3} placeholder="Digite aqui seu prompt..."
@@ -277,20 +299,20 @@ export default function Creative() {
                         :
                         <div>
                             <div className="flex">
-                                <button className="mx-4" onClick={(e: any) => setSelectedImage(e.target.src)} disabled={isMediaConnected ? false : true}>
-                                    <img className={`w-[280px] h-[240px] rounded-2xl border-4 border-solid ${images.image1 == selectedImage ? "border-purple" : "border-transparent"}`} src={images.image1} />
+                                <button className="mx-4" onClick={(e: any) => setSelectedCreative(e.target.src)} disabled={isMediaConnected ? false : true}>
+                                    <img className={`w-[280px] h-[240px] rounded-2xl border-4 border-solid ${creatives.image1 == selectedCreative ? "border-purple" : "border-transparent"}`} src={creatives.image1} />
                                 </button>
 
-                                <button className="mx-4" onClick={(e: any) => setSelectedImage(e.target.src)} disabled={isMediaConnected ? false : true}>
-                                    <img className={`w-[280px] h-[240px] rounded-2xl border-4 border-solid ${images.image2 == selectedImage ? "border-purple" : "border-transparent"}`} src={images.image2} />
+                                <button className="mx-4" onClick={(e: any) => setSelectedCreative(e.target.src)} disabled={isMediaConnected ? false : true}>
+                                    <img className={`w-[280px] h-[240px] rounded-2xl border-4 border-solid ${creatives.image2 == selectedCreative ? "border-purple" : "border-transparent"}`} src={creatives.image2} />
                                 </button>
 
-                                <button className="mx-4" onClick={(e: any) => setSelectedImage(e.target.src)} disabled={isMediaConnected ? false : true}>
-                                    <img className={`w-[280px] h-[240px] rounded-2xl border-4 border-solid ${images.image3 == selectedImage ? "border-purple" : "border-transparent"}`} src={images.image3} />
+                                <button className="mx-4" onClick={(e: any) => setSelectedCreative(e.target.src)} disabled={isMediaConnected ? false : true}>
+                                    <img className={`w-[280px] h-[240px] rounded-2xl border-4 border-solid ${creatives.image3 == selectedCreative ? "border-purple" : "border-transparent"}`} src={creatives.image3} />
                                 </button>
 
-                                <button className="mx-4" onClick={(e: any) => setSelectedImage(e.target.src)} disabled={isMediaConnected ? false : true}>
-                                    <img className={`w-[280px] h-[240px] rounded-2xl border-4 border-solid ${images.image4 == selectedImage ? "border-purple" : "border-transparent"}`} src={images.image4} />
+                                <button className="mx-4" onClick={(e: any) => setSelectedCreative(e.target.src)} disabled={isMediaConnected ? false : true}>
+                                    <img className={`w-[280px] h-[240px] rounded-2xl border-4 border-solid ${creatives.image4 == selectedCreative ? "border-purple" : "border-transparent"}`} src={creatives.image4} />
                                 </button>
                             </div>
 
@@ -298,11 +320,11 @@ export default function Creative() {
                                 {isMediaConnected
                                     ?
                                     <>
-                                        <h3 className="text-white-gray text-xl font-medium text-center">Escolha a imagem que você mais gostou! 👀</h3>
-                                        <Button.Purple onClick={() => selectedImage && setNextStep()} width="w-52">Confirmar</Button.Purple>
+                                        <h3 className="text-white-gray text-xl font-medium text-center">Escolha o criativo que você mais gostou! 👀</h3>
+                                        <Button.Purple onClick={() => selectedCreative && setNextStep()} width="w-52">Confirmar</Button.Purple>
                                     </>
                                     :
-                                    <h3 className="text-white-gray text-xl font-medium text-center w-[80%]">Imagens geradas com sucesso! Mas parece que você ainda não se conectou em nenhuma rede social. Sem estresse! Vá em <b>Configurações {'>'} Conexões</b>, faça a conexão, e pronto, é só continuar. 😉</h3>
+                                    <h3 className="text-white-gray text-xl font-medium text-center w-[80%]">Criativos gerados com sucesso! Mas parece que você ainda não se conectou em nenhuma rede social. Sem estresse! Vá em <b>Configurações {'>'} Conexões</b>, faça a conexão, e pronto, é só continuar. 😉</h3>
                                 }
                             </div>
                         </div>
@@ -342,14 +364,14 @@ export default function Creative() {
                 }
 
                 <div className="flex">
-                    <span className="mr-3"><Button.Transparent onClick={() => setPreviousStep()} width="w-52" disabled={isGeneratingCaption ? true : false}>Voltar</Button.Transparent></span>
+                    <span className="mr-3"><Button.Transparent onClick={() => { isCreativeFromCreativeList ? navigate("/creative-list") : setPreviousStep() }} width="w-52" disabled={isGeneratingCaption ? true : false}>Voltar</Button.Transparent></span>
                     <Button.Purple onClick={() => setNextStep()} width="w-52" disabled={isGeneratingCaption ? true : false}>Confirmar</Button.Purple>
                 </div>
 
                 <div className="flex items-center justify-center mt-8">
                     <p className="text-white-gray h-6 w-[664px] text-lg font-medium">Caso não tenha gostado dessa legenda, clique no botão ao lado para gerar outra:</p>
 
-                    <button onClick={generateCaption} type="button" className="flex items-center justify-center w-10 h-10 text-white-gray bg-purple rounded-xl hover:bg-purple-dark transition-all disabled:hover:bg-purple" disabled={isGeneratingCaption ? true : false}>
+                    <button onClick={() => generateCaption()} type="button" className="flex items-center justify-center w-10 h-10 text-white-gray bg-purple rounded-xl hover:bg-purple-dark transition-all disabled:hover:bg-purple" disabled={isGeneratingCaption ? true : false}>
                         {isGeneratingCaption
                             ? <CircularProgress size="18px" sx={{ color: "#ffffff", marginLeft: "1px" }} />
                             : <AutoAwesomeOutlinedIcon />
@@ -364,7 +386,7 @@ export default function Creative() {
                 <h3 className="text-white-gray text-2xl font-medium text-center">✨ Está quase lá! Antes de publicar, veja como sua publicação vai ficar! ✨</h3>
 
                 <div className={`flex items-center justify-center bg-dark-gray rounded-2xl pr-6 ${formattedDateTime != null ? "mt-12" : "my-12"}`}>
-                    <img className="w-[340px] h-[300px] rounded-2xl" src={selectedImage} />
+                    <img className="w-[340px] h-[300px] rounded-2xl" src={selectedCreative} />
                     <p className="ml-8 text-white-gray w-[460px]">{caption}</p>
                 </div>
 
@@ -376,7 +398,7 @@ export default function Creative() {
                     <span className="mr-3"><Button.Transparent onClick={() => setPreviousStep()} width="w-52" disabled={isPublishing ? true : false}>Voltar</Button.Transparent></span>
                     <Button.Purple onClick={publish} width="w-52" disabled={isPublishing ? true : false}>
                         {isPublishing
-                            ? <CircularProgress size="18px" sx={{ color: "#ffffff", marginLeft: "1px" }} />
+                            ? <CircularProgress size="24px" sx={{ color: "#ffffff", marginLeft: "1px" }} />
                             : "Publicar"
                         }
                     </Button.Purple>
@@ -390,7 +412,7 @@ export default function Creative() {
 
             <h6 className="fixed bottom-2 text-white-gray text-xs">A vulpix.AI pode cometer erros. É sempre aconselhável revisar informações essenciais.</h6>
 
-            <Modal.Info children="Sua publicação foi enviada com sucesso! 🚀" onConfirm={closeSuccessModal} isOpen={isSuccessModalOpen} onClose={closeSuccessModal} />
+            <Modal.Info children="Publicação realizada com sucesso! 🚀" onConfirm={closeSuccessModal} isOpen={isSuccessModalOpen} onClose={closeSuccessModal} />
             <Modal.Error children={errorMessage} onConfirm={closeErrorModal} isOpen={isErrorModalOpen} onClose={closeErrorModal} />
 
             {/* Publishing Scheduling Modal */}
