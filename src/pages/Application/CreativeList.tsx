@@ -146,10 +146,10 @@ export default function CreativeList() {
                 </div>
             </div>
 
-            <Modal.Dialog title="Criar Nova Publicação 🚀" onConfirm={() => navigate(`/creative/${selectedCreative.id}`)} isOpen={isSelectCreativeModalOpen} onClose={closeSelectCreativeModal}>
+            <Modal.Dialog title="Criar Nova Publicação" onConfirm={() => navigate(`/creative/${selectedCreative.id}`)} isOpen={isSelectCreativeModalOpen} onClose={closeSelectCreativeModal}>
                 <div className="flex flex-col items-center justify-center">
-                    <h3 className="mb-4 text-center">Parece que você curtiu esse criativo! 👀 Bora criar a legenda e postar em sua rede?</h3>
                     <img className="w-[280px] h-[240px] rounded-2xl" src={selectedCreative.image_url} />
+                    <h3 className="mt-4 text-center">Parece que você gostou desse criativo! 👀 Bora criar a legenda e postar em sua rede?</h3>
                 </div>
             </Modal.Dialog>
         </Menu>
