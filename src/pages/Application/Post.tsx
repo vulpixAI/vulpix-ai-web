@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { Menu } from "../../components/Menu";
+import { Input } from "../../components/Input";
 import { Skeleton } from "@mui/material";
-import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import dayjs, { Dayjs } from "dayjs";
 import InfoIcon from '@mui/icons-material/Info';
 import Tooltip from '@mui/material/Tooltip';
 import axios from "axios";
@@ -16,6 +17,9 @@ export default function Posts() {
     const [posts, setPosts] = useState<postResponse[]>([]);
     const [isLoading, setLoading] = useState<boolean>(true);
     const [hasPost, setHasPost] = useState<boolean>(true);
+
+    const [startDate, setStartDate] = useState<Dayjs | any>(dayjs().subtract(1, "month"));
+    const [endDate, setEndDate] = useState<Dayjs | any>(dayjs());
 
     useEffect(() => {
         axios.get(`${import.meta.env.VITE_API_URL}/posts`, {
@@ -35,8 +39,10 @@ export default function Posts() {
     return (
         <Menu>
             <div className="flex flex-col items-center h-screen w-full overflow-hidden">
-                <div className="h-1/5 pt-16 w-full flex justify-end items-center">
-                    <button className="text-white-gray bg-dark-gray flex items-center justify-center py-2 px-4 mr-12 rounded-2xl select-none disabled:cursor-no-drop" disabled={hasPost ? false : true}><CalendarTodayIcon sx={{ marginRight: "8px" }} /> Sep 16, 2024 - Nov 04, 2024</button>
+                <div className="h-1/5 pt-16 w-full flex justify-end items-center mr-16">
+                    <Input.DatePicker maxDate={endDate} value={startDate} onChange={(date: Dayjs | any) => setStartDate(date)} />
+                    <span className="text-white-gray text-2xl font-bold mr-2">-</span>
+                    <Input.DatePicker minDate={startDate} maxDate={dayjs()} value={endDate} onChange={(date: Dayjs | any) => setEndDate(date)} />
                 </div>
                 <div className={`${!isLoading && "overflow-x-hidden"} ${hasPost ? "grid grid-cols-2" : "flex justify-center"} px-2 h-4/5 pb-8`}>
                     {isLoading

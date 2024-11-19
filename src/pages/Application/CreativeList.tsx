@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { Menu } from "../../components/Menu";
 import { Modal } from "../../components/Modal";
+import { Input } from "../../components/Input";
 import { Skeleton } from "@mui/material";
+import dayjs, { Dayjs } from "dayjs";
 import { useNavigate } from "react-router-dom";
-import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import UseAuth from "../../hooks/useAuth";
 import axios from "axios";
 
@@ -28,6 +29,9 @@ export default function CreativeList() {
     const [isLoading, setLoading] = useState<boolean>(true);
     const [hasCreative, setHasCreative] = useState<boolean>(true);
     const [selectedCreative, setSelectedCreative] = useState<Partial<SelectedCreative>>({});
+
+    const [startDate, setStartDate] = useState<Dayjs | any>(dayjs().subtract(1, "month"));
+    const [endDate, setEndDate] = useState<Dayjs | any>(dayjs());
 
     useEffect(() => {
         axios.get(`${import.meta.env.VITE_API_URL}/criativos`, {
@@ -57,8 +61,10 @@ export default function CreativeList() {
     return (
         <Menu>
             <div className="flex flex-col items-center h-screen w-full overflow-hidden">
-                <div className="h-1/5 pt-16 w-full flex justify-end items-center">
-                    <button className="text-white-gray bg-dark-gray flex items-center justify-center py-2 px-4 mr-12 rounded-2xl select-none disabled:cursor-no-drop" disabled={hasCreative ? false : true}><CalendarTodayIcon sx={{ marginRight: "8px" }} /> Sep 16, 2024 - Nov 04, 2024</button>
+                <div className="h-1/5 pt-16 w-full flex justify-end items-center mr-16">
+                    <Input.DatePicker maxDate={endDate} value={startDate} onChange={(date: Dayjs | any) => setStartDate(date)} />
+                    <span className="text-white-gray text-2xl font-bold mr-2">-</span>
+                    <Input.DatePicker minDate={startDate} maxDate={dayjs()} value={endDate} onChange={(date: Dayjs | any) => setEndDate(date)} />
                 </div>
                 <div className={`${!isLoading && "overflow-x-hidden"} ${hasCreative ? "grid grid-cols-1" : "flex justify-center"} px-2 h-4/5 pb-8`}>
                     {isLoading

@@ -6,7 +6,7 @@ import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { TimePicker as TimePickerComponent } from '@mui/x-date-pickers/TimePicker';
 import { ThemeProvider } from '@mui/material/styles';
 import { datePickerTheme, timePickerTheme } from "../styles/themes";
-import dayjs, { Dayjs } from "dayjs";
+import { Dayjs } from "dayjs";
 import 'dayjs/locale/pt-br';
 
 interface GenericInput<T extends FieldValues> {
@@ -23,7 +23,9 @@ interface GenericInput<T extends FieldValues> {
 
 interface DateTimePicker {
     value: Dayjs | null,
-    onChange: any
+    onChange: any,
+    minDate?: Dayjs,
+    maxDate?: Dayjs
 }
 
 function GenericInput<T extends FieldValues>({ value, placeholder, type, maxLength, id, name, register, onBlur, onChange }: GenericInput<T>) {
@@ -100,17 +102,18 @@ function ModalInput<T extends FieldValues>({ value, placeholder, type, maxLength
     )
 }
 
-function DatePicker({ onChange, value }: DateTimePicker) {
+function DatePicker({ onChange, value, minDate, maxDate }: DateTimePicker) {
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
             <ThemeProvider theme={datePickerTheme}>
                 <DesktopDatePicker
                     {...(onChange ? { onChange: onChange } : {})}
                     value={value}
-                    minDate={dayjs()}
+                    minDate={minDate}
+                    maxDate={maxDate}
                     sx={{
                         '& .MuiInputBase-root': {
-                            color: '#ffffff'
+                            color: '#c3d1dc'
                         },
                         '& .MuiOutlinedInput-notchedOutline': {
                             borderColor: '#5d5aff'
@@ -123,6 +126,11 @@ function DatePicker({ onChange, value }: DateTimePicker) {
                         },
                         '& .MuiOutlinedInput-root.Mui-focused': {
                             boxShadow: 'none'
+                        },
+                        '& .MuiInputBase-input': {
+                            paddingTop: '16px',
+                            paddingBottom: '16px',
+                            paddingLeft: '24px'
                         },
                         '& .MuiIconButton-root': {
                             color: '#5d5aff',
@@ -147,7 +155,7 @@ function TimePicker({ onChange, value }: DateTimePicker) {
                     value={value}
                     sx={{
                         '& .MuiInputBase-root': {
-                            color: '#ffffff'
+                            color: '#c3d1dc'
                         },
                         '& .MuiOutlinedInput-notchedOutline': {
                             borderColor: '#5d5aff'
@@ -160,6 +168,11 @@ function TimePicker({ onChange, value }: DateTimePicker) {
                         },
                         '& .MuiOutlinedInput-root.Mui-focused': {
                             boxShadow: 'none'
+                        },
+                        '& .MuiInputBase-input': {
+                            paddingTop: '16px',
+                            paddingBottom: '16px',
+                            paddingLeft: '24px'
                         },
                         '& .MuiIconButton-root': {
                             color: '#5d5aff !important',

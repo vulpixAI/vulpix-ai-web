@@ -5,7 +5,7 @@ import { TypeAnimation } from 'react-type-animation';
 import { Button } from "../../components/Button";
 import { Modal } from "../../components/Modal";
 import { useNavigate, useParams } from "react-router-dom";
-import { Dayjs } from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import { Input } from "../../components/Input";
 import useTimer from "../../hooks/useTimer";
 import UseAuth from "../../hooks/useAuth";
@@ -421,7 +421,7 @@ export default function Creative() {
                 <div className="flex flex-col justify-center items-center w-full">
                     <h4 className="mb-8">📆 Quer agendar sua publicação? Escolha o dia e a hora! 🚀</h4>
                     <div className="flex">
-                        <Input.DatePicker value={scheduledDate} onChange={(date: Dayjs | any) => setScheduledDate(date)} />
+                        <Input.DatePicker minDate={dayjs()} value={scheduledDate} onChange={(date: Dayjs | any) => setScheduledDate(date)} />
                         <Input.TimePicker value={scheduledTime} onChange={(time: Dayjs | any) => setScheduledTime(time)} />
                     </div>
                 </div>
