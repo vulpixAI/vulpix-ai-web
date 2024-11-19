@@ -127,9 +127,9 @@ export default function CreativeList() {
                         :
                         hasCreative
                             ? creatives.map((e: CreativeResponse, index: number) =>
-                                <div className={`flex items-center justify-between ${index != 0 && "mt-12"}`}>
-                                    {e.images.map((image: SelectedCreative) =>
-                                        <button className="mx-6" onClick={() => selectCreative(image.id, image.image_url)} disabled={isMediaConnected ? false : true}>
+                                <div key={index} className={`flex items-center justify-between ${index != 0 && "mt-12"}`}>
+                                    {e.images.map((image: SelectedCreative, index: number) =>
+                                        <button key={index} className="mx-6" onClick={() => selectCreative(image.id, image.image_url)} disabled={isMediaConnected ? false : true}>
                                             <img className={`w-[280px] h-[240px] rounded-2xl transition-all ${isMediaConnected && "hover:brightness-75"}`} src={image.image_url} />
                                         </button>
                                     )}
