@@ -6,7 +6,7 @@ import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { TimePicker as TimePickerComponent } from '@mui/x-date-pickers/TimePicker';
 import { ThemeProvider } from '@mui/material/styles';
 import { datePickerTheme, timePickerTheme } from "../styles/themes";
-import { Dayjs } from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import 'dayjs/locale/pt-br';
 
 interface GenericInput<T extends FieldValues> {
@@ -26,6 +26,15 @@ interface DateTimePicker {
     onChange: any,
     minDate?: Dayjs,
     maxDate?: Dayjs
+}
+
+interface DateRangePicker {
+    valueStart: Dayjs | null,
+    maxDateStart: Dayjs,
+    onChangeStart: any,
+    valueEnd: Dayjs | null,
+    minDateEnd: Dayjs,
+    onChangeEnd: any
 }
 
 function GenericInput<T extends FieldValues>({ value, placeholder, type, maxLength, id, name, register, onBlur, onChange }: GenericInput<T>) {
@@ -188,9 +197,26 @@ function TimePicker({ onChange, value }: DateTimePicker) {
     )
 }
 
+function DateRangePicker({ valueStart, maxDateStart, onChangeStart, valueEnd, minDateEnd, onChangeEnd }: DateRangePicker) {
+    return (
+        <>
+            <div className="flex flex-col">
+                <label className="ml-2 mb-1">Início</label>
+                <Input.DatePicker maxDate={maxDateStart} value={valueStart} onChange={onChangeStart} />
+            </div>
+            <span className="text-white-gray text-xl mr-2 mt-6 select-none">–</span>
+            <div className="flex flex-col">
+                <label className="ml-2 mb-1">Fim</label>
+                <Input.DatePicker minDate={minDateEnd} maxDate={dayjs()} value={valueEnd} onChange={onChangeEnd} />
+            </div>
+        </>
+    )
+}
+
 export const Input = {
     Input: GenericInput,
     Modal: ModalInput,
     DatePicker: DatePicker,
-    TimePicker: TimePicker
+    TimePicker: TimePicker,
+    DateRangePicker: DateRangePicker
 }

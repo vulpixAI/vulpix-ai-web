@@ -4,6 +4,7 @@ import { Menu } from "../../components/Menu";
 import { TypeAnimation } from 'react-type-animation';
 import { Button } from "../../components/Button";
 import { Modal } from "../../components/Modal";
+import { padZero } from "../../utils/stringUtils";
 import { useNavigate, useParams } from "react-router-dom";
 import dayjs, { Dayjs } from "dayjs";
 import { Input } from "../../components/Input";
@@ -81,10 +82,6 @@ export default function Creative() {
             }
         }
     }, []);
-
-    function padZero(number: number | any) {
-        return number < 10 ? `0${number}` : number;
-    }
 
     function schedulePublishing() {
         if (!scheduledDate || !scheduledTime) return;
@@ -365,7 +362,7 @@ export default function Creative() {
 
                 <div className="flex">
                     <span className="mr-3"><Button.Transparent onClick={() => { isCreativeFromCreativeList ? navigate("/creative-list") : setPreviousStep() }} width="w-52" disabled={isGeneratingCaption ? true : false}>Voltar</Button.Transparent></span>
-                    <Button.Purple onClick={() => setNextStep()} width="w-52" disabled={isGeneratingCaption ? true : false}>Confirmar</Button.Purple>
+                    <Button.Purple onClick={() => setNextStep()} width="w-52" disabled={isGeneratingCaption || !caption ? true : false}>Confirmar</Button.Purple>
                 </div>
 
                 <div className="flex items-center justify-center mt-8">

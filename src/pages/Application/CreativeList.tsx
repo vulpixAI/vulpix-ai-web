@@ -2,9 +2,12 @@ import { useEffect, useState } from "react";
 import { Menu } from "../../components/Menu";
 import { Modal } from "../../components/Modal";
 import { Input } from "../../components/Input";
+import { formatMonth } from "../../utils/dateUtils";
+import { padZero } from "../../utils/stringUtils";
 import { Skeleton } from "@mui/material";
 import dayjs, { Dayjs } from "dayjs";
 import { useNavigate } from "react-router-dom";
+import EventIcon from '@mui/icons-material/Event';
 import UseAuth from "../../hooks/useAuth";
 import axios from "axios";
 
@@ -30,8 +33,14 @@ export default function CreativeList() {
     const [hasCreative, setHasCreative] = useState<boolean>(true);
     const [selectedCreative, setSelectedCreative] = useState<Partial<SelectedCreative>>({});
 
-    const [startDate, setStartDate] = useState<Dayjs | any>(dayjs().subtract(1, "month"));
-    const [endDate, setEndDate] = useState<Dayjs | any>(dayjs());
+    const [startDate, setStartDate] = useState<Dayjs>(dayjs().subtract(1, "month"));
+    const [endDate, setEndDate] = useState<Dayjs>(dayjs());
+    const [selectedStartDate, setSelectedStartDate] = useState<any>(dayjs().subtract(1, "month"));
+    const [selectedEndDate, setSelectedEndDate] = useState<any>(dayjs());
+
+    const [isDateRangePickerModalOpen, setDateRangePickerModalOpen] = useState<boolean>(false);
+    const openDateRangePickerModal = () => { setStartDate(selectedStartDate), setEndDate(selectedEndDate), setDateRangePickerModalOpen(true) };
+    const closeDateRangePickerModal = () => setDateRangePickerModalOpen(false);
 
     useEffect(() => {
         axios.get(`${import.meta.env.VITE_API_URL}/criativos`, {
@@ -58,13 +67,21 @@ export default function CreativeList() {
         openSelectCreativeModal();
     }
 
+    function filterDate() {
+        setSelectedStartDate(startDate);
+        setSelectedEndDate(endDate);
+        closeDateRangePickerModal();
+    }
+
     return (
         <Menu>
             <div className="flex flex-col items-center h-screen w-full overflow-hidden">
                 <div className="h-1/5 pt-16 w-full flex justify-end items-center mr-16">
-                    <Input.DatePicker maxDate={endDate} value={startDate} onChange={(date: Dayjs | any) => setStartDate(date)} />
-                    <span className="text-white-gray text-2xl font-bold mr-2">-</span>
-                    <Input.DatePicker minDate={startDate} maxDate={dayjs()} value={endDate} onChange={(date: Dayjs | any) => setEndDate(date)} />
+                    <button onClick={openDateRangePickerModal} className="text-white-gray bg-dark-gray flex items-center justify-center py-2 px-4 mr-12 rounded-2xl select-none"><EventIcon sx={{ marginRight: "8px" }} />
+                        {formatMonth(new Date(selectedStartDate).getMonth())} {padZero(new Date(selectedStartDate).getDate())}, {new Date(selectedStartDate).getFullYear()}
+                        <span className="mx-2">–</span>
+                        {formatMonth(new Date(selectedEndDate).getMonth())} {padZero(new Date(selectedEndDate).getDate())}, {new Date(selectedEndDate).getFullYear()}
+                    </button>
                 </div>
                 <div className={`${!isLoading && "overflow-x-hidden"} ${hasCreative ? "grid grid-cols-1" : "flex justify-center"} px-2 h-4/5 pb-8`}>
                     {isLoading
@@ -149,7 +166,23 @@ export default function CreativeList() {
             <Modal.Dialog title="Criar Nova Publicação" onConfirm={() => navigate(`/creative/${selectedCreative.id}`)} isOpen={isSelectCreativeModalOpen} onClose={closeSelectCreativeModal}>
                 <div className="flex flex-col items-center justify-center">
                     <img className="w-[280px] h-[240px] rounded-2xl" src={selectedCreative.image_url} />
-                    <h3 className="mt-4 text-center">Parece que você gostou desse criativo! 👀 Bora criar a legenda e postar em sua rede?</h3>
+                    <h3 className="mt-4 text-center">Parece que você gostou desse criativo! 👀 Bora criar a legenda e postar na sua rede? 🚀</h3>
+                </div>
+            </Modal.Dialog>
+
+            <Modal.Dialog title="Filtrar por Data" onConfirm={filterDate} isOpen={isDateRangePickerModalOpen} onClose={closeDateRangePickerModal}>
+                <div className="flex flex-col items-center justify-center w-full">
+                    <h3 className="text-center">Bora escolher a data pra dar aquele filtro nos <br /> seus criativos? 📅</h3>
+                    <div className="flex justify-center items-center mt-6">
+                        <Input.DateRangePicker
+                            valueStart={startDate}
+                            maxDateStart={endDate}
+                            onChangeStart={(date: Dayjs) => setStartDate(date)}
+                            valueEnd={endDate}
+                            minDateEnd={startDate}
+                            onChangeEnd={(date: Dayjs) => setEndDate(date)}
+                        />
+                    </div>
                 </div>
             </Modal.Dialog>
         </Menu>
