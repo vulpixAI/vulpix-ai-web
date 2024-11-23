@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Menu } from "../../components/Menu";
 import { Input } from "../../components/Input";
 import { Modal } from "../../components/Modal";
-import { formatMonth } from "../../utils/dateUtils";
+import { formatMonth, formatDate } from "../../utils/dateUtils";
 import { padZero } from "../../utils/stringUtils";
 import { Skeleton } from "@mui/material";
 import dayjs, { Dayjs } from "dayjs";
@@ -61,9 +61,9 @@ export default function Posts() {
             }
         }).then(response => {
             if (response.data.content.length == 0) {
+                setDateRangeChanged(false);
                 setMessage("Hmm... 🔍 Nada foi encontrado por aqui.");
-                setLoading(false);
-                setHasPost(false);
+                setTimeout(() => { setLoading(false), setHasPost(false) }, 3000);
                 return;
             }
 
@@ -77,19 +77,13 @@ export default function Posts() {
 
             isPaginationLoading.current = false;
             isLastPage.current = response.data.last;
-        }).catch((err) => {
+        }).catch(err => {
             if (err.response.status == 401) {
                 setMessage("Hmm... 😅 Você ainda não se conectou em nenhuma rede social. Que tal fazer isso agora?");
-            } else if (err.response.status == 404) {
-                setMessage("Hmm... 🔍 Nada foi encontrado por aqui.");
+                setTimeout(() => { setLoading(false), setHasPost(false) }, 3000);
             }
-            setTimeout(() => { setLoading(false), setHasPost(false) }, 3000);
         });
     }, [page, isDateRangeChanged]);
-
-    function formatDate(date: any) {
-        return `${new Date(date).getFullYear()}-${padZero(new Date(date).getMonth() + 1)}-${padZero(new Date(date).getDate())}`;
-    }
 
     function filterDate() {
         postsContainer.current.scrollTop = 0;
@@ -173,7 +167,7 @@ export default function Posts() {
                                     {isPaginationLoading.current && <CircularProgress size="50px" sx={{ color: "#5d5aff", marginRight: "-25px" }} />}
                                 </div>
                             </>
-                            : <h1 className="text-white-gray text-xl mt-8">{message}</h1>
+                            : <h1 className="text-white-gray text-xl mt-4">{message}</h1>
                     }
                 </div>
             </div>

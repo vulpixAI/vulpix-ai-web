@@ -1,3 +1,5 @@
+import { padZero } from "./stringUtils";
+
 export function formatMonth(number: number) {
     let month = "";
 
@@ -41,4 +43,8 @@ export function formatMonth(number: number) {
     }
 
     return month;
+}
+
+export function formatDate(date: any) {
+    return `${new Date(date).getFullYear()}-${padZero(new Date(date).getMonth() + 1)}-${padZero(new Date(date).getDate())}`;
 }

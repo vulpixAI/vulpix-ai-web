@@ -9,7 +9,7 @@ import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined';
 import GridViewIcon from '@mui/icons-material/GridView';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
-import CropOriginalIcon from '@mui/icons-material/CropOriginal';
+import ImageIcon from '@mui/icons-material/Image';
 import Tooltip from '@mui/material/Tooltip';
 import NotFound from "../pages/NotFound";
 
@@ -69,11 +69,11 @@ export function Menu({ children }: Menu) {
 
                                 <Tooltip title="Criativos Gerados" placement="right">
                                     <Link to={"/creative-list"} className={`${currentPage.includes("creative-list") ? "text-purple" : "text-white-gray"} mt-14 hover:text-purple ease-in-out duration-300`}>
-                                        <CropOriginalIcon />
+                                        <ImageIcon />
                                     </Link>
                                 </Tooltip>
 
-                                <Tooltip title="Postagens" placement="right">
+                                <Tooltip title="Publicações" placement="right">
                                     <Link to={"/post"} className={`${currentPage.includes("post") ? "text-purple" : "text-white-gray"} my-14 hover:text-purple ease-in-out duration-300`}>
                                         <GridViewIcon />
                                     </Link>

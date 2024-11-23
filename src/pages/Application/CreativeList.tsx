@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Menu } from "../../components/Menu";
 import { Modal } from "../../components/Modal";
 import { Input } from "../../components/Input";
-import { formatMonth } from "../../utils/dateUtils";
+import { formatMonth, formatDate } from "../../utils/dateUtils";
 import { padZero } from "../../utils/stringUtils";
 import { Skeleton } from "@mui/material";
 import dayjs, { Dayjs } from "dayjs";
@@ -42,6 +42,7 @@ export default function CreativeList() {
     const [endDate, setEndDate] = useState<Dayjs>(dayjs());
     const [selectedStartDate, setSelectedStartDate] = useState<any>(dayjs().subtract(1, "month"));
     const [selectedEndDate, setSelectedEndDate] = useState<any>(dayjs());
+    const [isDateRangeChanged, setDateRangeChanged] = useState<boolean>(false);
 
     const [isDateRangePickerModalOpen, setDateRangePickerModalOpen] = useState<boolean>(false);
     const openDateRangePickerModal = () => { setStartDate(selectedStartDate), setEndDate(selectedEndDate), setDateRangePickerModalOpen(true) };
@@ -64,23 +65,29 @@ export default function CreativeList() {
     }, []);
 
     useEffect(() => {
-        axios.get(`${import.meta.env.VITE_API_URL}/criativos?page=${page}&size=4`, {
+        axios.get(`${import.meta.env.VITE_API_URL}/criativos?page=${page}&size=4&dataInicio=${formatDate(selectedStartDate)}&dataFim=${formatDate(selectedEndDate)}`, {
             headers: {
                 Authorization: `Bearer ${sessionStorage.getItem("bearerToken")}`
             }
         }).then(response => {
             if (response.data.content.length == 0) {
+                setDateRangeChanged(false);
                 setTimeout(() => { setLoading(false), setHasCreative(false) }, 3000);
                 return;
             }
 
-            page > 0 ? setCreatives(prev => [...prev, ...response.data.content]) : setCreatives(response.data.content);
+            if (isDateRangeChanged) {
+                setCreatives(response.data.content);
+                setDateRangeChanged(false);
+            } else {
+                page > 0 ? setCreatives(prev => [...prev, ...response.data.content]) : setCreatives(response.data.content);
+            }
             setLoading(false);
 
             isPaginationLoading.current = false;
             isLastPage.current = response.data.last;
         });
-    }, [page]);
+    }, [page, isDateRangeChanged]);
 
     const [isSelectCreativeModalOpen, setSelectCreativeModalOpen] = useState<boolean>(false);
     const openSelectCreativeModal = () => setSelectCreativeModalOpen(true);
@@ -93,8 +100,13 @@ export default function CreativeList() {
     }
 
     function filterDate() {
+        creativesContainer.current.scrollTop = 0;
         setSelectedStartDate(startDate);
         setSelectedEndDate(endDate);
+        setPage(0);
+        setHasCreative(true);
+        setLoading(true);
+        setDateRangeChanged(true);
         closeDateRangePickerModal();
     }
 
@@ -190,7 +202,7 @@ export default function CreativeList() {
                                     {isPaginationLoading.current && <CircularProgress size="50px" sx={{ color: "#5d5aff" }} />}
                                 </div>
                             </>
-                            : <h1 className="text-white-gray text-xl mt-8">Ooops! Parece que ainda não tem nada por aqui. Que tal gerar novos criativos? 😄</h1>
+                            : <h1 className="text-white-gray text-xl mt-4">Hmm... 🔍 Nada foi encontrado por aqui.</h1>
                     }
                 </div>
             </div>
