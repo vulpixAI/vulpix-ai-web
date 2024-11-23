@@ -26,11 +26,13 @@ export default function Posts() {
     const [posts, setPosts] = useState<postResponse[]>([]);
     const [isLoading, setLoading] = useState<boolean>(true);
     const [hasPost, setHasPost] = useState<boolean>(true);
+    const [message, setMessage] = useState<string>("");
 
     const [startDate, setStartDate] = useState<Dayjs>(dayjs().subtract(1, "month"));
     const [endDate, setEndDate] = useState<Dayjs>(dayjs());
     const [selectedStartDate, setSelectedStartDate] = useState<any>(dayjs().subtract(1, "month"));
     const [selectedEndDate, setSelectedEndDate] = useState<any>(dayjs());
+    const [isDateRangeChanged, setDateRangeChanged] = useState<boolean>(false);
 
     const [isDateRangePickerModalOpen, setDateRangePickerModalOpen] = useState<boolean>(false);
     const openDateRangePickerModal = () => { setStartDate(selectedStartDate), setEndDate(selectedEndDate), setDateRangePickerModalOpen(true) };
@@ -53,25 +55,50 @@ export default function Posts() {
     }, []);
 
     useEffect(() => {
-        axios.get(`${import.meta.env.VITE_API_URL}/posts?page=${page}&size=10`, {
+        axios.get(`${import.meta.env.VITE_API_URL}/posts?page=${page}&size=10&dataInicio=${formatDate(selectedStartDate)}&dataFim=${formatDate(selectedEndDate)}`, {
             headers: {
                 Authorization: `Bearer ${sessionStorage.getItem("bearerToken")}`
             }
         }).then(response => {
-            page == 0 ? setPosts(response.data.content) : setPosts(prev => [...prev, ...response.data.content]);
-            setLoading(false);
-            isPaginationLoading.current = false;
-            response.data.last && (isLastPage.current = true);
-        }).catch((err) => {
-            if (err.response.status == 404) {
-                setTimeout(() => { setLoading(false), setHasPost(false) }, 3000);
+            if (response.data.content.length == 0) {
+                setMessage("Hmm... 🔍 Nada foi encontrado por aqui.");
+                setLoading(false);
+                setHasPost(false);
+                return;
             }
+
+            if (isDateRangeChanged) {
+                setPosts(response.data.content);
+                setDateRangeChanged(false);
+            } else {
+                page > 0 ? setPosts(prev => [...prev, ...response.data.content]) : setPosts(response.data.content);
+            }
+            setLoading(false);
+
+            isPaginationLoading.current = false;
+            isLastPage.current = response.data.last;
+        }).catch((err) => {
+            if (err.response.status == 401) {
+                setMessage("Hmm... 😅 Você ainda não se conectou em nenhuma rede social. Que tal fazer isso agora?");
+            } else if (err.response.status == 404) {
+                setMessage("Hmm... 🔍 Nada foi encontrado por aqui.");
+            }
+            setTimeout(() => { setLoading(false), setHasPost(false) }, 3000);
         });
-    }, [page]);
+    }, [page, isDateRangeChanged]);
+
+    function formatDate(date: any) {
+        return `${new Date(date).getFullYear()}-${padZero(new Date(date).getMonth() + 1)}-${padZero(new Date(date).getDate())}`;
+    }
 
     function filterDate() {
+        postsContainer.current.scrollTop = 0;
         setSelectedStartDate(startDate);
         setSelectedEndDate(endDate);
+        setPage(0);
+        setHasPost(true);
+        setLoading(true);
+        setDateRangeChanged(true);
         closeDateRangePickerModal();
     }
 
@@ -146,7 +173,7 @@ export default function Posts() {
                                     {isPaginationLoading.current && <CircularProgress size="50px" sx={{ color: "#5d5aff", marginRight: "-25px" }} />}
                                 </div>
                             </>
-                            : <h1 className="text-white-gray text-xl mt-8">Ooops! Parece que ainda não tem nada por aqui. Que tal publicar algo e inaugurar o espaço? 😄</h1>
+                            : <h1 className="text-white-gray text-xl mt-8">{message}</h1>
                     }
                 </div>
             </div>
