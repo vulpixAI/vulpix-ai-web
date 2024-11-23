@@ -82,7 +82,7 @@ export default function Creative() {
             }
         }
     }, []);
-
+    
     function schedulePublishing() {
         if (!scheduledDate || !scheduledTime) return;
 
@@ -233,7 +233,7 @@ export default function Creative() {
                             autoFocus
                         />
                         <div className="absolute right-3 bottom-2">
-                            {validInputRegex.test(userRequest)
+                            {validInputRegex.test(prompt)
                                 ? <button type="submit" className="flex items-center justify-center w-10 h-10 text-white-gray bg-purple rounded-xl hover:bg-purple-dark transition-all disabled:hover:bg-purple" disabled={isGenerating ? true : false}>
                                     {isGenerating
                                         ? <CircularProgress size="18px" sx={{ color: "#ffffff", marginLeft: "1px" }} />
