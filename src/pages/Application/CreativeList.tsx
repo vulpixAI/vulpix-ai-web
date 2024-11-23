@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Menu } from "../../components/Menu";
 import { Modal } from "../../components/Modal";
 import { Input } from "../../components/Input";
@@ -7,6 +7,7 @@ import { padZero } from "../../utils/stringUtils";
 import { Skeleton } from "@mui/material";
 import dayjs, { Dayjs } from "dayjs";
 import { useNavigate } from "react-router-dom";
+import CircularProgress from '@mui/material/CircularProgress';
 import EventIcon from '@mui/icons-material/Event';
 import UseAuth from "../../hooks/useAuth";
 import axios from "axios";
@@ -28,6 +29,10 @@ export default function CreativeList() {
     const navigate = useNavigate();
     const { isMediaConnected }: any = UseAuth();
 
+    const creativesContainer: any = useRef(null);
+    const isLastPage = useRef(false);
+    const isPaginationLoading = useRef(false);
+
     const [creatives, setCreatives] = useState<CreativeResponse[]>([]);
     const [isLoading, setLoading] = useState<boolean>(true);
     const [hasCreative, setHasCreative] = useState<boolean>(true);
@@ -42,20 +47,40 @@ export default function CreativeList() {
     const openDateRangePickerModal = () => { setStartDate(selectedStartDate), setEndDate(selectedEndDate), setDateRangePickerModalOpen(true) };
     const closeDateRangePickerModal = () => setDateRangePickerModalOpen(false);
 
+    const [page, setPage] = useState<number>(0);
+
+    function handleScroll() {
+        if (isLastPage.current) return;
+        if (isPaginationLoading.current) return;
+
+        if (creativesContainer.current.clientHeight + creativesContainer.current.scrollTop + 1 >= creativesContainer.current.scrollHeight) {
+            isPaginationLoading.current = true;
+            setPage(prev => prev + 1);
+        }
+    }
+
     useEffect(() => {
-        axios.get(`${import.meta.env.VITE_API_URL}/criativos`, {
+        setTimeout(() => creativesContainer.current.addEventListener("scroll", handleScroll), 200);
+    }, []);
+
+    useEffect(() => {
+        axios.get(`${import.meta.env.VITE_API_URL}/criativos?page=${page}&size=4`, {
             headers: {
                 Authorization: `Bearer ${sessionStorage.getItem("bearerToken")}`
             }
         }).then(response => {
-            if (response.data.length == 0) {
+            if (response.data.content.length == 0) {
                 setTimeout(() => { setLoading(false), setHasCreative(false) }, 3000);
-            } else {
-                setCreatives(response.data);
-                setLoading(false);
+                return;
             }
+
+            page > 0 ? setCreatives(prev => [...prev, ...response.data.content]) : setCreatives(response.data.content);
+            setLoading(false);
+
+            isPaginationLoading.current = false;
+            isLastPage.current = response.data.last;
         });
-    }, []);
+    }, [page]);
 
     const [isSelectCreativeModalOpen, setSelectCreativeModalOpen] = useState<boolean>(false);
     const openSelectCreativeModal = () => setSelectCreativeModalOpen(true);
@@ -83,7 +108,7 @@ export default function CreativeList() {
                         {formatMonth(new Date(selectedEndDate).getMonth())} {padZero(new Date(selectedEndDate).getDate())}, {new Date(selectedEndDate).getFullYear()}
                     </button>
                 </div>
-                <div className={`${!isLoading && "overflow-x-hidden"} ${hasCreative ? "grid grid-cols-1" : "flex justify-center"} px-2 h-4/5 pb-8`}>
+                <div ref={creativesContainer} className={`${!isLoading && "overflow-x-hidden"} ${hasCreative ? "grid grid-cols-1" : "flex justify-center"} px-2 h-4/5`}>
                     {isLoading
                         ?
                         <>
@@ -149,15 +174,22 @@ export default function CreativeList() {
                         </>
                         :
                         hasCreative
-                            ? creatives.map((e: CreativeResponse, index: number) =>
-                                <div key={index} className={`flex items-center justify-between ${index != 0 && "mt-12"}`}>
-                                    {e.images.map((image: SelectedCreative, index: number) =>
-                                        <button key={index} className="mx-6" onClick={() => selectCreative(image.id, image.image_url)} disabled={isMediaConnected ? false : true}>
-                                            <img className={`w-[280px] h-[240px] rounded-2xl transition-all ${isMediaConnected && "hover:brightness-75"}`} src={image.image_url} />
-                                        </button>
-                                    )}
+                            ?
+                            <>
+                                {creatives.map((e: CreativeResponse, index: number) =>
+                                    <div key={index} className={`flex items-center justify-between ${index != 0 && "mt-12"}`}>
+                                        {e.images.map((image: SelectedCreative, index: number) =>
+                                            <button key={index} className="mx-6" onClick={() => selectCreative(image.id, image.image_url)} disabled={isMediaConnected ? false : true}>
+                                                <img className={`w-[280px] h-[240px] rounded-2xl transition-all ${isMediaConnected && "hover:brightness-75"}`} src={image.image_url} />
+                                            </button>
+                                        )}
+                                    </div>
+                                )
+                                }
+                                <div className="flex justify-center w-full my-8">
+                                    {isPaginationLoading.current && <CircularProgress size="50px" sx={{ color: "#5d5aff" }} />}
                                 </div>
-                            )
+                            </>
                             : <h1 className="text-white-gray text-xl mt-8">Ooops! Parece que ainda não tem nada por aqui. Que tal gerar novos criativos? 😄</h1>
                     }
                 </div>
