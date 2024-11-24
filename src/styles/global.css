@@ -7,7 +7,8 @@ html {
 body::-webkit-scrollbar,
 div::-webkit-scrollbar,
 textarea::-webkit-scrollbar,
-ul::-webkit-scrollbar {
+ul::-webkit-scrollbar,
+p::-webkit-scrollbar {
     width: 6px;
 }
 
@@ -17,14 +18,16 @@ ul::-webkit-scrollbar-track {
     background: #161719;
 }
 
-textarea::-webkit-scrollbar-track {
+textarea::-webkit-scrollbar-track,
+p::-webkit-scrollbar-track {
     background: #222222;
 }
 
 body::-webkit-scrollbar-thumb,
 div::-webkit-scrollbar-thumb,
 textarea::-webkit-scrollbar-thumb,
-ul::-webkit-scrollbar-thumb {
+ul::-webkit-scrollbar-thumb,
+p::-webkit-scrollbar-thumb {
     background-color: #5d5aff;
     border-radius: 30px;
 }

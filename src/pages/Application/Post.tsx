@@ -7,15 +7,37 @@ import { padZero } from "../../utils/stringUtils";
 import { Skeleton } from "@mui/material";
 import dayjs, { Dayjs } from "dayjs";
 import CircularProgress from '@mui/material/CircularProgress';
+import CommentIcon from '@mui/icons-material/Comment';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import PersonIcon from '@mui/icons-material/Person';
+import ExploreIcon from '@mui/icons-material/Explore';
+import BookmarkIcon from '@mui/icons-material/Bookmark';
+import ShareIcon from '@mui/icons-material/Share';
 import InfoIcon from '@mui/icons-material/Info';
 import Tooltip from '@mui/material/Tooltip';
 import EventIcon from '@mui/icons-material/Event';
 import axios from "axios";
 
 interface postResponse {
+    id: string,
     media_url: string,
     caption: string,
     like_count: number
+}
+
+interface PostMetrics {
+    image_url: string,
+    caption: string,
+    metrics: {
+        comments: { value: number },
+        impressions: { value: number },
+        likes: { value: number },
+        profile_visits: { value: number },
+        reach: { value: number },
+        saved: { value: number },
+        shares: { value: number }
+    }
 }
 
 export default function Posts() {
@@ -37,6 +59,14 @@ export default function Posts() {
     const [isDateRangePickerModalOpen, setDateRangePickerModalOpen] = useState<boolean>(false);
     const openDateRangePickerModal = () => { setStartDate(selectedStartDate), setEndDate(selectedEndDate), setDateRangePickerModalOpen(true) };
     const closeDateRangePickerModal = () => setDateRangePickerModalOpen(false);
+
+    const [isGetPostByIdLoading, setGetPostByIdLoading] = useState<boolean>(false);
+    const [selectedPostMetrics, setSelectedPostMetrics] = useState<Partial<PostMetrics>>({});
+    const [isPostInfoModalOpen, setPostInfoModalOpen] = useState<boolean>(false);
+    const openPostInfoModal = () => setPostInfoModalOpen(true);
+    const closePostInfoModal = () => setPostInfoModalOpen(false);
+    const modalCaptionDiv: any = useRef(null);
+    const [isCaptionDivScrollable, setCaptionDivScrollable] = useState<boolean>(false);
 
     const [page, setPage] = useState<number>(0);
 
@@ -84,6 +114,26 @@ export default function Posts() {
             }
         });
     }, [page, isDateRangeChanged]);
+
+    useEffect(() => {
+        if (modalCaptionDiv.current) {
+            const hasScroll = modalCaptionDiv.current.scrollHeight > modalCaptionDiv.current.clientHeight;
+            setCaptionDivScrollable(hasScroll);
+        }
+    }, [selectedPostMetrics]);
+
+    async function getPostById(postId: string, postImage: string, postCaption: string) {
+        setSelectedPostMetrics({ image_url: postImage, caption: postCaption });
+        setGetPostByIdLoading(true);
+        await axios.get(`${import.meta.env.VITE_API_URL}/posts/${postId}`, {
+            headers: {
+                Authorization: `Bearer ${sessionStorage.getItem("bearerToken")}`
+            }
+        }).then(response => {
+            setSelectedPostMetrics((prev: any) => ({ ...prev, ...response.data }));
+            setGetPostByIdLoading(false);
+        });
+    }
 
     function filterDate() {
         postsContainer.current.scrollTop = 0;
@@ -155,11 +205,11 @@ export default function Posts() {
                                     <div key={index} className={`relative flex items-center justify-between ${index != 0 && index != 1 && "mt-12"} bg-dark-gray rounded-2xl pr-6 mx-4 w-[41rem] h-[300px]`}>
                                         <img className="w-[340px] h-[300px] rounded-2xl" src={post.media_url} />
                                         <p className="flex justify-start ml-8 text-white-gray w-[460px] h-[122px] overflow-hidden">{post.caption}</p>
-                                        <span className="text-white-gray absolute bottom-4 right-4 hover:text-purple transition-colors cursor-pointer">
+                                        <button onClick={() => { getPostById(post.id, post.media_url, post.caption), openPostInfoModal() }} className="text-white-gray absolute bottom-4 right-4 hover:text-purple transition-colors cursor-pointer">
                                             <Tooltip title="Informações" placement="bottom">
                                                 <InfoIcon />
                                             </Tooltip>
-                                        </span>
+                                        </button>
                                     </div>
                                 )
                                 }
@@ -187,6 +237,80 @@ export default function Posts() {
                     </div>
                 </div>
             </Modal.Dialog>
+
+            <Modal.Modal width={800} title="Informações da Publicação" isOpen={isPostInfoModalOpen} onClose={closePostInfoModal}>
+                <div className="flex justify-center items-center h-full w-full">
+                    {isGetPostByIdLoading
+                        ? <div className="my-4">
+                            <CircularProgress size="50px" sx={{ color: "#5d5aff", marginTop: "-40px" }} />
+                        </div>
+                        : <div className="flex flex-col h-full">
+                            <div className="flex items-center">
+                                <img className="w-[340px] h-[300px] rounded-2xl" src={selectedPostMetrics.image_url} />
+                                <p ref={modalCaptionDiv} className={`flex ${!isCaptionDivScrollable && "items-center"} ml-6 pr-2 text-white-gray w-[460px] h-[300px] overflow-y-auto`}>{selectedPostMetrics.caption}</p>
+                            </div>
+                            <div className="mt-10 mb-2 w-full h-full flex justify-between ml-2">
+                                <div className="flex flex-col justify-between h-20">
+                                    <div className="flex items-center w-28">
+                                        <Tooltip title="Curtidas" placement="bottom">
+                                            <ThumbUpIcon />
+                                        </Tooltip>
+                                        <span className="ml-3 mt-[1px]">{selectedPostMetrics.metrics?.likes.value}</span>
+                                    </div>
+
+                                    <div className="flex items-center w-28">
+                                        <Tooltip title="Visualizações" placement="bottom">
+                                            <VisibilityIcon />
+                                        </Tooltip>
+                                        <span className="ml-3 mt-[1px]">{selectedPostMetrics.metrics?.impressions.value}</span>
+                                    </div>
+                                </div>
+
+                                <div className="flex flex-col justify-between h-20">
+                                    <div className="flex items-center w-28">
+                                        <Tooltip title="Comentários" placement="bottom">
+                                            <CommentIcon />
+                                        </Tooltip>
+                                        <span className="ml-3 mt-[1px]">{selectedPostMetrics.metrics?.comments.value}</span>
+                                    </div>
+
+                                    <div className="flex items-center w-28">
+                                        <Tooltip title="Visitas ao Perfil" placement="bottom">
+                                            <PersonIcon />
+                                        </Tooltip>
+                                        <span className="ml-3 mt-[1px]">{selectedPostMetrics.metrics?.profile_visits.value}</span>
+                                    </div>
+                                </div>
+
+                                <div className="flex flex-col justify-between h-20">
+                                    <div className="flex items-center w-28">
+                                        <Tooltip title="Compartilhamentos" placement="bottom">
+                                            <ShareIcon />
+                                        </Tooltip>
+                                        <span className="ml-3 mt-[1px]">{selectedPostMetrics.metrics?.impressions.value}</span>
+                                    </div>
+
+                                    <div className="flex items-center w-28">
+                                        <Tooltip title="Alcance de Pessoas" placement="bottom">
+                                            <ExploreIcon />
+                                        </Tooltip>
+                                        <span className="ml-3 mt-[1px]">{selectedPostMetrics.metrics?.reach.value}</span>
+                                    </div>
+                                </div>
+
+                                <div className="flex flex-col h-20">
+                                    <div className="flex items-center w-24">
+                                        <Tooltip title="Salvos" placement="bottom">
+                                            <BookmarkIcon />
+                                        </Tooltip>
+                                        <span className="ml-3 mt-[1px]">{selectedPostMetrics.metrics?.saved.value}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </Modal.Modal>
         </Menu>
     )
 }
