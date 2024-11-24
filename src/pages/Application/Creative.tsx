@@ -82,7 +82,7 @@ export default function Creative() {
             }
         }
     }, []);
-    
+
     function schedulePublishing() {
         if (!scheduledDate || !scheduledTime) return;
 
@@ -388,7 +388,7 @@ export default function Creative() {
                 </div>
 
                 <h6 className={`my-8 text-white-gray ${formattedDateTime != null ? "block" : "hidden"}`}>
-                    📆 Sua publicação será agendada para a data {scheduledDate && padZero(new Date(scheduledDate).getDate())}/{scheduledDate && padZero(new Date(scheduledDate).getMonth()) + 1}/{scheduledDate && new Date(scheduledDate).getFullYear()} às {scheduledTime && padZero(new Date(scheduledTime).getHours())}h{scheduledTime && padZero(new Date(scheduledTime).getMinutes())}.
+                    📆 Sua publicação será agendada para a data {scheduledDate && padZero(new Date(scheduledDate).getDate())}/{scheduledDate && padZero(new Date(scheduledDate).getMonth() + 1)}/{scheduledDate && new Date(scheduledDate).getFullYear()} às {scheduledTime && padZero(new Date(scheduledTime).getHours())}h{scheduledTime && padZero(new Date(scheduledTime).getMinutes())}.
                 </h6>
 
                 <div className="flex">
