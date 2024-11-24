@@ -90,7 +90,7 @@ export default function Posts() {
                 Authorization: `Bearer ${sessionStorage.getItem("bearerToken")}`
             }
         }).then(response => {
-            if (response.data.content.length == 0) {
+            if (response.status == 204) {
                 setDateRangeChanged(false);
                 setMessage("Hmm... 🔍 Nada foi encontrado por aqui.");
                 setTimeout(() => { setLoading(false), setHasPost(false) }, 3000);

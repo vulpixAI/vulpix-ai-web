@@ -74,7 +74,7 @@ export default function CreativeList() {
                 Authorization: `Bearer ${sessionStorage.getItem("bearerToken")}`
             }
         }).then(response => {
-            if (response.data.content.length == 0) {
+            if (response.status == 204) {
                 setDateRangeChanged(false);
                 setTimeout(() => { setLoading(false), setHasCreative(false) }, 3000);
                 return;
