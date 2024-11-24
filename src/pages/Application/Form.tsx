@@ -58,7 +58,7 @@ type stepThreeFormData = z.infer<typeof stepThreeFormSchema>
 type stepFourFormData = z.infer<typeof stepFourFormSchema>
 type stepFiveFormData = z.infer<typeof stepFiveFormSchema>
 
-export default function Questions() {
+export default function Form() {
     const navigate = useNavigate();
     const { userData, setUserData }: any = UseAuth();
 

@@ -5,7 +5,7 @@ import CheckIcon from '@mui/icons-material/Check';
 import UseAuth from "../../hooks/useAuth";
 import NotFound from "../NotFound";
 
-export default function Plans() {
+export default function Plan() {
     const { userData }: any = UseAuth();
 
     const [step, setStep] = useState<number>(1);

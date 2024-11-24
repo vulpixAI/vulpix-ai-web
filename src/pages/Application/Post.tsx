@@ -40,7 +40,7 @@ interface PostMetrics {
     }
 }
 
-export default function Posts() {
+export default function Post() {
     const postsContainer: any = useRef(null);
     const isLastPage = useRef(false);
     const isPaginationLoading = useRef(false);
