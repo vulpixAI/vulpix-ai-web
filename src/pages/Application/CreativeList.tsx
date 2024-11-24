@@ -7,7 +7,10 @@ import { padZero } from "../../utils/stringUtils";
 import { Skeleton } from "@mui/material";
 import dayjs, { Dayjs } from "dayjs";
 import { useNavigate } from "react-router-dom";
+import Tooltip from '@mui/material/Tooltip';
 import CircularProgress from '@mui/material/CircularProgress';
+import Share from '@mui/icons-material/Share';
+import DownloadIcon from '@mui/icons-material/Download';
 import EventIcon from '@mui/icons-material/Event';
 import UseAuth from "../../hooks/useAuth";
 import axios from "axios";
@@ -37,6 +40,7 @@ export default function CreativeList() {
     const [isLoading, setLoading] = useState<boolean>(true);
     const [hasCreative, setHasCreative] = useState<boolean>(true);
     const [selectedCreative, setSelectedCreative] = useState<Partial<SelectedCreative>>({});
+    const [creativeId, setCreativeId] = useState<string | null>(null);
 
     const [startDate, setStartDate] = useState<Dayjs>(dayjs().subtract(1, "month"));
     const [endDate, setEndDate] = useState<Dayjs>(dayjs());
@@ -110,15 +114,36 @@ export default function CreativeList() {
         closeDateRangePickerModal();
     }
 
+    async function downloadCreative(e: any, imageUrl: string) {
+        e.preventDefault();
+
+        await axios.get(imageUrl, { responseType: "blob" })
+            .then(response => {
+                const blob = new Blob([response.data], { type: response.headers["content-type"] });
+                const url = window.URL.createObjectURL(blob);
+
+                const link = document.createElement("a");
+                link.href = url;
+                link.download = 'creative.jpg';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+
+                window.URL.revokeObjectURL(url);
+            });
+    }
+
     return (
         <Menu>
             <div className="flex flex-col items-center h-screen w-full overflow-hidden">
                 <div className="h-1/5 pt-16 w-full flex justify-end items-center mr-16">
-                    <button onClick={openDateRangePickerModal} className="text-white-gray bg-dark-gray flex items-center justify-center py-2 px-4 mr-12 rounded-2xl select-none"><EventIcon sx={{ marginRight: "8px" }} />
-                        {formatMonth(new Date(selectedStartDate).getMonth())} {padZero(new Date(selectedStartDate).getDate())}, {new Date(selectedStartDate).getFullYear()}
-                        <span className="mx-2">–</span>
-                        {formatMonth(new Date(selectedEndDate).getMonth())} {padZero(new Date(selectedEndDate).getDate())}, {new Date(selectedEndDate).getFullYear()}
-                    </button>
+                    <Tooltip title="Filtrar Criativos" placement="left">
+                        <button onClick={openDateRangePickerModal} className="text-white-gray bg-dark-gray flex items-center justify-center py-2 px-4 mr-12 rounded-2xl select-none transition-all hover:text-purple"><EventIcon sx={{ marginRight: "8px" }} />
+                            {formatMonth(new Date(selectedStartDate).getMonth())} {padZero(new Date(selectedStartDate).getDate())}, {new Date(selectedStartDate).getFullYear()}
+                            <span className="mx-2">–</span>
+                            {formatMonth(new Date(selectedEndDate).getMonth())} {padZero(new Date(selectedEndDate).getDate())}, {new Date(selectedEndDate).getFullYear()}
+                        </button>
+                    </Tooltip>
                 </div>
                 <div ref={creativesContainer} className={`${!isLoading && "overflow-x-hidden"} ${hasCreative ? "grid grid-cols-1" : "flex justify-center"} px-2 h-4/5`}>
                     {isLoading
@@ -191,9 +216,21 @@ export default function CreativeList() {
                                 {creatives.map((e: CreativeResponse, index: number) =>
                                     <div key={index} className={`flex items-center justify-between ${index != 0 && "mt-12"}`}>
                                         {e.images.map((image: SelectedCreative, index: number) =>
-                                            <button key={index} className="mx-6" onClick={() => selectCreative(image.id, image.image_url)} disabled={isMediaConnected ? false : true}>
-                                                <img className={`w-[280px] h-[240px] rounded-2xl transition-all ${isMediaConnected && "hover:brightness-75"}`} src={image.image_url} />
-                                            </button>
+                                            <div key={index} onMouseOver={() => setCreativeId(image.id)} onMouseOut={() => setCreativeId(null)} className="mx-6 relative">
+                                                <img className={`w-[280px] h-[240px] rounded-2xl transition-all pointer-events-none ${image.id == creativeId && "brightness-75"}`} src={image.image_url} />
+
+                                                <Tooltip title="Compartilhar" placement="bottom">
+                                                    <button className={`absolute bg-dark-gray p-2 rounded-xl bottom-1 right-12 flex justify-center items-center transition-all text-white-gray hover:text-purple disabled:hover:text-white-gray disabled:cursor-no-drop ${image.id == creativeId ? "opacity-100" : "opacity-0"}`} onClick={() => selectCreative(image.id, image.image_url)} disabled={isMediaConnected ? false : true}>
+                                                        <Share fontSize="small" />
+                                                    </button>
+                                                </Tooltip>
+
+                                                <Tooltip title="Download" placement="bottom">
+                                                    <button className={`absolute bg-dark-gray p-2 rounded-xl bottom-1 right-1 flex justify-center items-center transition-all text-white-gray hover:text-purple ${image.id == creativeId ? "opacity-100" : "opacity-0"}`} onClick={(e: any) => downloadCreative(e, image.image_url)}>
+                                                        <DownloadIcon fontSize="small" />
+                                                    </button>
+                                                </Tooltip>
+                                            </div>
                                         )}
                                     </div>
                                 )
@@ -207,9 +244,9 @@ export default function CreativeList() {
                 </div>
             </div>
 
-            <Modal.Dialog title="Criar Nova Publicação" onConfirm={() => navigate(`/creative/${selectedCreative.id}`)} isOpen={isSelectCreativeModalOpen} onClose={closeSelectCreativeModal}>
+            <Modal.Dialog title="Compartilhar Publicação" onConfirm={() => navigate(`/creative/${selectedCreative.id}`)} isOpen={isSelectCreativeModalOpen} onClose={closeSelectCreativeModal}>
                 <div className="flex flex-col items-center justify-center">
-                    <img className="w-[280px] h-[240px] rounded-2xl" src={selectedCreative.image_url} />
+                    <img className="w-[280px] h-[240px] rounded-2xl pointer-events-none" src={selectedCreative.image_url} />
                     <h3 className="mt-4 text-center">Parece que você gostou desse criativo! 👀 Bora criar a legenda e postar na sua rede? 🚀</h3>
                 </div>
             </Modal.Dialog>

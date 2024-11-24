@@ -150,11 +150,13 @@ export default function Posts() {
         <Menu>
             <div className="flex flex-col items-center h-screen w-full overflow-hidden">
                 <div className="h-1/5 pt-16 w-full flex justify-end items-center mr-16">
-                    <button onClick={openDateRangePickerModal} className="text-white-gray bg-dark-gray flex items-center justify-center py-2 px-4 mr-12 rounded-2xl select-none"><EventIcon sx={{ marginRight: "8px" }} />
-                        {formatMonth(new Date(selectedStartDate).getMonth())} {padZero(new Date(selectedStartDate).getDate())}, {new Date(selectedStartDate).getFullYear()}
-                        <span className="mx-2">–</span>
-                        {formatMonth(new Date(selectedEndDate).getMonth())} {padZero(new Date(selectedEndDate).getDate())}, {new Date(selectedEndDate).getFullYear()}
-                    </button>
+                    <Tooltip title="Filtrar Publicações" placement="left">
+                        <button onClick={openDateRangePickerModal} className="text-white-gray bg-dark-gray flex items-center justify-center py-2 px-4 mr-12 rounded-2xl select-none transition-all hover:text-purple"><EventIcon sx={{ marginRight: "8px" }} />
+                            {formatMonth(new Date(selectedStartDate).getMonth())} {padZero(new Date(selectedStartDate).getDate())}, {new Date(selectedStartDate).getFullYear()}
+                            <span className="mx-2">–</span>
+                            {formatMonth(new Date(selectedEndDate).getMonth())} {padZero(new Date(selectedEndDate).getDate())}, {new Date(selectedEndDate).getFullYear()}
+                        </button>
+                    </Tooltip>
                 </div>
                 <div ref={postsContainer} className={`${!isLoading && "overflow-x-hidden"} ${hasPost ? "grid grid-cols-2" : "flex justify-center"} px-2 h-4/5`}>
                     {isLoading
