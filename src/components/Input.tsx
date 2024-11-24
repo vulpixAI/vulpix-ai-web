@@ -142,8 +142,10 @@ function DatePicker({ onChange, value, minDate, maxDate }: DateTimePicker) {
                             paddingLeft: '24px'
                         },
                         '& .MuiIconButton-root': {
-                            color: '#5d5aff',
+                            color: '#c3d1dc',
+                            transition: "all ease-in-out 150ms",
                             '&:hover': {
+                                color: "#5d5aff",
                                 backgroundColor: 'transparent'
                             }
                         },
@@ -184,8 +186,10 @@ function TimePicker({ onChange, value }: DateTimePicker) {
                             paddingLeft: '24px'
                         },
                         '& .MuiIconButton-root': {
-                            color: '#5d5aff !important',
+                            color: '#c3d1dc !important',
+                            transition: "all ease-in-out 150ms",
                             '&:hover': {
+                                color: "#5d5aff !important",
                                 backgroundColor: 'transparent'
                             }
                         },
