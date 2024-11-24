@@ -287,7 +287,7 @@ export default function Posts() {
                                         <Tooltip title="Compartilhamentos" placement="bottom">
                                             <ShareIcon />
                                         </Tooltip>
-                                        <span className="ml-3 mt-[1px]">{selectedPostMetrics.metrics?.impressions.value}</span>
+                                        <span className="ml-3 mt-[1px]">{selectedPostMetrics.metrics?.shares.value}</span>
                                     </div>
 
                                     <div className="flex items-center w-28">
