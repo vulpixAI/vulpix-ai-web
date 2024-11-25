@@ -253,7 +253,7 @@ export default function CreativeList() {
 
             <Modal.Dialog title="Filtrar por Data" onConfirm={filterDate} isOpen={isDateRangePickerModalOpen} onClose={closeDateRangePickerModal}>
                 <div className="flex flex-col items-center justify-center w-full">
-                    <h3 className="text-center">Bora escolher a data pra dar aquele filtro nos <br /> seus criativos? 📅</h3>
+                    <h3 className="text-center">Bora escolher a data pra filtrar os seus criativos? 📅</h3>
                     <div className="flex justify-center items-center mt-6">
                         <Input.DateRangePicker
                             valueStart={startDate}

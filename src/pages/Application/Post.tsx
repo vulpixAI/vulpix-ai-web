@@ -204,15 +204,20 @@ export default function Post() {
                             ?
                             <>
                                 {posts.map((post: postResponse, index: number) =>
-                                    <div key={index} className={`relative flex items-center justify-between ${index != 0 && index != 1 && "mt-12"} bg-dark-gray rounded-2xl pr-6 mx-4 w-[41rem] h-[300px]`}>
-                                        <img className="w-[340px] h-[300px] rounded-2xl" src={post.media_url} />
-                                        <p className="flex justify-start ml-8 text-white-gray w-[460px] h-[122px] overflow-hidden">{post.caption}</p>
-                                        <button onClick={() => { getPostById(post.id, post.media_url, post.caption), openPostInfoModal() }} className="text-white-gray absolute bottom-4 right-4 hover:text-purple transition-colors cursor-pointer">
-                                            <Tooltip title="Informações" placement="bottom">
-                                                <InfoIcon />
-                                            </Tooltip>
-                                        </button>
-                                    </div>
+                                    <>
+                                        <div key={index} className={`relative flex items-center justify-between ${index != 0 && index != 1 && "mt-12"} bg-dark-gray rounded-2xl pr-6 mx-4 w-[41rem] h-[300px]`}>
+                                            <img className="w-[340px] h-[300px] rounded-2xl pointer-events-none" src={post.media_url} />
+                                            <p className="flex justify-start ml-8 text-white-gray w-[460px] h-[122px] overflow-hidden">{post.caption}</p>
+                                            <button onClick={() => { getPostById(post.id, post.media_url, post.caption), openPostInfoModal() }} className="text-white-gray absolute bottom-4 right-4 hover:text-purple transition-colors cursor-pointer">
+                                                <Tooltip title="Informações" placement="bottom">
+                                                    <InfoIcon />
+                                                </Tooltip>
+                                            </button>
+                                        </div>
+                                        {posts.length % 2 != 0 && posts.length - 1 == index &&
+                                            <div className=" flex items-center justify-between mt-12 rounded-2xl pr-6 mx-4 w-[41rem] h-[300px]"></div>
+                                        }
+                                    </>
                                 )
                                 }
                                 <div className="flex justify-end w-full my-8">
@@ -226,7 +231,7 @@ export default function Post() {
 
             <Modal.Dialog title="Filtrar por Data" onConfirm={filterDate} isOpen={isDateRangePickerModalOpen} onClose={closeDateRangePickerModal}>
                 <div className="flex flex-col items-center justify-center w-full">
-                    <h3 className="text-center">Bora escolher a data pra dar aquele filtro nas <br /> suas publicações? 📅</h3>
+                    <h3 className="text-center">Bora escolher a data pra filtrar as suas publicações? 📅</h3>
                     <div className="flex justify-center items-center mt-6">
                         <Input.DateRangePicker
                             valueStart={startDate}
@@ -248,7 +253,7 @@ export default function Post() {
                         </div>
                         : <div className="flex flex-col h-full">
                             <div className="flex items-center">
-                                <img className="w-[340px] h-[300px] rounded-2xl" src={selectedPostMetrics.image_url} />
+                                <img className="w-[340px] h-[300px] rounded-2xl pointer-events-none" src={selectedPostMetrics.image_url} />
                                 <p ref={modalCaptionDiv} className={`flex ${!isCaptionDivScrollable && "items-center"} ml-6 pr-2 text-white-gray w-[460px] h-[300px] overflow-y-auto`}>{selectedPostMetrics.caption}</p>
                             </div>
                             <div className="mt-10 mb-2 w-full h-full flex justify-between ml-2">
