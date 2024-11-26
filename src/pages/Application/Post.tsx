@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Menu } from "../../components/Menu";
 import { Input } from "../../components/Input";
 import { Modal } from "../../components/Modal";
@@ -18,6 +18,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import Tooltip from '@mui/material/Tooltip';
 import EventIcon from '@mui/icons-material/Event';
 import axios from "axios";
+import React from "react";
 
 interface postResponse {
     id: string,
@@ -80,9 +81,12 @@ export default function Post() {
         }
     }
 
-    useEffect(() => {
-        setTimeout(() => postsContainer.current.addEventListener("scroll", handleScroll), 200);
-    }, []);
+    useLayoutEffect(() => {
+        if (postsContainer.current) {
+            postsContainer.current.addEventListener("scroll", handleScroll);
+            return () => postsContainer.current.removeEventListener("scroll", handleScroll);
+        }
+    }, [postsContainer.current]);
 
     useEffect(() => {
         axios.get(`${import.meta.env.VITE_API_URL}/posts?page=${page}&size=10&dataInicio=${formatDate(selectedStartDate)}&dataFim=${formatDate(selectedEndDate)}`, {
@@ -204,7 +208,7 @@ export default function Post() {
                             ?
                             <>
                                 {posts.map((post: postResponse, index: number) =>
-                                    <>
+                                    <React.Fragment key={index}>
                                         <div key={index} className={`relative flex items-center justify-between ${index != 0 && index != 1 && "mt-12"} bg-dark-gray rounded-2xl pr-6 mx-4 w-[41rem] h-[300px]`}>
                                             <img className="w-[340px] h-[300px] rounded-2xl pointer-events-none" src={post.media_url} />
                                             <p className="flex justify-start ml-8 text-white-gray w-[460px] h-[122px] overflow-hidden">{post.caption}</p>
@@ -217,10 +221,10 @@ export default function Post() {
                                         {posts.length % 2 != 0 && posts.length - 1 == index &&
                                             <div className=" flex items-center justify-between mt-12 rounded-2xl pr-6 mx-4 w-[41rem] h-[300px]"></div>
                                         }
-                                    </>
+                                    </React.Fragment>
                                 )
                                 }
-                                <div className="flex justify-end w-full my-8">
+                                <div className={`flex items-center justify-end w-full ${isLastPage.current ? "h-10" : "h-24"}`}>
                                     {isPaginationLoading.current && <CircularProgress size="50px" sx={{ color: "#5d5aff", marginRight: "-25px" }} />}
                                 </div>
                             </>

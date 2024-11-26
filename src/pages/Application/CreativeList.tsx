@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Menu } from "../../components/Menu";
 import { Modal } from "../../components/Modal";
 import { Input } from "../../components/Input";
@@ -64,9 +64,12 @@ export default function CreativeList() {
         }
     }
 
-    useEffect(() => {
-        setTimeout(() => creativesContainer.current.addEventListener("scroll", handleScroll), 200);
-    }, []);
+    useLayoutEffect(() => {
+        if (creativesContainer.current) {
+            creativesContainer.current.addEventListener("scroll", handleScroll);
+            return () => creativesContainer.current.removeEventListener("scroll", handleScroll);
+        }
+    }, [creativesContainer.current]);
 
     useEffect(() => {
         axios.get(`${import.meta.env.VITE_API_URL}/criativos?page=${page}&size=4&dataInicio=${formatDate(selectedStartDate)}&dataFim=${formatDate(selectedEndDate)}`, {
@@ -235,7 +238,7 @@ export default function CreativeList() {
                                     </div>
                                 )
                                 }
-                                <div className="flex justify-center w-full my-8">
+                                <div className={`flex items-center justify-center w-full ${isLastPage.current ? "h-10" : "h-24"}`}>
                                     {isPaginationLoading.current && <CircularProgress size="50px" sx={{ color: "#5d5aff" }} />}
                                 </div>
                             </>
