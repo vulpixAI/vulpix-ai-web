@@ -118,7 +118,7 @@ export default function Home() {
             <section id="planos" className="pb-32 flex flex-col items-center overflow-x-hidden">
                 <h1 className="text-4xl text-center text-white-gray font-bold select-none mobile:text-2xl" data-aos="fade-right" data-aos-duration="1500" data-aos-once="true">Comece por nossos <span className="text-purple">planos</span>.</h1>
                 <p className="mt-6 text-white-gray w-[54rem] mobile:w-80 text-center mobile:text-base" data-aos="fade-right" data-aos-duration="1500" data-aos-once="true">Oferecemos planos acessíveis e personalizados que atendem a diferentes necessidades, seja você um microempreendedor ou uma empresa em crescimento. Escolha o que mais se adequa ao seu objetivo e dê o primeiro passo para elevar a presença digital da sua marca.</p>
-                <div className="flex mobile:flex-col mt-20">
+                <div className="flex mobile:flex-col mobile:items-center mt-20">
                     <Link to={"/signup"} className="hover:scale-[1.02] transition-transform">
                         <div className="w-[300px] h-[360px] flex flex-col items-center justify-between border-solid border-white border-2 rounded-[1.6rem]" data-aos="fade-up" data-aos-duration="1500" data-aos-once="true" data-aos-delay="150">
                             <div className="h-1/5 flex flex-col items-start justify-end text-white-gray w-full px-8">
@@ -140,7 +140,7 @@ export default function Home() {
                     </Link>
 
                     <Link to={"/signup"} className="hover:scale-[1.02] transition-transform">
-                        <div className="w-[300px] h-[360px] flex flex-col items-center justify-between border-solid border-white border-2 rounded-[1.6rem] mx-12" data-aos="fade-up" data-aos-duration="1500" data-aos-once="true" data-aos-delay="500">
+                        <div className="w-[300px] h-[360px] flex flex-col items-center justify-between border-solid border-white border-2 rounded-[1.6rem] mx-12 mobile:my-10" data-aos="fade-up" data-aos-duration="1500" data-aos-once="true" data-aos-delay="500">
                             <div className="h-1/5 flex flex-col items-start justify-end text-white-gray w-full px-8">
                                 <h4 className="text-white-gray text-lg font-semibold tracking-wide">Premium</h4>
                                 <p className="text-xs">Ideal para Expansão</p>
