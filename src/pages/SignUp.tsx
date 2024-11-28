@@ -43,9 +43,9 @@ const enderecoEmpresaFormSchema = z.object({
     complemento: z.string().nullable()
 });
 
-type userFormData = z.infer<typeof userFormSchema>
-type empresaFormData = z.infer<typeof empresaFormSchema>
-type enderecoEmpresaFormData = z.infer<typeof enderecoEmpresaFormSchema>
+type UserFormData = z.infer<typeof userFormSchema>
+type EmpresaFormData = z.infer<typeof empresaFormSchema>
+type EnderecoEmpresaFormData = z.infer<typeof enderecoEmpresaFormSchema>
 
 export default function SignUp() {
     const { signUp }: any = UseAuth();
@@ -66,7 +66,7 @@ export default function SignUp() {
         setError: setUserError,
         clearErrors: clearUserErrors,
         formState: { errors: userErrors }
-    } = useForm<userFormData>({ resolver: zodResolver(userFormSchema) });
+    } = useForm<UserFormData>({ resolver: zodResolver(userFormSchema) });
 
     const {
         register: registerEmpresa,
@@ -76,7 +76,7 @@ export default function SignUp() {
         setError: setEmpresaError,
         clearErrors: clearEmpresaErrors,
         formState: { errors: empresaErrors }
-    } = useForm<empresaFormData>({ resolver: zodResolver(empresaFormSchema) });
+    } = useForm<EmpresaFormData>({ resolver: zodResolver(empresaFormSchema) });
 
     const {
         register: registerEnderecoEmpresa,
@@ -86,7 +86,7 @@ export default function SignUp() {
         setError: setEnderecoEmpresaError,
         clearErrors: clearEnderecoEmpresaErrors,
         formState: { errors: enderecoEmpresaErrors }
-    } = useForm<enderecoEmpresaFormData>({ resolver: zodResolver(enderecoEmpresaFormSchema) });
+    } = useForm<EnderecoEmpresaFormData>({ resolver: zodResolver(enderecoEmpresaFormSchema) });
 
     const [step, setStep] = useState<number>(1);
     const [formData, setFormData] = useState<object[]>([]);
@@ -120,7 +120,7 @@ export default function SignUp() {
             .catch(err => console.error(err));
     }
 
-    async function signUpUser(data: enderecoEmpresaFormData) {
+    async function signUpUser(data: EnderecoEmpresaFormData) {
         const userFormData = formData[0];
         const empresaFormData = formData[1];
         const enderecoEmpresaFormData = data;
@@ -316,7 +316,7 @@ export default function SignUp() {
                         <div className="flex flex-col">
                             <Input.Input
                                 value={watchEmpresa('razaoSocial')}
-                                placeholder="Razão social*"
+                                placeholder="Razão Social*"
                                 type="text"
                                 id="inputRazaoSocial"
                                 name="razaoSocial"
@@ -328,7 +328,7 @@ export default function SignUp() {
                         <div className="flex flex-col mt-4">
                             <Input.Input
                                 value={watchEmpresa('nomeFantasia')}
-                                placeholder="Nome fantasia*"
+                                placeholder="Nome Fantasia*"
                                 type="text"
                                 id="inputNomeFantasia"
                                 name="nomeFantasia"
