@@ -298,6 +298,20 @@ export default function SignUp() {
 
                         <div className="flex flex-col">
                             <Input.Input
+                                value={watchEmpresa('cnpj')}
+                                placeholder="CNPJ*"
+                                type="text"
+                                maxLength={18}
+                                id="inputCnpj"
+                                name="cnpj"
+                                register={registerEmpresa}
+                                onChange={maskCnpjInput}
+                            />
+                            {empresaErrors.cnpj && <span className="text-white-gray text-sm ml-3 mt-2">{empresaErrors.cnpj.message}</span>}
+                        </div>
+
+                        <div className="flex flex-col mt-4">
+                            <Input.Input
                                 value={watchEmpresa('razaoSocial')}
                                 placeholder="Razão Social*"
                                 type="text"
@@ -332,20 +346,6 @@ export default function SignUp() {
                                 onChange={maskTelefoneInput}
                             />
                             {empresaErrors.telefone && <span className="text-white-gray text-sm ml-3 mt-2">{empresaErrors.telefone.message}</span>}
-                        </div>
-
-                        <div className="flex flex-col mt-4">
-                            <Input.Input
-                                value={watchEmpresa('cnpj')}
-                                placeholder="CNPJ*"
-                                type="text"
-                                maxLength={18}
-                                id="inputCnpj"
-                                name="cnpj"
-                                register={registerEmpresa}
-                                onChange={maskCnpjInput}
-                            />
-                            {empresaErrors.cnpj && <span className="text-white-gray text-sm ml-3 mt-2">{empresaErrors.cnpj.message}</span>}
                         </div>
 
                         <SignUpProgressBar step={step} />
