@@ -509,6 +509,7 @@ export default function Form() {
                                                 id=""
                                                 name="resultadosEsperados"
                                                 register={registerStepFive}
+                                                disabled={isLoading ? true : false}
                                             />
                                             {stepFiveErrors.resultadosEsperados && <span className="text-white-gray text-sm ml-3 mt-2">{stepFiveErrors.resultadosEsperados.message}</span>}
                                         </div>
@@ -521,6 +522,7 @@ export default function Form() {
                                                 id="inputDatasImportantes"
                                                 name="datasImportantes"
                                                 register={registerStepFive}
+                                                disabled={isLoading ? true : false}
                                             />
                                             {stepFiveErrors.datasImportantes && <span className="text-white-gray text-sm ml-3 mt-2">{stepFiveErrors.datasImportantes.message}</span>}
                                         </div>
@@ -533,6 +535,7 @@ export default function Form() {
                                                 id="inputEstiloCriativos"
                                                 name="estiloCriativos"
                                                 register={registerStepFive}
+                                                disabled={isLoading ? true : false}
                                             />
                                             {stepFiveErrors.estiloCriativos && <span className="text-white-gray text-sm ml-3 mt-2">{stepFiveErrors.estiloCriativos.message}</span>}
                                         </div>
@@ -545,6 +548,7 @@ export default function Form() {
                                                 id="inputReferenciasVisuais"
                                                 name="referenciasVisuais"
                                                 register={registerStepFive}
+                                                disabled={isLoading ? true : false}
                                             />
                                             {stepFiveErrors.referenciasVisuais && <span className="text-white-gray text-sm ml-3 mt-2">{stepFiveErrors.referenciasVisuais.message}</span>}
                                         </div>
@@ -557,6 +561,7 @@ export default function Form() {
                                                 id="inputObservacoesGerais"
                                                 name="observacoesGerais"
                                                 register={registerStepFive}
+                                                disabled={isLoading ? true : false}
                                             />
                                             {stepFiveErrors.observacoesGerais && <span className="text-white-gray text-sm ml-3 mt-2">{stepFiveErrors.observacoesGerais.message}</span>}
                                         </div>

@@ -87,6 +87,7 @@ export default function Login() {
                             id="inputEmail"
                             name="email"
                             register={register}
+                            disabled={isLoading ? true : false}
                         />
                         {errors.email && <span className="text-white-gray text-sm ml-3 mt-2">{errors.email.message}</span>}
                     </div>
@@ -98,6 +99,7 @@ export default function Login() {
                             id="inputPassword"
                             name="password"
                             register={register}
+                            disabled={isLoading ? true : false}
                         />
                         <button
                             type="button"

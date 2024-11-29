@@ -19,7 +19,6 @@ const userFormSchema = z.object({
     nome: z.string().min(1, "Campo obrigatório"),
     sobrenome: z.string().min(1, "Campo obrigatório"),
     email: z.string().min(1, "Campo obrigatório").email("Formato de e-mail inválido"),
-    telefone: z.string().regex(/^\(\d{2}\) (?:\d{4}-\d{4}|9\d{4}-\d{4})$/, "Formato de telefone inválido"),
     password: z.string().min(8, "Mínimo de 8 caracteres"),
     confirmPassword: z.string().min(8, "Mínimo de 8 caracteres")
 }).refine(data => data.password == data.confirmPassword, {
@@ -30,6 +29,7 @@ const userFormSchema = z.object({
 const empresaFormSchema = z.object({
     razaoSocial: z.string().min(1, "Campo obrigatório"),
     nomeFantasia: z.string().min(1, "Campo obrigatório"),
+    telefone: z.string().regex(/^\(\d{2}\) (?:\d{4}-\d{4}|9\d{4}-\d{4})$/, "Formato de telefone inválido"),
     cnpj: z.string().regex(/^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/, "Formato de CNPJ inválido")
 });
 
@@ -62,9 +62,6 @@ export default function SignUp() {
         register: registerUser,
         handleSubmit: handleSubmitUser,
         watch: watchUser,
-        setValue: setValueUser,
-        setError: setUserError,
-        clearErrors: clearUserErrors,
         formState: { errors: userErrors }
     } = useForm<UserFormData>({ resolver: zodResolver(userFormSchema) });
 
@@ -153,8 +150,8 @@ export default function SignUp() {
         const value = e.target.value.replace(/\D/g, '')
             .replace(/^(\d{2})(\d)/, '($1) $2')
             .replace(/(\d{5})(\d)/, '$1-$2');
-        setValueUser('telefone', value);
-        (/^\(\d{2}\) 9\d{4}-\d{4}$/).test(value) ? clearUserErrors('telefone') : setUserError('telefone', { message: 'Formato de telefone inválido' });
+        setValueEmpresa('telefone', value);
+        (/^\(\d{2}\) 9\d{4}-\d{4}$/).test(value) ? clearEmpresaErrors('telefone') : setEmpresaError('telefone', { message: 'Formato de telefone inválido' });
     }
 
     function maskCnpjInput(e: React.ChangeEvent<HTMLInputElement>) {
@@ -195,8 +192,8 @@ export default function SignUp() {
                         Crie sua conta
                     </h1>
                     <p className="text-white-gray mt-3 text-lg text-center">
-                        {step == 1 && "Insira seus dados de usuário para continuar"}
-                        {step == 2 && "Forneça as informações sobre a sua empresa"}
+                        {step == 1 && "Insira seus dados pessoais para continuar"}
+                        {step == 2 && "Forneça as informações de sua empresa"}
                         {step >= 3 && "Informe o endereço completo de sua empresa"}
                     </p>
                 </div>
@@ -244,20 +241,6 @@ export default function SignUp() {
                                 register={registerUser}
                             />
                             {userErrors.email && <span className="text-white-gray text-sm ml-3 mt-2">{userErrors.email.message}</span>}
-                        </div>
-
-                        <div className="flex flex-col mt-4">
-                            <Input.Input
-                                value={watchUser('telefone')}
-                                placeholder="Telefone*"
-                                type="text"
-                                maxLength={15}
-                                id="inputTelefone"
-                                name="telefone"
-                                register={registerUser}
-                                onChange={maskTelefoneInput}
-                            />
-                            {userErrors.telefone && <span className="text-white-gray text-sm ml-3 mt-2">{userErrors.telefone.message}</span>}
                         </div>
 
                         <div className="flex flex-col mt-4 relative">
@@ -339,6 +322,20 @@ export default function SignUp() {
 
                         <div className="flex flex-col mt-4">
                             <Input.Input
+                                value={watchEmpresa('telefone')}
+                                placeholder="Telefone*"
+                                type="text"
+                                maxLength={15}
+                                id="inputTelefone"
+                                name="telefone"
+                                register={registerEmpresa}
+                                onChange={maskTelefoneInput}
+                            />
+                            {empresaErrors.telefone && <span className="text-white-gray text-sm ml-3 mt-2">{empresaErrors.telefone.message}</span>}
+                        </div>
+
+                        <div className="flex flex-col mt-4">
+                            <Input.Input
                                 value={watchEmpresa('cnpj')}
                                 placeholder="CNPJ*"
                                 type="text"
@@ -378,6 +375,7 @@ export default function SignUp() {
                                     name="cep"
                                     register={registerEnderecoEmpresa}
                                     onChange={maskCepInput}
+                                    disabled={isLoading ? true : false}
                                 />
                                 {enderecoEmpresaErrors.cep && <span className="text-white-gray text-sm ml-3 mt-2">{enderecoEmpresaErrors.cep.message}</span>}
                             </div>
@@ -390,6 +388,7 @@ export default function SignUp() {
                                     id="inputNumero"
                                     name="numero"
                                     register={registerEnderecoEmpresa}
+                                    disabled={isLoading ? true : false}
                                 />
                                 {enderecoEmpresaErrors.numero && <span className="text-white-gray text-sm ml-3 mt-2">{enderecoEmpresaErrors.numero.message}</span>}
                             </div>
@@ -403,6 +402,7 @@ export default function SignUp() {
                                 id="inputLogradouro"
                                 name="logradouro"
                                 register={registerEnderecoEmpresa}
+                                disabled={isLoading ? true : false}
                             />
                             {enderecoEmpresaErrors.logradouro && <span className="text-white-gray text-sm ml-3 mt-2">{enderecoEmpresaErrors.logradouro.message}</span>}
                         </div>
@@ -416,6 +416,7 @@ export default function SignUp() {
                                     id="inputCidade"
                                     name="cidade"
                                     register={registerEnderecoEmpresa}
+                                    disabled={isLoading ? true : false}
                                 />
                                 {enderecoEmpresaErrors.cidade && <span className="text-white-gray text-sm ml-3 mt-2">{enderecoEmpresaErrors.cidade.message}</span>}
                             </div>
@@ -428,6 +429,7 @@ export default function SignUp() {
                                     id="inputEstado"
                                     name="estado"
                                     register={registerEnderecoEmpresa}
+                                    disabled={isLoading ? true : false}
                                 />
                                 {enderecoEmpresaErrors.estado && <span className="text-white-gray text-sm ml-3 mt-2">{enderecoEmpresaErrors.estado.message}</span>}
                             </div>
@@ -441,6 +443,7 @@ export default function SignUp() {
                                 id="inputBairro"
                                 name="bairro"
                                 register={registerEnderecoEmpresa}
+                                disabled={isLoading ? true : false}
                             />
                             {enderecoEmpresaErrors.bairro && <span className="text-white-gray text-sm ml-3 mt-2">{enderecoEmpresaErrors.bairro.message}</span>}
                         </div>
@@ -453,6 +456,7 @@ export default function SignUp() {
                                 id="inputComplemento"
                                 name="complemento"
                                 register={registerEnderecoEmpresa}
+                                disabled={isLoading ? true : false}
                             />
                         </div>
 

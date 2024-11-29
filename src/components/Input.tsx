@@ -38,7 +38,7 @@ interface DateRangePicker {
     onChangeEnd: any
 }
 
-function GenericInput<T extends FieldValues>({ value, placeholder, type, maxLength, id, name, register, onBlur, onChange }: GenericInput<T>) {
+function GenericInput<T extends FieldValues>({ value, placeholder, type, maxLength, id, name, register, onBlur, onChange, disabled }: GenericInput<T>) {
     const [isOnFocus, setOnFocus] = useState<boolean>(false);
 
     return (
@@ -70,6 +70,7 @@ function GenericInput<T extends FieldValues>({ value, placeholder, type, maxLeng
                 onFocus={() => setOnFocus(true)}
                 onBlur={() => { setOnFocus(false); onBlur && onBlur(value) }}
                 {...(onChange ? { onChange: onChange } : {})}
+                disabled={disabled}
             />
         </div>
     )
