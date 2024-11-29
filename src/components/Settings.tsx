@@ -118,10 +118,8 @@ export function Settings({ isOpen, onClose }: Settings) {
             complemento: data.complemento,
             cidade: data.cidade,
             estado: data.estado,
-            usuario: {
-                nome: data.nome,
-                sobrenome: data.sobrenome
-            }
+            nome: data.nome,
+            sobrenome: data.sobrenome
         }
 
         setLoading(true);
