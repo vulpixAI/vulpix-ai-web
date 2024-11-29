@@ -18,7 +18,8 @@ interface GenericInput<T extends FieldValues> {
     name?: Path<T>,
     register?: UseFormRegister<T>,
     onBlur?: any,
-    onChange?: React.ChangeEventHandler
+    onChange?: React.ChangeEventHandler,
+    disabled?: boolean
 }
 
 interface DateTimePicker {
@@ -74,7 +75,7 @@ function GenericInput<T extends FieldValues>({ value, placeholder, type, maxLeng
     )
 }
 
-function ModalInput<T extends FieldValues>({ value, placeholder, type, maxLength, id, name, register, onBlur, onChange }: GenericInput<T>) {
+function ModalInput<T extends FieldValues>({ value, placeholder, type, maxLength, id, name, register, onBlur, onChange, disabled }: GenericInput<T>) {
     const [isOnFocus, setOnFocus] = useState<boolean>(false);
 
     return (
@@ -106,6 +107,7 @@ function ModalInput<T extends FieldValues>({ value, placeholder, type, maxLength
                 onFocus={() => setOnFocus(true)}
                 onBlur={() => { setOnFocus(false); onBlur && onBlur(value) }}
                 {...(onChange ? { onChange: onChange } : {})}
+                disabled={disabled}
             />
         </div>
     )
