@@ -113,8 +113,7 @@ export default function SignUp() {
                     clearEnderecoEmpresaErrors('estado');
                     clearEnderecoEmpresaErrors('bairro');
                 }
-            })
-            .catch(err => console.error(err));
+            });
     }
 
     async function signUpUser(data: EnderecoEmpresaFormData) {
