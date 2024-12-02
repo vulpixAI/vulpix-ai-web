@@ -13,7 +13,8 @@ const formSchema = z.object({
     setor: z.string().min(1, "Campo obrigatório"),
     anoFundacao: z.string().min(1, "Campo obrigatório"),
     logotipo: z.string().min(1, "Campo obrigatório"),
-    cor: z.string().min(1, "Campo obrigatório"),
+    corPrimaria: z.string().regex(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/, "Hexadecimal inválido"),
+    corSecundaria: z.string().regex(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/, "Hexadecimal inválido"),
     fonte: z.string().min(1, "Campo obrigatório"),
     estiloVisual: z.string().min(1, "Campo obrigatório"),
     publicoAlvo: z.string().min(1, "Campo obrigatório"),
@@ -63,7 +64,8 @@ export function Form({ isLoading, setLoading, setMessage, openSuccessModal, open
             setValue('setor', response.data.setor);
             setValue('anoFundacao', response.data.anoFundacao);
             setValue('logotipo', response.data.logotipo);
-            setValue('cor', response.data.corPrimaria);
+            setValue('corPrimaria', response.data.corPrimaria);
+            setValue('corSecundaria', response.data.corSecundaria);
             setValue('fonte', response.data.fonte);
             setValue('estiloVisual', response.data.estiloVisual);
             setValue('publicoAlvo', response.data.publicoAlvo);
@@ -94,7 +96,8 @@ export function Form({ isLoading, setLoading, setMessage, openSuccessModal, open
             setor: data.setor,
             anoFundacao: data.anoFundacao,
             logotipo: data.logotipo,
-            corPrimaria: data.cor,
+            corPrimaria: data.corPrimaria,
+            corSecundaria: data.corSecundaria,
             fonte: data.fonte,
             estiloVisual: data.estiloVisual,
             publicoAlvo: data.publicoAlvo,
@@ -146,7 +149,29 @@ export function Form({ isLoading, setLoading, setMessage, openSuccessModal, open
                     <h2 className="text-center">Deseja atualizar o formulário? Faça suas alterações por aqui! ✏️</h2>
 
                     <div className="h-[360px] -mt-4 py-2 px-4 w-full overflow-x-hidden">
-                        <div className="flex flex-col">
+                        <div className="flex mt-2">
+                            <div className="flex flex-col mr-4">
+                                <Input.ColorPicker
+                                    label="Cor primária da empresa"
+                                    labelBg="bg-dark-gray"
+                                    value={watch("corPrimaria")}
+                                    onChange={(e: any) => { register('corPrimaria').onChange({ target: { name: "corPrimaria", value: e } }), !isFormChanged && setFormChanged(true) }}
+                                />
+                                {errors.corPrimaria && <span className="text-white-gray text-sm ml-3 mt-2">{errors.corPrimaria.message}</span>}
+                            </div>
+
+                            <div className="flex flex-col">
+                                <Input.ColorPicker
+                                    label="Cor secundária da empresa"
+                                    labelBg="bg-dark-gray"
+                                    value={watch("corSecundaria")}
+                                    onChange={(e: any) => { register('corSecundaria').onChange({ target: { name: "corSecundaria", value: e } }), !isFormChanged && setFormChanged(true) }}
+                                />
+                                {errors.corSecundaria && <span className="text-white-gray text-sm ml-3 mt-2">{errors.corSecundaria.message}</span>}
+                            </div>
+                        </div>
+
+                        <div className="flex flex-col mt-5">
                             <Input.Modal
                                 value={watch('slogan')}
                                 placeholder="Slogan da empresa"
@@ -213,20 +238,6 @@ export function Form({ isLoading, setLoading, setMessage, openSuccessModal, open
                                 disabled={isLoading ? true : false}
                             />
                             {errors.logotipo && <span className="text-white-gray text-sm ml-3 mt-2">{errors.logotipo.message}</span>}
-                        </div>
-
-                        <div className="flex flex-col mt-5">
-                            <Input.Modal
-                                value={watch('cor')}
-                                placeholder="Cores utilizadas pela empresa"
-                                type="text"
-                                id="inputCor"
-                                name="cor"
-                                register={register}
-                                onChange={(e: any) => { register('cor').onChange(e), !isFormChanged && setFormChanged(true) }}
-                                disabled={isLoading ? true : false}
-                            />
-                            {errors.cor && <span className="text-white-gray text-sm ml-3 mt-2">{errors.cor.message}</span>}
                         </div>
 
                         <div className="flex flex-col mt-5">

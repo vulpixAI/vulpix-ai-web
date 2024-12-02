@@ -104,7 +104,7 @@ export function Connections({ isLoading, setLoading, setMessage, openSuccessModa
             <div className="w-full mt-4">
                 <Input.Modal
                     value={connectionData.accessToken || null}
-                    placeholder="Token de acesso*"
+                    placeholder="Token de Acesso*"
                     type="text"
                     onChange={(e: any) => setConnectionData((prevData: any) => ({ ...prevData, accessToken: e.target.value }))}
                     disabled={isLoading ? true : false}
@@ -114,7 +114,7 @@ export function Connections({ isLoading, setLoading, setMessage, openSuccessModa
             <div className="w-full mt-4">
                 <Input.Modal
                     value={connectionData.clientId || null}
-                    placeholder="Id do cliente*"
+                    placeholder="Id do Cliente*"
                     type="text"
                     onChange={(e: any) => setConnectionData((prevData: any) => ({ ...prevData, clientId: e.target.value }))}
                     disabled={isLoading ? true : false}
@@ -124,7 +124,7 @@ export function Connections({ isLoading, setLoading, setMessage, openSuccessModa
             <div className="w-full mt-4">
                 <Input.Modal
                     value={connectionData.clientSecret || null}
-                    placeholder="Secret do cliente*"
+                    placeholder="Secret do Cliente*"
                     type="text"
                     onChange={(e: any) => setConnectionData((prevData: any) => ({ ...prevData, clientSecret: e.target.value }))}
                     disabled={isLoading ? true : false}
@@ -134,7 +134,7 @@ export function Connections({ isLoading, setLoading, setMessage, openSuccessModa
             <div className="w-full my-4">
                 <Input.Modal
                     value={connectionData.igUserId || null}
-                    placeholder="Id de usuário*"
+                    placeholder="Id de Usuário*"
                     type="text"
                     onChange={(e: any) => setConnectionData((prevData: any) => ({ ...prevData, igUserId: e.target.value }))}
                     disabled={isLoading ? true : false}
