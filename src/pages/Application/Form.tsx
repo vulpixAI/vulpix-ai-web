@@ -21,7 +21,8 @@ const stepOneFormSchema = z.object({
 });
 
 const stepTwoFormSchema = z.object({
-    cor: z.string().min(1, "Campo obrigatório"),
+    corPrimaria: z.string().regex(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/, "Hexadecimal inválido"),
+    corSecundaria: z.string().regex(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/, "Hexadecimal inválido"),
     fonte: z.string().min(1, "Campo obrigatório"),
     estiloVisual: z.string().min(1, "Campo obrigatório"),
     publicoAlvo: z.string().min(1, "Campo obrigatório"),
@@ -70,6 +71,9 @@ export default function Form() {
     useEffect(() => {
         userData.status == "AGUARDANDO_FORMULARIO" && setCorrectStatus(true);
         setTimeout(() => setLoadingScreen(false), 3000);
+
+        registerStepTwo('corPrimaria').onChange({ target: { name: "corPrimaria", value: "" } })
+        registerStepTwo('corSecundaria').onChange({ target: { name: "corSecundaria", value: "" } })
     }, []);
 
     const [isSuccessModalOpen, setSuccessModalOpen] = useState<boolean>(false);
@@ -134,8 +138,8 @@ export default function Form() {
             setor: formData[0].setor,
             anoFundacao: formData[0].anoFundacao,
             logotipo: formData[0].logotipo,
-            corPrimaria: formData[1].cor,
-            corSecundaria: formData[1].cor,
+            corPrimaria: formData[1].corPrimaria,
+            corSecundaria: formData[1].corSecundaria,
             fonte: formData[1].fonte,
             estiloVisual: formData[1].estiloVisual,
             publicoAlvo: formData[1].publicoAlvo,
@@ -279,16 +283,26 @@ export default function Form() {
                                 {step == 2 &&
 
                                     <form onSubmit={handleSubmitStepTwo(setNextStep)} className="mt-8">
-                                        <div className="flex flex-col mt-4">
-                                            <Input.Input
-                                                value={watchStepTwo('cor')}
-                                                placeholder="Quais são as cores utilizadas pela empresa?"
-                                                type="text"
-                                                id="inputCor"
-                                                name="cor"
-                                                register={registerStepTwo}
-                                            />
-                                            {stepTwoErrors.cor && <span className="text-white-gray text-sm ml-3 mt-2">{stepTwoErrors.cor.message}</span>}
+                                        <div className="flex mt-4">
+                                            <div className="flex flex-col mr-4">
+                                                <Input.ColorPicker
+                                                    label="Cor primária da empresa*"
+                                                    labelBg="bg-black"
+                                                    value={watchStepTwo("corPrimaria")}
+                                                    onChange={(e: any) => registerStepTwo('corPrimaria').onChange({ target: { name: "corPrimaria", value: e } })}
+                                                />
+                                                {stepTwoErrors.corPrimaria && <span className="text-white-gray text-sm ml-3 mt-2">{stepTwoErrors.corPrimaria.message}</span>}
+                                            </div>
+
+                                            <div className="flex flex-col">
+                                                <Input.ColorPicker
+                                                    label="Cor secundária da empresa*"
+                                                    labelBg="bg-black"
+                                                    value={watchStepTwo("corSecundaria")}
+                                                    onChange={(e: any) => registerStepTwo('corSecundaria').onChange({ target: { name: "corSecundaria", value: e } })}
+                                                />
+                                                {stepTwoErrors.corSecundaria && <span className="text-white-gray text-sm ml-3 mt-2">{stepTwoErrors.corSecundaria.message}</span>}
+                                            </div>
                                         </div>
 
                                         <div className="flex flex-col mt-4">
