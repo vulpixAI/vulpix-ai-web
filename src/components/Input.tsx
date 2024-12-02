@@ -5,7 +5,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { TimePicker as TimePickerComponent } from '@mui/x-date-pickers/TimePicker';
 import { ThemeProvider } from '@mui/material/styles';
-import { datePickerTheme, timePickerTheme } from "../styles/themes";
+import { colorPickerTheme, datePickerTheme, timePickerTheme } from "../styles/themes";
 import { MuiColorInput } from 'mui-color-input'
 import dayjs, { Dayjs } from "dayjs";
 import 'dayjs/locale/pt-br';
@@ -126,29 +126,31 @@ function ColorPicker({ value, onChange, label, labelBg }: ColorPicker) {
     return (
         <div className="relative flex items-center">
             <h3 className={`absolute -top-[9px] left-4 ${labelBg} z-50 text-sm text-slate-400 px-1`}>{label}</h3>
-            <MuiColorInput
-                format="hex"
-                value={value}
-                onChange={onChange}
-                placeholder="Escolha uma cor"
-                sx={{
-                    '& .MuiInputBase-root': {
-                        color: "#c3d1dc !important",
-                    },
-                    "& .MuiOutlinedInput-notchedOutline": {
-                        borderStyle: "solid !important",
-                        borderColor: "#52525b !important",
-                        borderWidth: "2px !important"
-                    },
-                    "& :hover .MuiOutlinedInput-notchedOutline": {
-                        borderColor: "#52525b !important",
-                    },
-                    "& .Mui-focused .MuiOutlinedInput-notchedOutline": {
-                        borderColor: "#5d5aff !important"
-                    }
-                }}
-            />
-        </div>
+            <ThemeProvider theme={colorPickerTheme}>
+                <MuiColorInput
+                    format="hex"
+                    value={value}
+                    onChange={onChange}
+                    placeholder="Escolha uma cor"
+                    sx={{
+                        "& .MuiInputBase-root": {
+                            color: "#c3d1dc !important"
+                        },
+                        "& .MuiOutlinedInput-notchedOutline": {
+                            borderStyle: "solid !important",
+                            borderColor: "#52525b !important",
+                            borderWidth: "2px !important"
+                        },
+                        "& :hover .MuiOutlinedInput-notchedOutline": {
+                            borderColor: "#52525b !important"
+                        },
+                        "& .Mui-focused .MuiOutlinedInput-notchedOutline": {
+                            borderColor: "#5d5aff !important"
+                        }
+                    }}
+                />
+            </ThemeProvider>
+        </div >
     )
 }
 

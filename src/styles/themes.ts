@@ -1,7 +1,7 @@
 import { CSSObject } from "@emotion/react";
 import createTheme from "@mui/material/styles/createTheme";
 
-declare module '@mui/material/styles' {
+declare module "@mui/material/styles" {
     interface Components {
         MuiPickersDay?: {
             styleOverrides?: {
@@ -16,28 +16,40 @@ declare module '@mui/material/styles' {
     }
 }
 
+export const colorPickerTheme = createTheme({
+    components: {
+        MuiPaper: {
+            styleOverrides: {
+                root: {
+                    backgroundColor: "#222222"
+                }
+            }
+        }
+    }
+});
+
 export const datePickerTheme = createTheme({
     palette: {
-        mode: 'dark',
+        mode: "dark",
         text: {
-            primary: '#ffffff',
-            secondary: '#ffffff'
+            primary: "#ffffff",
+            secondary: "#ffffff"
         }
     },
     components: {
         MuiPickersDay: {
             styleOverrides: {
                 root: {
-                    color: '#ffffff',
-                    '&:hover': {
-                        backgroundColor: '#5d5aff !important'
+                    color: "#ffffff",
+                    "&:hover": {
+                        backgroundColor: "#5d5aff !important"
                     },
-                    '&.Mui-selected': {
-                        backgroundColor: '#5d5aff !important',
-                        color: '#ffffff'
+                    "&.Mui-selected": {
+                        backgroundColor: "#5d5aff !important",
+                        color: "#ffffff"
                     },
-                    '&.MuiPickersDay-today': {
-                        border: 'none'
+                    "&.MuiPickersDay-today": {
+                        border: "none"
                     }
                 }
             }
@@ -45,16 +57,16 @@ export const datePickerTheme = createTheme({
         MuiPickersYear: {
             styleOverrides: {
                 yearButton: {
-                    color: '#ffffff',
+                    color: "#ffffff",
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
-                    '&:hover': {
-                        backgroundColor: '#5d5aff !important'
+                    "&:hover": {
+                        backgroundColor: "#5d5aff !important"
                     },
-                    '&.Mui-selected': {
-                        backgroundColor: '#5d5aff !important',
-                        color: '#ffffff'
+                    "&.Mui-selected": {
+                        backgroundColor: "#5d5aff !important",
+                        color: "#ffffff"
                     }
                 }
             }
@@ -64,26 +76,26 @@ export const datePickerTheme = createTheme({
 
 export const timePickerTheme = createTheme({
     palette: {
-        mode: 'dark',
+        mode: "dark",
         text: {
-            primary: '#ffffff',
-            secondary: '#ffffff'
+            primary: "#ffffff",
+            secondary: "#ffffff"
         },
     },
     components: {
         MuiMenuItem: {
             styleOverrides: {
                 root: {
-                    color: '#ffffff',
-                    '&:hover': {
-                        backgroundColor: '#5d5aff !important'
+                    color: "#ffffff",
+                    "&:hover": {
+                        backgroundColor: "#5d5aff !important"
                     },
-                    '&.Mui-selected': {
-                        backgroundColor: '#5d5aff !important',
-                        color: '#ffffff !important'
+                    "&.Mui-selected": {
+                        backgroundColor: "#5d5aff !important",
+                        color: "#ffffff !important"
                     },
-                    '&.MuiPickersDay-today': {
-                        border: 'none'
+                    "&.MuiPickersDay-today": {
+                        border: "none"
                     }
                 }
             }
@@ -91,9 +103,9 @@ export const timePickerTheme = createTheme({
         MuiButtonBase: {
             styleOverrides: {
                 root: {
-                    color: '#ffffff !important',
-                    '&:hover': {
-                        backgroundColor: '#5d5aff'
+                    color: "#ffffff !important",
+                    "&:hover": {
+                        backgroundColor: "#5d5aff"
                     }
                 }
             }
