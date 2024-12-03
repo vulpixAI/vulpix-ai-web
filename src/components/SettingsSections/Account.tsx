@@ -21,9 +21,7 @@ interface Account {
 }
 
 const userFormSchema = z.object({
-    nome: z.string().min(1, "Campo obrigatório"),
-    sobrenome: z.string().min(1, "Campo obrigatório"),
-    telefone: z.string().regex(/^\(\d{2}\) (?:\d{4}-\d{4}|9\d{4}-\d{4})$/, "Formato de telefone inválido"),
+    telefone: z.string().regex(/^\(\d{2}\) \d{4}-\d{4}$/, "Formato de telefone inválido"),
     nomeFantasia: z.string().min(1, "Campo obrigatório"),
     cep: z.string().regex(/^\d{5}-\d{3}$/, "Formato de CEP inválido"),
     numero: z.string().min(1, "Campo obrigatório"),
@@ -35,6 +33,8 @@ const userFormSchema = z.object({
 });
 
 type UserFormData = z.infer<typeof userFormSchema> & {
+    nome: string,
+    sobrenome: string,
     email: string,
     cnpj: string,
     razaoSocial: string
@@ -52,7 +52,7 @@ export function Account({ isLoading, setLoading, setMessage, openSuccessModal, o
         setValue('nome', userData.nome);
         setValue('sobrenome', userData.sobrenome);
         setValue('email', userData.email);
-        setValue('telefone', userData.telefone.replace(/\D/g, '').replace(/^(\d{2})(\d)/, '($1) $2').replace(/(\d{5})(\d)/, '$1-$2'));
+        setValue('telefone', userData.telefone.replace(/\D/g, '').replace(/^(\d{2})(\d)/, '($1) $2').replace(/(\d{4})(\d{4})/, '$1-$2'));
         setValue('cnpj', userData.cnpj);
         setValue('razaoSocial', userData.razaoSocial);
         setValue('nomeFantasia', userData.nomeFantasia);
@@ -76,9 +76,7 @@ export function Account({ isLoading, setLoading, setMessage, openSuccessModal, o
             bairro: data.bairro,
             complemento: data.complemento,
             cidade: data.cidade,
-            estado: data.estado,
-            nome: data.nome,
-            sobrenome: data.sobrenome
+            estado: data.estado
         }
 
         setLoading(true);
@@ -117,9 +115,9 @@ export function Account({ isLoading, setLoading, setMessage, openSuccessModal, o
     function maskTelefoneInput(e: React.ChangeEvent<HTMLInputElement>) {
         const value = e.target.value.replace(/\D/g, '')
             .replace(/^(\d{2})(\d)/, '($1) $2')
-            .replace(/(\d{5})(\d)/, '$1-$2');
+            .replace(/(\d{4})(\d{4})/, '$1-$2');
         setValue('telefone', value);
-        (/^\(\d{2}\) 9\d{4}-\d{4}$/).test(value) ? clearErrors('telefone') : setError('telefone', { message: 'Formato de telefone inválido' });
+        (/^\(\d{2}\) \d{4}-\d{4}$/).test(value) ? clearErrors('telefone') : setError('telefone', { message: 'Formato de telefone inválido' });
     }
 
     function maskCepInput(e: React.ChangeEvent<HTMLInputElement>) {
@@ -159,32 +157,18 @@ export function Account({ isLoading, setLoading, setMessage, openSuccessModal, o
                     <div className="h-[360px] -mt-4 py-2 px-4 w-full overflow-x-hidden">
                         <h3 className="mb-5 flex items-center"><PersonIcon fontSize="small" /> <span className="mt-[2px] ml-1">Dados Pessoais</span></h3>
 
-                        <div className="flex flex-col">
-                            <Input.Modal
-                                value={watch('nome')}
-                                placeholder="Nome"
-                                type="text"
-                                id="inputNome"
-                                name="nome"
-                                register={register}
-                                onChange={(e: any) => { register('nome').onChange(e), !isUserFormChanged && setUserFormChanged(true) }}
-                                disabled={isLoading ? true : false}
-                            />
-                            {errors.nome && <span className="text-white-gray text-sm ml-3 mt-2">{errors.nome.message}</span>}
-                        </div>
+                        <div className="flex justify-between">
+                            <div className="relative w-[236px]">
+                                <label className="text-slate-400 text-sm px-1 bg-dark-gray absolute left-4 -top-[9px] transition-all select-none z-10">Nome</label>
+                                <input className="relative outline-none w-full h-12 rounded-lg bg-transparent disabled:cursor-no-drop border-2 border-zinc-600 placeholder:blue-gray p-2 pl-4 text-zinc-400" {...register("nome")} disabled />
+                                <span className="absolute right-3 top-[10px] text-zinc-400 cursor-no-drop"><LockIcon /></span>
+                            </div>
 
-                        <div className="flex flex-col mt-5">
-                            <Input.Modal
-                                value={watch('sobrenome')}
-                                placeholder="Sobrenome"
-                                type="text"
-                                id="inputSobrenome"
-                                name="sobrenome"
-                                register={register}
-                                onChange={(e: any) => { register('sobrenome').onChange(e), !isUserFormChanged && setUserFormChanged(true) }}
-                                disabled={isLoading ? true : false}
-                            />
-                            {errors.sobrenome && <span className="text-white-gray text-sm ml-3 mt-2">{errors.sobrenome.message}</span>}
+                            <div className="relative w-[236px]">
+                                <label className="text-slate-400 text-sm px-1 bg-dark-gray absolute left-4 -top-[9px] transition-all select-none z-10">Sobrenome</label>
+                                <input className="relative outline-none w-full h-12 rounded-lg bg-transparent disabled:cursor-no-drop border-2 border-zinc-600 placeholder:blue-gray p-2 pl-4 text-zinc-400" {...register("sobrenome")} disabled />
+                                <span className="absolute right-3 top-[10px] text-zinc-400 cursor-no-drop"><LockIcon /></span>
+                            </div>
                         </div>
 
                         <div className="relative mt-5">
@@ -226,7 +210,7 @@ export function Account({ isLoading, setLoading, setMessage, openSuccessModal, o
                                 value={watch('telefone')}
                                 placeholder="Telefone"
                                 type="text"
-                                maxLength={15}
+                                maxLength={14}
                                 id="inputTelefone"
                                 name="telefone"
                                 register={register}

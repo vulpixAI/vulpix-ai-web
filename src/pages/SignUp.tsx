@@ -29,7 +29,7 @@ const userFormSchema = z.object({
 const empresaFormSchema = z.object({
     razaoSocial: z.string().min(1, "Campo obrigatório"),
     nomeFantasia: z.string().min(1, "Campo obrigatório"),
-    telefone: z.string().regex(/^\(\d{2}\) (?:\d{4}-\d{4}|9\d{4}-\d{4})$/, "Formato de telefone inválido"),
+    telefone: z.string().regex(/^\(\d{2}\) \d{4}-\d{4}$/, "Formato de telefone inválido"),
     cnpj: z.string().regex(/^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/, "Formato de CNPJ inválido")
 });
 
@@ -148,9 +148,9 @@ export default function SignUp() {
     function maskTelefoneInput(e: React.ChangeEvent<HTMLInputElement>) {
         const value = e.target.value.replace(/\D/g, '')
             .replace(/^(\d{2})(\d)/, '($1) $2')
-            .replace(/(\d{5})(\d)/, '$1-$2');
+            .replace(/(\d{4})(\d{4})/, '$1-$2');
         setValueEmpresa('telefone', value);
-        (/^\(\d{2}\) 9\d{4}-\d{4}$/).test(value) ? clearEmpresaErrors('telefone') : setEmpresaError('telefone', { message: 'Formato de telefone inválido' });
+        (/^\(\d{2}\) \d{4}-\d{4}$/).test(value) ? clearEmpresaErrors('telefone') : setEmpresaError('telefone', { message: 'Formato de telefone inválido' });
     }
 
     function maskCnpjInput(e: React.ChangeEvent<HTMLInputElement>) {
@@ -338,7 +338,7 @@ export default function SignUp() {
                                 value={watchEmpresa('telefone')}
                                 placeholder="Telefone*"
                                 type="text"
-                                maxLength={15}
+                                maxLength={14}
                                 id="inputTelefone"
                                 name="telefone"
                                 register={registerEmpresa}
