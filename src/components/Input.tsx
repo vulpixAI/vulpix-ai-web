@@ -107,7 +107,7 @@ function ModalInput<T extends FieldValues>({ value, placeholder, type, maxLength
             }
 
             <input
-                className={`relative outline-none w-full h-12 rounded-lg bg-transparent disabled:cursor-no-drop border-2 ${isOnFocus ? "border-purple" : "border-zinc-600"} placeholder:blue-gray p-2 pl-4 text-blue-gray ${name == "password" || name == "confirmPassword" ? "pr-11" : ""}`}
+                className={`relative outline-none w-full h-12 rounded-lg bg-transparent disabled:cursor-no-drop border-2 ${isOnFocus ? "border-purple" : "border-zinc-600"} placeholder:blue-gray p-2 pl-4 text-blue-gray ${name == "password" || name == "newPassword" || name == "confirmPassword" || name == "currentPassword" ? "pr-11" : ""}`}
                 value={value || ""}
                 type={type}
                 maxLength={maxLength}

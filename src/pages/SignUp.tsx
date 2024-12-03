@@ -89,6 +89,9 @@ export default function SignUp() {
     const [formData, setFormData] = useState<object[]>([]);
     const [isLoading, setLoading] = useState<boolean>(false);
 
+    const [isPasswordVisible, setPasswordVisible] = useState<boolean>(false);
+    const [isConfirmPasswordVisible, setConfirmPasswordVisible] = useState<boolean>(false);
+
     function setPreviousStep() {
         step > 1 && setStep(step => step - 1);
         setFormData(data => data.slice(0, -1));
@@ -139,11 +142,6 @@ export default function SignUp() {
 
         setLoading(false);
     }
-
-    const [isPasswordVisible, setPasswordVisible] = useState<boolean>(false);
-    const togglePasswordVisibility = () => setPasswordVisible(prevState => !prevState);
-    const [isConfirmPasswordVisible, setConfirmPasswordVisible] = useState<boolean>(false);
-    const toggleConfirmPasswordVisibility = () => setConfirmPasswordVisible(prevState => !prevState);
 
     function maskTelefoneInput(e: React.ChangeEvent<HTMLInputElement>) {
         const value = e.target.value.replace(/\D/g, '')
@@ -253,8 +251,8 @@ export default function SignUp() {
                             />
                             <button
                                 type="button"
-                                className="absolute right-3 top-3 text-white-gray cursor-pointer"
-                                onClick={togglePasswordVisibility}
+                                className="absolute right-3 top-[10px] text-white-gray cursor-pointer"
+                                onClick={() => setPasswordVisible(prevState => !prevState)}
                                 tabIndex={-1}
                             >
                                 {isPasswordVisible ? <Visibility /> : <VisibilityOff />}
@@ -273,8 +271,8 @@ export default function SignUp() {
                             />
                             <button
                                 type="button"
-                                className="absolute right-3 top-3 text-white-gray cursor-pointer"
-                                onClick={toggleConfirmPasswordVisibility}
+                                className="absolute right-3 top-[10px] text-white-gray cursor-pointer"
+                                onClick={() => setConfirmPasswordVisible(prevState => !prevState)}
                                 tabIndex={-1}
                             >
                                 {isConfirmPasswordVisible ? <Visibility /> : <VisibilityOff />}
