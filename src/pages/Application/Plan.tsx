@@ -1,21 +1,53 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "../../components/Button";
 import { LoadingScreen } from "../../components/LoadingScreen";
+import { Modal } from "../../components/Modal";
 import CheckIcon from '@mui/icons-material/Check';
 import UseAuth from "../../hooks/useAuth";
 import NotFound from "../NotFound";
+import axios from "axios";
 
 export default function Plan() {
-    const { userData }: any = UseAuth();
+    const navigate = useNavigate();
+    const { userData, setUserData }: any = UseAuth();
 
     const [step, setStep] = useState<number>(1);
     const [isCorrectStatus, setCorrectStatus] = useState<boolean>(false);
     const [showLoadingScreen, setLoadingScreen] = useState<boolean>(true);
+    const [isPlanAccessed, setPlanAccessed] = useState<boolean>(false);
+
+    const [isSuccessModalOpen, setSuccessModalOpen] = useState<boolean>(false);
+    const openSuccessModal = () => setSuccessModalOpen(true);
+    const closeSuccessModal = () => { setSuccessModalOpen(false), navigate("/form") }
 
     useEffect(() => {
         userData.status == "AGUARDANDO_PAGAMENTO" && setCorrectStatus(true);
         setTimeout(() => setLoadingScreen(false), 3000);
     }, []);
+
+    useEffect(() => {
+        userData.status == "AGUARDANDO_FORMULARIO" && openSuccessModal();
+    }, [userData]);
+
+    useEffect(() => {
+        if (!isPlanAccessed) return;
+
+        async function getUserData() {
+            await axios.get(`${import.meta.env.VITE_API_URL}/usuarios`, {
+                headers: {
+                    Authorization: `Bearer ${sessionStorage.getItem("bearerToken")}`
+                }
+            }).then(response => {
+                sessionStorage.setItem("userData", JSON.stringify(response.data));
+                setUserData(response.data);
+            });
+        }
+
+        const intervalId = setInterval(getUserData, 5000);
+        getUserData();
+        return () => clearInterval(intervalId);
+    }, [isPlanAccessed]);
 
     function setNextStep() {
         step < 2 && setStep(step => step + 1);
@@ -62,7 +94,7 @@ export default function Plan() {
                                     <h1 className="text-4xl self-start">Escolha o melhor plano para você</h1>
 
                                     <div className="flex mt-8">
-                                        <a href="https://buy.stripe.com/test_8wMfZS8Tu9eQ3PW8wz" target="_blank" className="hover:scale-[1.02] transition-transform cursor-pointer">
+                                        <a onClick={() => setPlanAccessed(true)} href="https://buy.stripe.com/test_8wMfZS8Tu9eQ3PW8wz" target="_blank" className="hover:scale-[1.02] transition-transform cursor-pointer">
                                             <div className="w-[300px] h-[360px] flex flex-col items-center justify-between border-solid border-white border-2 rounded-[1.6rem]">
                                                 <div className="h-1/5 flex flex-col items-start justify-end text-white-gray w-full px-8">
                                                     <h4 className="text-white-gray text-lg font-semibold tracking-wide">Standard</h4>
@@ -82,7 +114,7 @@ export default function Plan() {
                                             </div>
                                         </a>
 
-                                        <a href="https://buy.stripe.com/test_fZe3d6edOfDe5Y49AE" target="_blank" className="hover:scale-[1.02] transition-transform cursor-pointer">
+                                        <a onClick={() => setPlanAccessed(true)} href="https://buy.stripe.com/test_fZe3d6edOfDe5Y49AE" target="_blank" className="hover:scale-[1.02] transition-transform cursor-pointer">
                                             <div className="w-[300px] h-[360px] flex flex-col items-center justify-between border-solid border-white border-2 rounded-[1.6rem] mx-12">
                                                 <div className="h-1/5 flex flex-col items-start justify-end text-white-gray w-full px-8">
                                                     <h4 className="text-white-gray text-lg font-semibold tracking-wide">Premium</h4>
@@ -103,7 +135,7 @@ export default function Plan() {
                                             </div>
                                         </a>
 
-                                        <a href="https://buy.stripe.com/test_4gwcNG9XygHi3PW4gl" target="_blank" className="hover:scale-[1.02] transition-transform cursor-pointer">
+                                        <a onClick={() => setPlanAccessed(true)} href="https://buy.stripe.com/test_4gwcNG9XygHi3PW4gl" target="_blank" className="hover:scale-[1.02] transition-transform cursor-pointer">
                                             <div className="w-[300px] h-[360px] flex flex-col items-center justify-between border-solid border-white border-2 rounded-[1.6rem]">
                                                 <div className="h-1/5 flex flex-col items-start justify-end text-white-gray w-full px-8">
                                                     <h4 className="text-white-gray text-lg font-semibold tracking-wide">Business</h4>
@@ -137,6 +169,8 @@ export default function Plan() {
                 :
                 <NotFound />
             }
+
+            <Modal.Info children="Pagamento realizado com sucesso!" onConfirm={closeSuccessModal} isOpen={isSuccessModalOpen} onClose={closeSuccessModal} />
         </>
     )
 }
