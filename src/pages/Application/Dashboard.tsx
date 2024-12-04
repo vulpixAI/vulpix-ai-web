@@ -4,6 +4,7 @@ import { Input } from "../../components/Input";
 import { Modal } from "../../components/Modal";
 import { formatMonth } from "../../utils/dateUtils";
 import { padZero } from "../../utils/stringUtils";
+import { Chart } from "../../components/Chart";
 import dayjs, { Dayjs } from "dayjs";
 import EventIcon from '@mui/icons-material/Event';
 import useAuth from "../../hooks/useAuth";
@@ -59,8 +60,12 @@ export default function Dashboard() {
                         <div className="h-32 w-64 bg-dark-gray rounded-2xl mx-6"></div>
                     </div>
                     <div className="flex items-center justify-center h-[70%]">
-                        <div className="h-[20rem] w-[34rem] bg-dark-gray rounded-2xl mx-6"></div>
-                        <div className="h-[20rem] w-[34rem] bg-dark-gray rounded-2xl mx-6"></div>
+                        <div className="h-[20rem] w-[34rem] bg-dark-gray rounded-2xl mx-6 flex items-center justify-center">
+                            {/* <Chart.Line data={} /> */}
+                        </div>
+                        <div className="h-[20rem] w-[34rem] bg-dark-gray rounded-2xl mx-6 flex items-center justify-center">
+                            {/* <Chart.Bar data={} /> */}
+                        </div>
                     </div>
                 </div>
             </div>

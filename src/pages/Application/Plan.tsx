@@ -7,10 +7,12 @@ import CheckIcon from '@mui/icons-material/Check';
 import UseAuth from "../../hooks/useAuth";
 import NotFound from "../NotFound";
 import axios from "axios";
+import useWebSocket from "react-use-websocket";
 
 export default function Plan() {
     const navigate = useNavigate();
     const { userData, setUserData }: any = UseAuth();
+    // const { lastMessage, readyState } = useWebSocket("");
 
     const [step, setStep] = useState<number>(1);
     const [isCorrectStatus, setCorrectStatus] = useState<boolean>(false);
