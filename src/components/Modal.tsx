@@ -3,13 +3,14 @@ import { Modal as ModalComponent, Box, Fade } from '@mui/material';
 import { Button } from './Button';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
+import CircularProgress from '@mui/material/CircularProgress';
 
 interface Modal {
     title?: string,
     children: string | ReactNode,
     onConfirm?: () => void,
     isOpen: boolean,
-    onClose: () => void,
+    onClose?: () => void,
     width?: number,
     height?: number
 }
@@ -187,9 +188,47 @@ function ErrorModal({ children, onConfirm, isOpen, onClose, width = 430 }: Modal
     )
 }
 
+function LoadingModal({ children, isOpen, onClose, width = 430 }: Modal) {
+    return (
+        <ModalComponent
+            open={isOpen}
+            onClose={onClose}
+            closeAfterTransition
+        >
+            <Fade in={isOpen} timeout={500}>
+                <Box
+                    sx={{
+                        position: 'fixed',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                        width: width,
+                        bgcolor: '#222222',
+                        boxShadow: 24,
+                        p: 4,
+                        borderRadius: 4,
+                        outline: 'none'
+                    }}
+                >
+                    <div className="w-full h-1/4 flex flex-col justify-center items-center">
+                        <div className="mt-6">
+                            <CircularProgress size="50px" sx={{ color: "#5d5aff" }} />
+                        </div>
+                    </div>
+
+                    <div className="w-full h-1/2 flex justify-center items-center text-white-gray my-6">
+                        <p className="text-center">{children}</p>
+                    </div>
+                </Box>
+            </Fade>
+        </ModalComponent>
+    )
+}
+
 export const Modal = {
     Modal: GenericModal,
     Dialog: DialogModal,
     Info: InfoModal,
-    Error: ErrorModal
+    Error: ErrorModal,
+    Loading: LoadingModal
 }

@@ -7,7 +7,7 @@ import CheckIcon from '@mui/icons-material/Check';
 import UseAuth from "../../hooks/useAuth";
 import NotFound from "../NotFound";
 import axios from "axios";
-import useWebSocket from "react-use-websocket";
+// import useWebSocket from "react-use-websocket";
 
 export default function Plan() {
     const navigate = useNavigate();
@@ -17,39 +17,41 @@ export default function Plan() {
     const [step, setStep] = useState<number>(1);
     const [isCorrectStatus, setCorrectStatus] = useState<boolean>(false);
     const [showLoadingScreen, setLoadingScreen] = useState<boolean>(true);
-    const [isPlanAccessed, setPlanAccessed] = useState<boolean>(false);
 
     const [isSuccessModalOpen, setSuccessModalOpen] = useState<boolean>(false);
     const openSuccessModal = () => setSuccessModalOpen(true);
     const closeSuccessModal = () => { setSuccessModalOpen(false), navigate("/form") }
+
+    const [isErrorModalOpen, setErrorModalOpen] = useState<boolean>(false);
+    const openErrorModal = () => setErrorModalOpen(true);
+    const closeErrorModal = () => setErrorModalOpen(false);
+
+    const [loadingMessage, setLoadingMessage] = useState<string>("Gerando link de pagamento...");
+    const [isLoadingModalOpen, setLoadingModalOpen] = useState<boolean>(false);
+    const openLoadingModal = () => setLoadingModalOpen(true);
+    const closeLoadingModal = () => setLoadingModalOpen(false);
 
     useEffect(() => {
         userData.status == "AGUARDANDO_PAGAMENTO" && setCorrectStatus(true);
         setTimeout(() => setLoadingScreen(false), 3000);
     }, []);
 
-    useEffect(() => {
-        userData.status == "AGUARDANDO_FORMULARIO" && openSuccessModal();
-    }, [userData]);
+    async function getPaymentLink() {
+        openLoadingModal();
 
-    useEffect(() => {
-        if (!isPlanAccessed) return;
-
-        async function getUserData() {
-            await axios.get(`${import.meta.env.VITE_API_URL}/usuarios`, {
-                headers: {
-                    Authorization: `Bearer ${sessionStorage.getItem("bearerToken")}`
-                }
-            }).then(response => {
-                sessionStorage.setItem("userData", JSON.stringify(response.data));
-                setUserData(response.data);
-            });
-        }
-
-        const intervalId = setInterval(getUserData, 5000);
-        getUserData();
-        return () => clearInterval(intervalId);
-    }, [isPlanAccessed]);
+        await axios.post(`${import.meta.env.VITE_API_URL}/pagamentos`, null, {
+            headers: {
+                Authorization: `Bearer ${sessionStorage.getItem("bearerToken")}`
+            }
+        }).then(response => {
+            setTimeout(() => setLoadingMessage("Redirecionando para a página..."), 1000);
+            setTimeout(() => window.open(`${response.data}`, "_blank"), 2000);
+            setTimeout(() => setLoadingMessage("Aguardando pagamento..."), 2200);
+        }).catch(() => {
+            closeLoadingModal();
+            openErrorModal();
+        });
+    }
 
     function setNextStep() {
         step < 2 && setStep(step => step + 1);
@@ -96,7 +98,7 @@ export default function Plan() {
                                     <h1 className="text-4xl self-start">Escolha o melhor plano para você</h1>
 
                                     <div className="flex mt-8">
-                                        <a onClick={() => setPlanAccessed(true)} href="https://buy.stripe.com/test_8wMfZS8Tu9eQ3PW8wz" target="_blank" className="hover:scale-[1.02] transition-transform cursor-pointer">
+                                        <button onClick={getPaymentLink} className="hover:scale-[1.02] transition-transform cursor-pointer">
                                             <div className="w-[300px] h-[360px] flex flex-col items-center justify-between border-solid border-white border-2 rounded-[1.6rem]">
                                                 <div className="h-1/5 flex flex-col items-start justify-end text-white-gray w-full px-8">
                                                     <h4 className="text-white-gray text-lg font-semibold tracking-wide">Standard</h4>
@@ -114,9 +116,9 @@ export default function Plan() {
                                                     </ul>
                                                 </div>
                                             </div>
-                                        </a>
+                                        </button>
 
-                                        <a onClick={() => setPlanAccessed(true)} href="https://buy.stripe.com/test_fZe3d6edOfDe5Y49AE" target="_blank" className="hover:scale-[1.02] transition-transform cursor-pointer">
+                                        <button onClick={getPaymentLink} className="hover:scale-[1.02] transition-transform cursor-pointer">
                                             <div className="w-[300px] h-[360px] flex flex-col items-center justify-between border-solid border-white border-2 rounded-[1.6rem] mx-12">
                                                 <div className="h-1/5 flex flex-col items-start justify-end text-white-gray w-full px-8">
                                                     <h4 className="text-white-gray text-lg font-semibold tracking-wide">Premium</h4>
@@ -135,9 +137,9 @@ export default function Plan() {
                                                     </ul>
                                                 </div>
                                             </div>
-                                        </a>
+                                        </button>
 
-                                        <a onClick={() => setPlanAccessed(true)} href="https://buy.stripe.com/test_4gwcNG9XygHi3PW4gl" target="_blank" className="hover:scale-[1.02] transition-transform cursor-pointer">
+                                        <button onClick={getPaymentLink} className="hover:scale-[1.02] transition-transform cursor-pointer">
                                             <div className="w-[300px] h-[360px] flex flex-col items-center justify-between border-solid border-white border-2 rounded-[1.6rem]">
                                                 <div className="h-1/5 flex flex-col items-start justify-end text-white-gray w-full px-8">
                                                     <h4 className="text-white-gray text-lg font-semibold tracking-wide">Business</h4>
@@ -156,7 +158,7 @@ export default function Plan() {
                                                     </ul>
                                                 </div>
                                             </div>
-                                        </a>
+                                        </button>
                                     </div>
 
                                     <div className="text-sm mt-8 ">
@@ -172,7 +174,9 @@ export default function Plan() {
                 <NotFound />
             }
 
+            <Modal.Loading children={loadingMessage} onConfirm={closeLoadingModal} isOpen={isLoadingModalOpen} />
             <Modal.Info children="Pagamento realizado com sucesso!" onConfirm={closeSuccessModal} isOpen={isSuccessModalOpen} onClose={closeSuccessModal} />
+            <Modal.Error children="Houve uma falha ao gerar o link de pagamento." onConfirm={closeErrorModal} isOpen={isErrorModalOpen} onClose={closeErrorModal} />
         </>
     )
 }
