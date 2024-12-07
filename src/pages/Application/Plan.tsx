@@ -7,12 +7,10 @@ import CheckIcon from '@mui/icons-material/Check';
 import UseAuth from "../../hooks/useAuth";
 import NotFound from "../NotFound";
 import axios from "axios";
-// import useWebSocket from "react-use-websocket";
 
 export default function Plan() {
     const navigate = useNavigate();
     const { userData, setUserData }: any = UseAuth();
-    // const { lastMessage, readyState } = useWebSocket("");
 
     const [step, setStep] = useState<number>(1);
     const [isCorrectStatus, setCorrectStatus] = useState<boolean>(false);
@@ -176,7 +174,7 @@ export default function Plan() {
 
             <Modal.Loading children={loadingMessage} onConfirm={closeLoadingModal} isOpen={isLoadingModalOpen} />
             <Modal.Info children="Pagamento realizado com sucesso!" onConfirm={closeSuccessModal} isOpen={isSuccessModalOpen} onClose={closeSuccessModal} />
-            <Modal.Error children="Houve uma falha ao gerar o link de pagamento." onConfirm={closeErrorModal} isOpen={isErrorModalOpen} onClose={closeErrorModal} />
+            <Modal.Error children="Houve um problema ao gerar o link de pagamento." onConfirm={closeErrorModal} isOpen={isErrorModalOpen} onClose={closeErrorModal} />
         </>
     )
 }

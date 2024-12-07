@@ -37,41 +37,49 @@ export function Connections({ isLoading, setLoading, setMessage, openSuccessModa
         }
     }, [connectionData]);
 
-    async function sendConnectionForm() {
-        const postPayload = {
-            tipo: connectionData.media
-        }
-
-        const patchPayload = {
+    async function saveIntegrationData() {
+        const payload = {
             accessToken: connectionData.accessToken,
             clientId: connectionData.clientId,
             clientSecret: connectionData.clientSecret,
             igUserId: connectionData.igUserId
         }
 
-        setLoading(true);
-
-        await axios.post(`${import.meta.env.VITE_API_URL}/integracoes`, postPayload, {
+        await axios.patch(`${import.meta.env.VITE_API_URL}/integracoes`, payload, {
             headers: {
                 Authorization: `Bearer ${sessionStorage.getItem("bearerToken")}`
             }
         }).then(() => {
-            axios.patch(`${import.meta.env.VITE_API_URL}/integracoes`, patchPayload, {
-                headers: {
-                    Authorization: `Bearer ${sessionStorage.getItem("bearerToken")}`
-                }
-            }).then(() => {
-                sessionStorage.setItem("mediaConnected", "true");
-                setMediaConnected(true);
-                setMessage("Conexão realizada com sucesso! 🚀");
-                openSuccessModal();
-            }).catch(() => {
-                setMessage("Houve um problema ao realizar a conexão.");
-                openErrorModal();
-            });
+            sessionStorage.setItem("mediaConnected", "true");
+            setMediaConnected(true);
+            setMessage("Conexão realizada com sucesso! 🚀");
+            openSuccessModal();
         }).catch(() => {
             setMessage("Houve um problema ao realizar a conexão.");
             openErrorModal();
+        });
+    }
+
+    async function sendConnectionForm() {
+        const payload = {
+            tipo: connectionData.media
+        }
+
+        setLoading(true);
+
+        await axios.post(`${import.meta.env.VITE_API_URL}/integracoes`, payload, {
+            headers: {
+                Authorization: `Bearer ${sessionStorage.getItem("bearerToken")}`
+            }
+        }).then(() => {
+            saveIntegrationData();
+        }).catch((err) => {
+            if (err.response) {
+                err.response.status == 409 && saveIntegrationData();
+            } else {
+                setMessage("Houve um problema ao realizar a conexão.");
+                openErrorModal();
+            }
         });
 
         setLoading(false);

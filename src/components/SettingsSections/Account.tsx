@@ -53,7 +53,7 @@ export function Account({ isLoading, setLoading, setMessage, openSuccessModal, o
         setValue('sobrenome', userData.sobrenome);
         setValue('email', userData.email);
         setValue('telefone', userData.telefone.replace(/\D/g, '').replace(/^(\d{2})(\d)/, '($1) $2').replace(/(\d{4})(\d{4})/, '$1-$2'));
-        setValue('cnpj', userData.cnpj);
+        setValue('cnpj', userData.cnpj.replace(/\D/g, '').replace(/^(\d{2})(\d)/, '$1.$2').replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3').replace(/^(\d{2})\.(\d{3})\.(\d{3})(\d)/, '$1.$2.$3/$4').replace(/^(\d{2})\.(\d{3})\.(\d{3})\/(\d{4})(\d)/, '$1.$2.$3/$4-$5'));
         setValue('razaoSocial', userData.razaoSocial);
         setValue('nomeFantasia', userData.nomeFantasia);
         setValue('cep', userData.cep.replace(/\D/g, '').replace(/^(\d{5})(\d)/, '$1-$2'));
@@ -96,9 +96,7 @@ export function Account({ isLoading, setLoading, setMessage, openSuccessModal, o
                 bairro: data.bairro,
                 complemento: data.complemento,
                 cidade: data.cidade,
-                estado: data.estado,
-                nome: data.nome,
-                sobrenome: data.sobrenome
+                estado: data.estado
             }));
             sessionStorage.setItem("userData", JSON.stringify(userData));
             setMessage("Alteração realizada com sucesso! 🚀");

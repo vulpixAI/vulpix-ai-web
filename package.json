@@ -32,7 +32,6 @@
     "react-slick": "^0.30.2",
     "react-toastify": "^10.0.5",
     "react-type-animation": "^3.2.0",
-    "react-use-websocket": "^4.11.1",
     "recharts": "^2.14.1",
     "slick-carousel": "^1.8.1",
     "tailwind-clip-path": "^1.0.0",
