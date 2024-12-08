@@ -32,7 +32,7 @@ export function AuthProvider({ children }: AuthProvider) {
     }, []);
 
     useEffect(() => {
-        if (userData.status == "AGUARDANDO_FORMULARIO" || userData.status == "CADASTRO_FINALIZADO") {
+        if (userData.status == "AGUARDANDO_PAGAMENTO" || userData.status == "AGUARDANDO_FORMULARIO" || userData.status == "CADASTRO_FINALIZADO") {
             sessionStorage.setItem("userData", JSON.stringify(userData));
         }
     }, [userData]);

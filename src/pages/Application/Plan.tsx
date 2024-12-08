@@ -15,6 +15,8 @@ export default function Plan() {
     const [step, setStep] = useState<number>(1);
     const [isCorrectStatus, setCorrectStatus] = useState<boolean>(false);
     const [showLoadingScreen, setLoadingScreen] = useState<boolean>(true);
+    const [isPlanAccessed, setPlanAccessed] = useState<boolean>(false);
+    const [intervalId, setIntervalId] = useState<any>(null);
 
     const [isSuccessModalOpen, setSuccessModalOpen] = useState<boolean>(false);
     const openSuccessModal = () => setSuccessModalOpen(true);
@@ -34,7 +36,27 @@ export default function Plan() {
         setTimeout(() => setLoadingScreen(false), 3000);
     }, []);
 
+    useEffect(() => {
+        userData.status == "AGUARDANDO_FORMULARIO" && (openSuccessModal(), clearTimeout(intervalId), setIntervalId(null));
+    }, [userData]);
+
+    async function getUserData() {
+        await axios.get(`${import.meta.env.VITE_API_URL}/usuarios`, {
+            headers: {
+                Authorization: `Bearer ${sessionStorage.getItem("bearerToken")}`
+            }
+        }).then(response => {
+            setUserData(response.data);
+        });
+    }
+
+    useEffect(() => {
+        if (!isPlanAccessed) return;
+        setIntervalId(setInterval(getUserData, 10000));
+    }, [isPlanAccessed]);
+
     async function getPaymentLink() {
+        setPlanAccessed(true);
         openLoadingModal();
 
         await axios.post(`${import.meta.env.VITE_API_URL}/pagamentos`, null, {
