@@ -9,30 +9,33 @@ interface Chart {
 function Line({ width = 500, height = 250, data }: Chart) {
     return (
         <LineChart width={width} height={height} data={data}
-            margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+            margin={{ top: 5, right: 30, left: -10, bottom: 5 }}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="name" />
             <YAxis />
-            <Tooltip />
+            <Tooltip
+                contentStyle={{ backgroundColor: "#222222", borderColor: "#555", color: "#c3d1dc" }}
+            />
             <Legend />
-            <LineComponent type="monotone" dataKey="item1" stroke="#5d5aff" />
-            <LineComponent type="monotone" dataKey="item2" stroke="#e67e22 " />
-            <LineComponent type="monotone" dataKey="item3" stroke="#1abc9c" />
-            <LineComponent type="monotone" dataKey="item4" stroke="#f0f0f0" />
+            <LineComponent type="monotone" dataKey="Likes" stroke="#5d5aff" />
+            <LineComponent type="monotone" dataKey="Views" stroke="#e67e22 " />
+            <LineComponent type="monotone" dataKey="Shares" stroke="#1abc9c" />
+            <LineComponent type="monotone" dataKey="Saves" stroke="#f0f0f0" />
+            <LineComponent type="monotone" dataKey="Comments" stroke="#faff7c" />
         </LineChart>
     )
 }
 
 function Bar({ width = 500, height = 250, data }: Chart) {
     return (
-        <BarChart width={width} height={height} data={data}>
+        <BarChart width={width} height={height} data={data}
+            margin={{ top: 5, right: 30, left: -10, bottom: 5 }}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="name" />
             <YAxis />
             <Tooltip />
             <Legend />
-            <BarComponent dataKey="item1" fill="#5d5aff" />
-            <BarComponent dataKey="item2" fill="#f0f0f0" />
+            <BarComponent dataKey="Seguidores" fill="#5d5aff" />
         </BarChart>
     )
 }
