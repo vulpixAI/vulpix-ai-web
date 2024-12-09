@@ -52,7 +52,7 @@ export function Connections({ isLoading, setLoading, setMessage, openSuccessModa
         } else {
             setConnectionFormCompleted(false);
         }
-    }, [isFormChanged]);
+    }, [isFormChanged,connectionData]);
 
     async function saveIntegrationData() {
         const payload = {
