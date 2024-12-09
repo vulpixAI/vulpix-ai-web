@@ -28,9 +28,26 @@ export function Connections({ isLoading, setLoading, setMessage, openSuccessModa
 
     const [connectionData, setConnectionData] = useState<Partial<ConnectionData>>({});
     const [isConnectionFormCompleted, setConnectionFormCompleted] = useState<boolean>(false);
+    const [isFormChanged, setFormChanged] = useState<boolean>(false);
 
     useEffect(() => {
-        if (connectionData.media && connectionData.accessToken && connectionData.clientId && connectionData.clientSecret && connectionData.igUserId) {
+        axios.get(`${import.meta.env.VITE_API_URL}/integracoes`, {
+            headers: {
+                Authorization: `Bearer ${sessionStorage.getItem("bearerToken")}`
+            }
+        }).then(response => {
+            if (response.data) {
+                setConnectionData((prevData: object) => ({ ...prevData, media: response.data.tipo }));
+                setConnectionData((prevData: object) => ({ ...prevData, accessToken: response.data.accessToken }));
+                setConnectionData((prevData: object) => ({ ...prevData, clientId: response.data.clientId }));
+                setConnectionData((prevData: object) => ({ ...prevData, clientSecret: response.data.clientSecret }));
+                setConnectionData((prevData: object) => ({ ...prevData, igUserId: response.data.igUserId }));
+            }
+        });
+    }, []);
+
+    useEffect(() => {
+        if (connectionData.media && connectionData.accessToken && connectionData.clientId && connectionData.clientSecret && connectionData.igUserId && isFormChanged) {
             setConnectionFormCompleted(true);
         } else {
             setConnectionFormCompleted(false);
@@ -91,7 +108,7 @@ export function Connections({ isLoading, setLoading, setMessage, openSuccessModa
 
             <div className="flex mt-[8px] select-none">
                 <button
-                    onClick={() => setConnectionData((prevData: any) => ({ ...prevData, media: "INSTAGRAM" }))}
+                    onClick={() => { setConnectionData((prevData: any) => ({ ...prevData, media: "INSTAGRAM" })), !isFormChanged && setFormChanged(true) }}
                     className={`flex items-center py-2 px-3 mr-2 rounded-md border-solid border-2 transition-all ${connectionData.media == "INSTAGRAM" ? "text-purple border-purple" : "border-white-gray"}`}
                     disabled={isLoading ? true : false}
                 >
@@ -100,7 +117,7 @@ export function Connections({ isLoading, setLoading, setMessage, openSuccessModa
                 </button>
 
                 <button
-                    onClick={() => setConnectionData((prevData: any) => ({ ...prevData, media: "FACEBOOK" }))}
+                    onClick={() => { setConnectionData((prevData: any) => ({ ...prevData, media: "FACEBOOK" })), !isFormChanged && setFormChanged(true) }}
                     className={`flex items-center py-2 px-3 ml-2 rounded-md border-solid border-2 transition-all ${connectionData.media == "FACEBOOK" ? "text-purple border-purple" : "border-white-gray"}`}
                     disabled={isLoading ? true : false}
                 >
@@ -114,7 +131,7 @@ export function Connections({ isLoading, setLoading, setMessage, openSuccessModa
                     value={connectionData.accessToken || null}
                     placeholder="Token de Acesso*"
                     type="text"
-                    onChange={(e: any) => setConnectionData((prevData: any) => ({ ...prevData, accessToken: e.target.value }))}
+                    onChange={(e: any) => { setConnectionData((prevData: any) => ({ ...prevData, accessToken: e.target.value })), !isFormChanged && setFormChanged(true) }}
                     disabled={isLoading ? true : false}
                 />
             </div>
@@ -124,7 +141,7 @@ export function Connections({ isLoading, setLoading, setMessage, openSuccessModa
                     value={connectionData.clientId || null}
                     placeholder="Id do Cliente*"
                     type="text"
-                    onChange={(e: any) => setConnectionData((prevData: any) => ({ ...prevData, clientId: e.target.value }))}
+                    onChange={(e: any) => { setConnectionData((prevData: any) => ({ ...prevData, clientId: e.target.value })), !isFormChanged && setFormChanged(true) }}
                     disabled={isLoading ? true : false}
                 />
             </div>
@@ -134,7 +151,7 @@ export function Connections({ isLoading, setLoading, setMessage, openSuccessModa
                     value={connectionData.clientSecret || null}
                     placeholder="Secret do Cliente*"
                     type="text"
-                    onChange={(e: any) => setConnectionData((prevData: any) => ({ ...prevData, clientSecret: e.target.value }))}
+                    onChange={(e: any) => { setConnectionData((prevData: any) => ({ ...prevData, clientSecret: e.target.value })), !isFormChanged && setFormChanged(true) }}
                     disabled={isLoading ? true : false}
                 />
             </div>
@@ -144,7 +161,7 @@ export function Connections({ isLoading, setLoading, setMessage, openSuccessModa
                     value={connectionData.igUserId || null}
                     placeholder="Id de Usuário*"
                     type="text"
-                    onChange={(e: any) => setConnectionData((prevData: any) => ({ ...prevData, igUserId: e.target.value }))}
+                    onChange={(e: any) => { setConnectionData((prevData: any) => ({ ...prevData, igUserId: e.target.value })), !isFormChanged && setFormChanged(true) }}
                     disabled={isLoading ? true : false}
                 />
             </div>
