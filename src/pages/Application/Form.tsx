@@ -199,7 +199,9 @@ export default function Form() {
 
                             <div className="text-white-gray flex flex-col justify-center items-center">
                                 <h1 className="text-4xl text-center">Estamos quase lá!</h1>
-                                <p className="w-96 text-center my-8">Finalize a configuração de sua conta para garantir uma experiência mais precisa e personalizada. Isso permitirá que nossos serviços ofereçam ainda mais qualidade e eficiência para você.</p>
+                                <p className="w-[40rem] text-center my-8">
+                                    Reserve alguns minutos para responder a um breve formulário que nos ajudará a entender melhor suas preferências. Assim, ajustaremos nossos serviços para atender exatamente às suas necessidades, garantindo qualidade e eficiência. Será feito apenas uma <span className="font-semibold text-purple">única vez</span>. Clique no botão abaixo e comece agora!
+                                </p>
                                 <Button.Purple width="w-44" type="button" onClick={() => setNextStep(null)}>Próximo</Button.Purple>
                             </div>
 
@@ -207,7 +209,7 @@ export default function Form() {
 
                             <div className="w-[70%] text-white-gray">
                                 <h4 className="mb-4">PASSO {step} DE 5</h4>
-                                <h4>Alimente a IA com informações da sua empresa.</h4>
+                                <h4>Por favor, preencha as informações solicitadas sobre sua empresa. <span className="font-semibold text-purple">Esses dados são essenciais</span> para personalizarmos nossos serviços de forma eficiente e adequada às suas necessidades. Certifique-se de que as informações fornecidas estejam corretas.</h4>
 
                                 {step == 1 &&
 
@@ -271,11 +273,8 @@ export default function Form() {
                                             {stepOneErrors.logotipo && <span className="text-white-gray text-sm ml-3 mt-2">{stepOneErrors.logotipo.message}</span>}
                                         </div>
 
-                                        <div className="flex justify-between mt-8">
-                                            <p className="mr-24">Por favor, preencha as informações solicitadas sobre sua empresa. Esses dados são cruciais para personalizarmos nossos serviços eficazmente. Certifique-se de sua precisão.</p>
-                                            <div className="flex">
-                                                <Button.Purple width="w-44" type="submit">Próximo</Button.Purple>
-                                            </div>
+                                        <div className="flex justify-end mt-8">
+                                            <Button.Purple width="w-44" type="submit">Próximo</Button.Purple>
                                         </div>
                                     </form>
                                 }
@@ -353,9 +352,7 @@ export default function Form() {
                                             {stepTwoErrors.problemasQueResolve && <span className="text-white-gray text-sm ml-3 mt-2">{stepTwoErrors.problemasQueResolve.message}</span>}
                                         </div>
 
-                                        <div className="flex justify-between mt-8">
-                                            <p className="mr-24">Por favor, preencha as informações solicitadas sobre sua empresa. Esses dados são cruciais para personalizarmos nossos serviços eficazmente. Certifique-se de sua precisão.</p>
-
+                                        <div className="flex justify-end mt-8">
                                             <div className="flex">
                                                 <span className="mr-3"><Button.Transparent width="w-44" type="button" onClick={setPreviousStep}>Voltar</Button.Transparent></span>
                                                 <Button.Purple width="w-44" type="submit">Próximo</Button.Purple>
@@ -427,9 +424,7 @@ export default function Form() {
                                             {stepThreeErrors.pontosFortes && <span className="text-white-gray text-sm ml-3 mt-2">{stepThreeErrors.pontosFortes.message}</span>}
                                         </div>
 
-                                        <div className="flex justify-between mt-8">
-                                            <p className="mr-24">Por favor, preencha as informações solicitadas sobre sua empresa. Esses dados são cruciais para personalizarmos nossos serviços eficazmente. Certifique-se de sua precisão.</p>
-
+                                        <div className="flex justify-end mt-8">
                                             <div className="flex">
                                                 <span className="mr-3"><Button.Transparent width="w-44" type="button" onClick={setPreviousStep}>Voltar</Button.Transparent></span>
                                                 <Button.Purple width="w-44" type="submit">Próximo</Button.Purple>
@@ -501,9 +496,7 @@ export default function Form() {
                                             {stepFourErrors.objetivoMarketing && <span className="text-white-gray text-sm ml-3 mt-2">{stepFourErrors.objetivoMarketing.message}</span>}
                                         </div>
 
-                                        <div className="flex justify-between mt-8">
-                                            <p className="mr-24">Por favor, preencha as informações solicitadas sobre sua empresa. Esses dados são cruciais para personalizarmos nossos serviços eficazmente. Certifique-se de sua precisão.</p>
-
+                                        <div className="flex justify-end mt-8">
                                             <div className="flex">
                                                 <span className="mr-3"><Button.Transparent width="w-44" type="button" onClick={setPreviousStep}>Voltar</Button.Transparent></span>
                                                 <Button.Purple width="w-44" type="submit">Próximo</Button.Purple>
@@ -580,9 +573,7 @@ export default function Form() {
                                             {stepFiveErrors.observacoesGerais && <span className="text-white-gray text-sm ml-3 mt-2">{stepFiveErrors.observacoesGerais.message}</span>}
                                         </div>
 
-                                        <div className="flex justify-between mt-8">
-                                            <p className="mr-24">Por favor, preencha as informações solicitadas sobre sua empresa. Esses dados são cruciais para personalizarmos nossos serviços eficazmente. Certifique-se de sua precisão.</p>
-
+                                        <div className="flex justify-end mt-8">
                                             <div className="flex">
                                                 <span className="mr-3"><Button.Transparent width="w-44" type="button" onClick={setPreviousStep} disabled={isLoading ? true : false}>Voltar</Button.Transparent></span>
                                                 <Button.Purple width="w-44" type="submit" disabled={isLoading ? true : false}>

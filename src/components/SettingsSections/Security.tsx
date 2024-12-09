@@ -71,7 +71,7 @@ export function Security({ isLoading, setLoading, setMessage, openSuccessModal, 
 
     return (
         <form onSubmit={handleSubmit(updatePassword)} className="w-full h-full flex flex-col items-center justify-between">
-            <h2 className="text-center">Quer mudar sua senha? É aqui mesmo! Fácil, rápido e seguro. 🔒</h2>
+            <h2 className="text-center">Quer mudar sua senha? É aqui mesmo! Fácil, rápido e seguro.</h2>
 
             <div className="h-[360px] -mt-4 py-2 px-4 w-full overflow-x-hidden">
                 <div className="flex flex-col relative">

@@ -321,7 +321,7 @@ export default function Creative() {
                                         <Button.Purple onClick={() => selectedCreative && setNextStep()} width="w-52">Confirmar</Button.Purple>
                                     </>
                                     :
-                                    <h3 className="text-white-gray text-xl font-medium text-center w-[80%]">Criativos gerados com sucesso! Mas parece que você ainda não se conectou em nenhuma rede social. Sem estresse! Vá em <b>Configurações {'>'} Conexões</b>, faça a conexão, e pronto, é só continuar. 😉</h3>
+                                    <h3 className="text-white-gray text-xl font-medium text-center w-[80%]">Criativos gerados com sucesso! Mas parece que você ainda não se conectou em nenhuma rede social. Sem estresse! Vá em <b>Configurações {'>'} Conexões</b>, faça a conexão, e pronto, é só continuar.</h3>
                                 }
                             </div>
                         </div>

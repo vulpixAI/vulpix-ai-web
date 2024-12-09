@@ -150,7 +150,7 @@ export function Account({ isLoading, setLoading, setMessage, openSuccessModal, o
                 </div>
                 :
                 <form onSubmit={handleSubmit(updateUserData)} className="w-full h-full flex flex-col items-center justify-between">
-                    <h2 className="text-center">Pretende atualizar seus dados? Atualize suas informações por aqui! ✏️</h2>
+                    <h2 className="text-center">Pretende atualizar seus dados? Atualize suas informações por aqui!</h2>
 
                     <div className="h-[360px] -mt-4 py-2 px-4 w-full overflow-x-hidden">
                         <h3 className="mb-5 flex items-center"><PersonIcon fontSize="small" /> <span className="mt-[2px] ml-1">Dados Pessoais</span></h3>

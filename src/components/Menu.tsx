@@ -106,7 +106,7 @@ export function Menu({ children }: Menu) {
                                         </Tooltip>
                                     </div>
                                     <div className="h-10 w-[1px] bg-white-gray/40 mx-8"></div>
-                                    <h4 className="text-purple select-none w-32 text-center text-nowrap cursor-pointer" onClick={openSettingsModal}>{userData.nomeFantasia}</h4>
+                                    <h4 className="text-purple font-semibold select-none w-32 text-center text-nowrap cursor-pointer" onClick={openSettingsModal}>{userData.nomeFantasia}</h4>
                                 </div>
                             </nav>
                             <div className="w-[90%] h-[1px] bg-white-gray/40 mt-16 fixed"></div>

@@ -146,7 +146,7 @@ export function Form({ isLoading, setLoading, setMessage, openSuccessModal, open
                 </div>
                 :
                 <form onSubmit={handleSubmit(updateFormData)} className="w-full h-full flex flex-col items-center justify-between">
-                    <h2 className="text-center">Deseja atualizar o formulário? Faça suas alterações por aqui! ✏️</h2>
+                    <h2 className="text-center">Deseja atualizar o formulário? Faça suas alterações por aqui!</h2>
 
                     <div className="h-[360px] -mt-4 py-2 px-4 w-full overflow-x-hidden">
                         <div className="flex mt-2">

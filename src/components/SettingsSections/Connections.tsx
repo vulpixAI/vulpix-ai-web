@@ -104,7 +104,7 @@ export function Connections({ isLoading, setLoading, setMessage, openSuccessModa
 
     return (
         <div className="w-full h-full flex flex-col items-center justify-between">
-            <h2 className="text-center">Escolha uma rede, preencha os campos e, ao se conectar, você poderá fazer publicações através da nossa plataforma! 🚀</h2>
+            <h2 className="text-center">Escolha uma rede, preencha os campos e, ao se conectar, você poderá fazer publicações através da nossa plataforma!</h2>
 
             <div className="flex mt-[8px] select-none">
                 <button
