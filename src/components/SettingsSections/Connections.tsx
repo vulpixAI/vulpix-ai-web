@@ -68,6 +68,7 @@ export function Connections({ isLoading, setLoading, setMessage, openSuccessModa
             }
         }).then(() => {
             sessionStorage.setItem("mediaConnected", "true");
+            setFormChanged(false);
             setMediaConnected(true);
             setMessage("Conexão realizada com sucesso! 🚀");
             openSuccessModal();
