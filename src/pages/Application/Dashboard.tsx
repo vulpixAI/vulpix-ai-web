@@ -99,6 +99,49 @@ export default function Dashboard() {
         isDateRangeChanged && getLineChartData();
     }, [isDateRangeChanged]);
 
+    const lineChartDataMock = [
+        {
+            "name": "Ter",
+            "Likes": 35,
+            "Views": 15,
+            "Shares": 22,
+            "Saves": 18,
+            "Comments": 48
+        },
+        {
+            "name": "Qua",
+            "Likes": 50,
+            "Views": 25,
+            "Shares": 18,
+            "Saves": 20,
+            "Comments": 60
+        },
+        {
+            "name": "Qui",
+            "Likes": 28,
+            "Views": 12,
+            "Shares": 30,
+            "Saves": 14,
+            "Comments": 70
+        },
+        {
+            "name": "Sex",
+            "Likes": 45,
+            "Views": 20,
+            "Shares": 25,
+            "Saves": 22,
+            "Comments": 65
+        },
+        {
+            "name": "Sab",
+            "Likes": 38,
+            "Views": 18,
+            "Shares": 28,
+            "Saves": 19,
+            "Comments": 55
+        }
+    ];
+
     const barChartDataMock = [
         {
             "name": "Jul",
@@ -222,7 +265,7 @@ export default function Dashboard() {
                             <div className="h-[20rem] w-[34rem] bg-dark-gray rounded-2xl mx-6 pb-3 flex flex-col">
                                 <div className="h-1/5 flex justify-center items-center"><h4>Métricas de Engajamento</h4></div>
                                 <div className="h-4/5 flex items-center justify-center">
-                                    <Chart.Line data={lineChartData} />
+                                    <Chart.Line data={lineChartDataMock} />
                                 </div>
                             </div>
 
