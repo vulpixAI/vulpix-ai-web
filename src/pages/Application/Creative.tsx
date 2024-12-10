@@ -400,7 +400,7 @@ export default function Creative() {
                         }
                     </Button.Purple>
                     <span className="ml-3">
-                        <Button.Transparent width="w-52" onClick={() => formattedDateTime != null ? deleteScheduling() : openSchedulingModal()}>
+                        <Button.Transparent width="w-52" onClick={() => formattedDateTime != null ? deleteScheduling() : openSchedulingModal()} disabled={isPublishing ? true : false}>
                             {formattedDateTime != null ? "Excluir Agendamento" : "Agendar Publicação"}
                         </Button.Transparent>
                     </span>
