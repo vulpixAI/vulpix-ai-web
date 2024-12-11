@@ -1,4 +1,4 @@
-import { useState, useEffect, FormEvent } from "react";
+import { useState, useEffect, FormEvent, useRef } from "react";
 import { Skeleton, TextareaAutosize, Tooltip } from "@mui/material";
 import { Menu } from "../../components/Menu";
 import { TypeAnimation } from 'react-type-animation';
@@ -27,6 +27,7 @@ export default function Creative() {
     const { id } = useParams();
     const { minutes, seconds, startTimer, resetTimer } = useTimer();
     const { isMediaConnected }: any = UseAuth();
+    const captionTextArea: any = useRef(null);
 
     const interactiveMessages = ["O que sua imaginação está pedindo agora?", "Pronto para criar algo incrível?", "O que vamos criar juntos hoje?", "Ideia na cabeça? Vamos transformar em imagem!", "Qual é o projeto da vez?", "Digite sua ideia... Vamos criar!"];
     const validInputRegex = /^(?!\s*$)(?!\s).+/;
@@ -43,6 +44,8 @@ export default function Creative() {
     const [caption, setCaption] = useState<string>("");
     const [isRequestingCaptionApi, setRequestingCaptionApi] = useState<boolean>(false);
     const [isGeneratingCaption, setGeneratingCaption] = useState<boolean>(false);
+    const [isEditActive, setEditActive] = useState<boolean>(false);
+    const [isCaptionDivScrollable, setCaptionDivScrollable] = useState<boolean>(false);
 
     const [isPublishing, setPublishing] = useState<boolean>(false);
 
@@ -172,6 +175,27 @@ export default function Creative() {
                 setErrorMessage("Houve um problema ao gerar a legenda.");
                 openErrorModal();
             });
+    }
+
+    useEffect(() => {
+        if (captionTextArea.current && step == 2) {
+            const hasScroll = captionTextArea.current.scrollHeight > captionTextArea.current.clientHeight;
+            setCaptionDivScrollable(hasScroll);
+        }
+    }, [step]);
+
+    function editCaption() {
+        setEditActive(true);
+        setTimeout(() => {
+            captionTextArea.current.setSelectionRange(captionTextArea.current.value.length, captionTextArea.current.value.length);
+            captionTextArea.current.focus();
+        }, 0);
+    }
+
+    function resetCaptionTextArea() {
+        captionTextArea.current.setSelectionRange(0, 0);
+        captionTextArea.current.focus();
+        setEditActive(false);
     }
 
     async function publish() {
@@ -346,23 +370,34 @@ export default function Creative() {
                     caption && isGeneratingCaption
                         ?
                         <div className="w-[750px] h-72 flex items-center justify-center rounded-2xl my-8 p-12 bg-dark-gray text-white-gray">
-                            <TypeAnimation
-                                key={step}
-                                sequence={[caption, () => setGeneratingCaption(false)]}
-                                speed={90}
-                                repeat={1}
-                                cursor={false}
-                            />
+                            <div className="h-[192px] flex items-center overflow-y-auto">
+                                <TypeAnimation
+                                    style={{ height: "192px", display: "flex", alignItems: "center", overflowY: "auto", padding: "0 4px" }}
+                                    key={step}
+                                    sequence={[caption, () => setGeneratingCaption(false)]}
+                                    speed={90}
+                                    repeat={1}
+                                    cursor={false}
+                                />
+                            </div>
                         </div>
                         :
                         <div className="w-[750px] h-72 flex items-center justify-center rounded-2xl my-8 p-12 bg-dark-gray text-white-gray">
-                            <p>{caption}</p>
+                            <TextareaAutosize
+                                ref={captionTextArea}
+                                className="outline-none w-full rounded-xl px-1 bg-dark-gray text-blue-gray placeholder:text-zinc-500 resize-none placeholder:select-none"
+                                maxRows={8}
+                                onChange={(e) => { setCaption(e.target.value) }}
+                                value={caption.trimStart()}
+                                disabled={isEditActive ? false : true}
+                            />
                         </div>
                 }
 
                 <div className="flex">
-                    <span className="mr-3"><Button.Transparent onClick={() => { isCreativeFromCreativeList ? navigate("/creative-list") : setPreviousStep() }} width="w-52" disabled={isGeneratingCaption ? true : false}>Voltar</Button.Transparent></span>
-                    <Button.Purple onClick={() => setNextStep()} width="w-52" disabled={isGeneratingCaption || !caption ? true : false}>Confirmar</Button.Purple>
+                    <Button.Transparent onClick={() => { isCreativeFromCreativeList ? navigate("/creative-list") : (setPreviousStep(), resetCaptionTextArea()) }} width="w-52" disabled={isGeneratingCaption ? true : false}>Voltar</Button.Transparent>
+                    <span className="mx-3"><Button.Purple onClick={() => { setNextStep(), resetCaptionTextArea() }} width="w-52" disabled={isGeneratingCaption || !caption ? true : false}>Confirmar</Button.Purple></span>
+                    <Button.Transparent onClick={() => editCaption()} width="w-52" disabled={isGeneratingCaption || !caption ? true : false}>Editar</Button.Transparent>
                 </div>
 
                 <div className="flex items-center justify-center mt-8">
@@ -384,7 +419,7 @@ export default function Creative() {
 
                 <div className={`flex items-center justify-center bg-dark-gray rounded-2xl pr-6 ${formattedDateTime != null ? "mt-12" : "my-12"}`}>
                     <img className="w-[340px] h-[300px] rounded-2xl" src={selectedCreative} />
-                    <p className="ml-8 text-white-gray w-[460px]">{caption}</p>
+                    <p className={`flex ${!isCaptionDivScrollable && "items-center"} ml-8 text-white-gray w-[460px] h-[230px] overflow-y-auto px-1`}>{caption}</p>
                 </div>
 
                 <h6 className={`my-8 text-white-gray ${formattedDateTime != null ? "block" : "hidden"}`}>
