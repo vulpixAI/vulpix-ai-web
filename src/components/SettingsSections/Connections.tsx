@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Button } from "../Button";
 import { Input } from "../Input";
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -30,6 +31,11 @@ export function Connections({ isLoading, setLoading, setMessage, openSuccessModa
     const [isConnectionFormCompleted, setConnectionFormCompleted] = useState<boolean>(false);
     const [isFormChanged, setFormChanged] = useState<boolean>(false);
 
+    const [isAccessTokenVisible, setAccessTokenVisible] = useState<boolean>(false);
+    const [isClientIdVisible, setClientIdVisible] = useState<boolean>(false);
+    const [isClientSecretVisible, setClientSecretVisible] = useState<boolean>(false);
+    const [isIgUserIdVisible, setIgUserIdVisible] = useState<boolean>(false);
+
     useEffect(() => {
         axios.get(`${import.meta.env.VITE_API_URL}/integracoes`, {
             headers: {
@@ -52,7 +58,7 @@ export function Connections({ isLoading, setLoading, setMessage, openSuccessModa
         } else {
             setConnectionFormCompleted(false);
         }
-    }, [isFormChanged,connectionData]);
+    }, [isFormChanged, connectionData]);
 
     async function saveIntegrationData() {
         const payload = {
@@ -127,44 +133,80 @@ export function Connections({ isLoading, setLoading, setMessage, openSuccessModa
                 </button>
             </div>
 
-            <div className="w-full mt-4">
+            <div className="w-full mt-4 relative">
                 <Input.Modal
                     value={connectionData.accessToken || null}
                     placeholder="Token de Acesso*"
-                    type="text"
+                    type={isAccessTokenVisible ? "text" : "password"}
                     onChange={(e: any) => { setConnectionData((prevData: any) => ({ ...prevData, accessToken: e.target.value })), !isFormChanged && setFormChanged(true) }}
                     disabled={isLoading ? true : false}
+                    hasIcon
                 />
+                <button
+                    type="button"
+                    className="absolute right-3 top-[10px] text-white-gray cursor-pointer"
+                    onClick={() => setAccessTokenVisible(prevState => !prevState)}
+                    tabIndex={-1}
+                >
+                    {isAccessTokenVisible ? <Visibility /> : <VisibilityOff />}
+                </button>
             </div>
 
-            <div className="w-full mt-4">
+            <div className="w-full mt-4 relative">
                 <Input.Modal
                     value={connectionData.clientId || null}
                     placeholder="Id do Cliente*"
-                    type="text"
+                    type={isClientIdVisible ? "text" : "password"}
                     onChange={(e: any) => { setConnectionData((prevData: any) => ({ ...prevData, clientId: e.target.value })), !isFormChanged && setFormChanged(true) }}
                     disabled={isLoading ? true : false}
+                    hasIcon
                 />
+                <button
+                    type="button"
+                    className="absolute right-3 top-[10px] text-white-gray cursor-pointer"
+                    onClick={() => setClientIdVisible(prevState => !prevState)}
+                    tabIndex={-1}
+                >
+                    {isClientIdVisible ? <Visibility /> : <VisibilityOff />}
+                </button>
             </div>
 
-            <div className="w-full mt-4">
+            <div className="w-full mt-4 relative">
                 <Input.Modal
                     value={connectionData.clientSecret || null}
                     placeholder="Secret do Cliente*"
-                    type="text"
+                    type={isClientSecretVisible ? "text" : "password"}
                     onChange={(e: any) => { setConnectionData((prevData: any) => ({ ...prevData, clientSecret: e.target.value })), !isFormChanged && setFormChanged(true) }}
                     disabled={isLoading ? true : false}
+                    hasIcon
                 />
+                <button
+                    type="button"
+                    className="absolute right-3 top-[10px] text-white-gray cursor-pointer"
+                    onClick={() => setClientSecretVisible(prevState => !prevState)}
+                    tabIndex={-1}
+                >
+                    {isClientSecretVisible ? <Visibility /> : <VisibilityOff />}
+                </button>
             </div>
 
-            <div className="w-full my-4">
+            <div className="w-full my-4 relative">
                 <Input.Modal
                     value={connectionData.igUserId || null}
                     placeholder="Id de Usuário*"
-                    type="text"
+                    type={isIgUserIdVisible ? "text" : "password"}
                     onChange={(e: any) => { setConnectionData((prevData: any) => ({ ...prevData, igUserId: e.target.value })), !isFormChanged && setFormChanged(true) }}
                     disabled={isLoading ? true : false}
+                    hasIcon
                 />
+                <button
+                    type="button"
+                    className="absolute right-3 top-[10px] text-white-gray cursor-pointer"
+                    onClick={() => setIgUserIdVisible(prevState => !prevState)}
+                    tabIndex={-1}
+                >
+                    {isIgUserIdVisible ? <Visibility /> : <VisibilityOff />}
+                </button>
             </div>
 
             <div className="flex items-end justify-end w-full">

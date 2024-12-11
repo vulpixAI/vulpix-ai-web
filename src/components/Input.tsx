@@ -20,7 +20,8 @@ interface GenericInput<T extends FieldValues> {
     register?: UseFormRegister<T>,
     onBlur?: any,
     onChange?: React.ChangeEventHandler,
-    disabled?: boolean
+    disabled?: boolean,
+    hasIcon?: boolean
 }
 
 interface ColorPicker {
@@ -46,7 +47,7 @@ interface DateRangePicker {
     onChangeEnd: any
 }
 
-function GenericInput<T extends FieldValues>({ value, placeholder, type, maxLength, id, name, register, onBlur, onChange, disabled }: GenericInput<T>) {
+function GenericInput<T extends FieldValues>({ value, placeholder, type, maxLength, id, name, register, onBlur, onChange, disabled, hasIcon = false }: GenericInput<T>) {
     const [isOnFocus, setOnFocus] = useState<boolean>(false);
 
     return (
@@ -69,7 +70,7 @@ function GenericInput<T extends FieldValues>({ value, placeholder, type, maxLeng
             }
 
             <input
-                className={`relative outline-none w-full h-12 rounded-lg bg-transparent disabled:cursor-no-drop border-2 ${isOnFocus ? "border-purple" : "border-zinc-600"} placeholder:blue-gray p-2 pl-4 text-blue-gray ${name == "password" || name == "confirmPassword" ? "pr-11" : ""}`}
+                className={`relative outline-none w-full h-12 rounded-lg bg-transparent disabled:cursor-no-drop border-2 ${isOnFocus ? "border-purple" : "border-zinc-600"} placeholder:blue-gray p-2 pl-4 text-blue-gray ${hasIcon ? "pr-11" : ""}`}
                 value={value || ""}
                 type={type}
                 maxLength={maxLength}
@@ -84,7 +85,7 @@ function GenericInput<T extends FieldValues>({ value, placeholder, type, maxLeng
     )
 }
 
-function ModalInput<T extends FieldValues>({ value, placeholder, type, maxLength, id, name, register, onBlur, onChange, disabled }: GenericInput<T>) {
+function ModalInput<T extends FieldValues>({ value, placeholder, type, maxLength, id, name, register, onBlur, onChange, disabled, hasIcon = false }: GenericInput<T>) {
     const [isOnFocus, setOnFocus] = useState<boolean>(false);
 
     return (
@@ -107,7 +108,7 @@ function ModalInput<T extends FieldValues>({ value, placeholder, type, maxLength
             }
 
             <input
-                className={`relative outline-none w-full h-12 rounded-lg bg-transparent disabled:cursor-no-drop border-2 ${isOnFocus ? "border-purple" : "border-zinc-600"} placeholder:blue-gray p-2 pl-4 text-blue-gray ${name == "password" || name == "newPassword" || name == "confirmPassword" || name == "currentPassword" ? "pr-11" : ""}`}
+                className={`relative outline-none w-full h-12 rounded-lg bg-transparent disabled:cursor-no-drop border-2 ${isOnFocus ? "border-purple" : "border-zinc-600"} placeholder:blue-gray p-2 pl-4 text-blue-gray ${hasIcon ? "pr-11" : ""}`}
                 value={value || ""}
                 type={type}
                 maxLength={maxLength}

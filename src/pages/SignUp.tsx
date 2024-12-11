@@ -248,6 +248,7 @@ export default function SignUp() {
                                 id="inputPassword"
                                 name="password"
                                 register={registerUser}
+                                hasIcon
                             />
                             <button
                                 type="button"
@@ -268,6 +269,7 @@ export default function SignUp() {
                                 id="inputConfirmPassword"
                                 name="confirmPassword"
                                 register={registerUser}
+                                hasIcon
                             />
                             <button
                                 type="button"

@@ -84,6 +84,7 @@ export function Security({ isLoading, setLoading, setMessage, openSuccessModal, 
                         register={register}
                         onChange={(e: any) => { register('currentPassword').onChange(e), !isPasswordFormChanged && setPasswordFormChanged(true) }}
                         disabled={isLoading ? true : false}
+                        hasIcon
                     />
                     <button
                         type="button"
@@ -106,6 +107,7 @@ export function Security({ isLoading, setLoading, setMessage, openSuccessModal, 
                         register={register}
                         onChange={(e: any) => { register('newPassword').onChange(e), !isPasswordFormChanged && setPasswordFormChanged(true) }}
                         disabled={isLoading ? true : false}
+                        hasIcon
                     />
                     <button
                         type="button"
@@ -128,6 +130,7 @@ export function Security({ isLoading, setLoading, setMessage, openSuccessModal, 
                         register={register}
                         onChange={(e: any) => { register('confirmNewPassword').onChange(e), !isPasswordFormChanged && setPasswordFormChanged(true) }}
                         disabled={isLoading ? true : false}
+                        hasIcon
                     />
                     <button
                         type="button"

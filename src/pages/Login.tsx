@@ -100,6 +100,7 @@ export default function Login() {
                             name="password"
                             register={register}
                             disabled={isLoading ? true : false}
+                            hasIcon
                         />
                         <button
                             type="button"
