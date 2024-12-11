@@ -29,6 +29,7 @@ export function Connections({ isLoading, setLoading, setMessage, openSuccessModa
 
     const [connectionData, setConnectionData] = useState<Partial<ConnectionData>>({});
     const [isConnectionFormCompleted, setConnectionFormCompleted] = useState<boolean>(false);
+    const [isFormDataLoading, setFormDataLoading] = useState<boolean>(true);
     const [isFormChanged, setFormChanged] = useState<boolean>(false);
 
     const [isAccessTokenVisible, setAccessTokenVisible] = useState<boolean>(false);
@@ -48,8 +49,9 @@ export function Connections({ isLoading, setLoading, setMessage, openSuccessModa
                 setConnectionData((prevData: object) => ({ ...prevData, clientId: response.data.clientId }));
                 setConnectionData((prevData: object) => ({ ...prevData, clientSecret: response.data.clientSecret }));
                 setConnectionData((prevData: object) => ({ ...prevData, igUserId: response.data.igUserId }));
+                setFormDataLoading(false);
             }
-        });
+        }).catch(() => setFormDataLoading(false));
     }, []);
 
     useEffect(() => {
@@ -110,113 +112,122 @@ export function Connections({ isLoading, setLoading, setMessage, openSuccessModa
     }
 
     return (
-        <div className="w-full h-full flex flex-col items-center justify-between">
-            <h2 className="text-center">Escolha uma rede, preencha os campos e, ao se conectar, você poderá fazer publicações através da nossa plataforma!</h2>
+        <>
+            {isFormDataLoading
+                ?
+                <div className="w-full h-full flex items-center justify-center">
+                    <CircularProgress size="50px" sx={{ color: "#5d5aff" }} />
+                </div>
+                :
+                <div className="w-full h-full flex flex-col items-center justify-between">
+                    <h2 className="text-center">Escolha uma rede, preencha os campos e, ao se conectar, você poderá fazer publicações através da nossa plataforma!</h2>
 
-            <div className="flex mt-[8px] select-none">
-                <button
-                    onClick={() => { setConnectionData((prevData: any) => ({ ...prevData, media: "INSTAGRAM" })), !isFormChanged && setFormChanged(true) }}
-                    className={`flex items-center py-2 px-3 mr-2 rounded-md border-solid border-2 transition-all ${connectionData.media == "INSTAGRAM" ? "text-purple border-purple" : "border-white-gray"}`}
-                    disabled={isLoading ? true : false}
-                >
-                    <InstagramIcon />
-                    <span className="ml-2">Instagram</span>
-                </button>
+                    <div className="flex mt-[8px] select-none">
+                        <button
+                            onClick={() => { setConnectionData((prevData: any) => ({ ...prevData, media: "INSTAGRAM" })), !isFormChanged && setFormChanged(true) }}
+                            className={`flex items-center py-2 px-3 mr-2 rounded-md border-solid border-2 transition-all ${connectionData.media == "INSTAGRAM" ? "text-purple border-purple" : "border-white-gray"}`}
+                            disabled={isLoading ? true : false}
+                        >
+                            <InstagramIcon />
+                            <span className="ml-2">Instagram</span>
+                        </button>
 
-                <button
-                    onClick={() => { setConnectionData((prevData: any) => ({ ...prevData, media: "FACEBOOK" })), !isFormChanged && setFormChanged(true) }}
-                    className={`flex items-center py-2 px-3 ml-2 rounded-md border-solid border-2 transition-all ${connectionData.media == "FACEBOOK" ? "text-purple border-purple" : "border-white-gray"}`}
-                    disabled={isLoading ? true : false}
-                >
-                    <FacebookIcon />
-                    <span className="ml-2">Facebook</span>
-                </button>
-            </div>
+                        <button
+                            onClick={() => { setConnectionData((prevData: any) => ({ ...prevData, media: "FACEBOOK" })), !isFormChanged && setFormChanged(true) }}
+                            className={`flex items-center py-2 px-3 ml-2 rounded-md border-solid border-2 transition-all ${connectionData.media == "FACEBOOK" ? "text-purple border-purple" : "border-white-gray"}`}
+                            disabled={isLoading ? true : false}
+                        >
+                            <FacebookIcon />
+                            <span className="ml-2">Facebook</span>
+                        </button>
+                    </div>
 
-            <div className="w-full mt-4 relative">
-                <Input.Modal
-                    value={connectionData.accessToken || null}
-                    placeholder="Token de Acesso*"
-                    type={isAccessTokenVisible ? "text" : "password"}
-                    onChange={(e: any) => { setConnectionData((prevData: any) => ({ ...prevData, accessToken: e.target.value })), !isFormChanged && setFormChanged(true) }}
-                    disabled={isLoading ? true : false}
-                    hasIcon
-                />
-                <button
-                    type="button"
-                    className="absolute right-3 top-[10px] text-white-gray cursor-pointer"
-                    onClick={() => setAccessTokenVisible(prevState => !prevState)}
-                    tabIndex={-1}
-                >
-                    {isAccessTokenVisible ? <Visibility /> : <VisibilityOff />}
-                </button>
-            </div>
+                    <div className="w-full mt-4 relative">
+                        <Input.Modal
+                            value={connectionData.accessToken || null}
+                            placeholder="Token de Acesso*"
+                            type={isAccessTokenVisible ? "text" : "password"}
+                            onChange={(e: any) => { setConnectionData((prevData: any) => ({ ...prevData, accessToken: e.target.value })), !isFormChanged && setFormChanged(true) }}
+                            disabled={isLoading ? true : false}
+                            hasIcon
+                        />
+                        <button
+                            type="button"
+                            className="absolute right-3 top-[10px] text-white-gray cursor-pointer"
+                            onClick={() => setAccessTokenVisible(prevState => !prevState)}
+                            tabIndex={-1}
+                        >
+                            {isAccessTokenVisible ? <Visibility /> : <VisibilityOff />}
+                        </button>
+                    </div>
 
-            <div className="w-full mt-4 relative">
-                <Input.Modal
-                    value={connectionData.clientId || null}
-                    placeholder="Id do Cliente*"
-                    type={isClientIdVisible ? "text" : "password"}
-                    onChange={(e: any) => { setConnectionData((prevData: any) => ({ ...prevData, clientId: e.target.value })), !isFormChanged && setFormChanged(true) }}
-                    disabled={isLoading ? true : false}
-                    hasIcon
-                />
-                <button
-                    type="button"
-                    className="absolute right-3 top-[10px] text-white-gray cursor-pointer"
-                    onClick={() => setClientIdVisible(prevState => !prevState)}
-                    tabIndex={-1}
-                >
-                    {isClientIdVisible ? <Visibility /> : <VisibilityOff />}
-                </button>
-            </div>
+                    <div className="w-full mt-4 relative">
+                        <Input.Modal
+                            value={connectionData.clientId || null}
+                            placeholder="Id do Cliente*"
+                            type={isClientIdVisible ? "text" : "password"}
+                            onChange={(e: any) => { setConnectionData((prevData: any) => ({ ...prevData, clientId: e.target.value })), !isFormChanged && setFormChanged(true) }}
+                            disabled={isLoading ? true : false}
+                            hasIcon
+                        />
+                        <button
+                            type="button"
+                            className="absolute right-3 top-[10px] text-white-gray cursor-pointer"
+                            onClick={() => setClientIdVisible(prevState => !prevState)}
+                            tabIndex={-1}
+                        >
+                            {isClientIdVisible ? <Visibility /> : <VisibilityOff />}
+                        </button>
+                    </div>
 
-            <div className="w-full mt-4 relative">
-                <Input.Modal
-                    value={connectionData.clientSecret || null}
-                    placeholder="Secret do Cliente*"
-                    type={isClientSecretVisible ? "text" : "password"}
-                    onChange={(e: any) => { setConnectionData((prevData: any) => ({ ...prevData, clientSecret: e.target.value })), !isFormChanged && setFormChanged(true) }}
-                    disabled={isLoading ? true : false}
-                    hasIcon
-                />
-                <button
-                    type="button"
-                    className="absolute right-3 top-[10px] text-white-gray cursor-pointer"
-                    onClick={() => setClientSecretVisible(prevState => !prevState)}
-                    tabIndex={-1}
-                >
-                    {isClientSecretVisible ? <Visibility /> : <VisibilityOff />}
-                </button>
-            </div>
+                    <div className="w-full mt-4 relative">
+                        <Input.Modal
+                            value={connectionData.clientSecret || null}
+                            placeholder="Secret do Cliente*"
+                            type={isClientSecretVisible ? "text" : "password"}
+                            onChange={(e: any) => { setConnectionData((prevData: any) => ({ ...prevData, clientSecret: e.target.value })), !isFormChanged && setFormChanged(true) }}
+                            disabled={isLoading ? true : false}
+                            hasIcon
+                        />
+                        <button
+                            type="button"
+                            className="absolute right-3 top-[10px] text-white-gray cursor-pointer"
+                            onClick={() => setClientSecretVisible(prevState => !prevState)}
+                            tabIndex={-1}
+                        >
+                            {isClientSecretVisible ? <Visibility /> : <VisibilityOff />}
+                        </button>
+                    </div>
 
-            <div className="w-full my-4 relative">
-                <Input.Modal
-                    value={connectionData.igUserId || null}
-                    placeholder="Id de Usuário*"
-                    type={isIgUserIdVisible ? "text" : "password"}
-                    onChange={(e: any) => { setConnectionData((prevData: any) => ({ ...prevData, igUserId: e.target.value })), !isFormChanged && setFormChanged(true) }}
-                    disabled={isLoading ? true : false}
-                    hasIcon
-                />
-                <button
-                    type="button"
-                    className="absolute right-3 top-[10px] text-white-gray cursor-pointer"
-                    onClick={() => setIgUserIdVisible(prevState => !prevState)}
-                    tabIndex={-1}
-                >
-                    {isIgUserIdVisible ? <Visibility /> : <VisibilityOff />}
-                </button>
-            </div>
+                    <div className="w-full my-4 relative">
+                        <Input.Modal
+                            value={connectionData.igUserId || null}
+                            placeholder="Id de Usuário*"
+                            type={isIgUserIdVisible ? "text" : "password"}
+                            onChange={(e: any) => { setConnectionData((prevData: any) => ({ ...prevData, igUserId: e.target.value })), !isFormChanged && setFormChanged(true) }}
+                            disabled={isLoading ? true : false}
+                            hasIcon
+                        />
+                        <button
+                            type="button"
+                            className="absolute right-3 top-[10px] text-white-gray cursor-pointer"
+                            onClick={() => setIgUserIdVisible(prevState => !prevState)}
+                            tabIndex={-1}
+                        >
+                            {isIgUserIdVisible ? <Visibility /> : <VisibilityOff />}
+                        </button>
+                    </div>
 
-            <div className="flex items-end justify-end w-full">
-                <Button.Purple onClick={sendConnectionForm} type="button" width="w-44" disabled={(isConnectionFormCompleted && !isLoading) ? false : true}>
-                    {isLoading
-                        ? <CircularProgress size="24px" sx={{ color: "#ffffff", marginLeft: "1px" }} />
-                        : "Salvar Alterações"
-                    }
-                </Button.Purple>
-            </div>
-        </div>
+                    <div className="flex items-end justify-end w-full">
+                        <Button.Purple onClick={sendConnectionForm} type="button" width="w-44" disabled={(isConnectionFormCompleted && !isLoading) ? false : true}>
+                            {isLoading
+                                ? <CircularProgress size="24px" sx={{ color: "#ffffff", marginLeft: "1px" }} />
+                                : "Salvar Alterações"
+                            }
+                        </Button.Purple>
+                    </div>
+                </div>
+            }
+        </>
     )
 }
