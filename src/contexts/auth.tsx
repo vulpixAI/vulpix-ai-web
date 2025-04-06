@@ -82,7 +82,7 @@ export function AuthProvider({ children }: AuthProvider) {
 
     async function loginWithMfa(email: string, otp: string, secretKey: string, dispositiveCode: string) {
         try {
-            const response = await axios.post(`${import.meta.env.VITE_API_URL}/usuarios/login/otp`, {
+            const response = await axios.post(`${import.meta.env.VITE_API_URL}/autenticacoes/google/validar-otp`, {
                 email: email,
                 otp: otp,
                 secretKey: secretKey,

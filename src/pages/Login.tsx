@@ -36,6 +36,7 @@ export default function Login() {
     const inputRefs = useRef<any>([]);
     const [qrcodeResponse, setQrcodeResponse] = useState<Partial<qrcodeResponse>>({});
     const [isMfaRequired, setMfaRequired] = useState<boolean>(false);
+    const [isQrcodeGenerateRequired, setQrcodeGenerateRequired] = useState<boolean>(false);
     const [userEmail, setUserEmail] = useState<string>("");
     const [dispositiveCode, setDispositiveCode] = useState<string>("teste");
 
@@ -53,9 +54,12 @@ export default function Login() {
         }
 
         if (response.data.mfaRequerido != null && response.data.mfaRequerido) {
-            await axios.get(`${import.meta.env.VITE_API_URL}/autenticacoes/google/gerar-qrcode?email=${response.data.email}`).then(response => {
-                setQrcodeResponse(response.data);
-            });
+            if (response.data.secretKey == null) {
+                await axios.get(`${import.meta.env.VITE_API_URL}/autenticacoes/google/gerar-qrcode?email=${response.data.email}`).then(response => {
+                    setQrcodeResponse(response.data);
+                });
+                setQrcodeGenerateRequired(true);
+            }
 
             setUserEmail(data.email);
             setMfaRequired(true);
@@ -155,14 +159,16 @@ export default function Login() {
 
                         <ul className="list-disc mt-4 text-white-gray text-sm px-6 w-full">
                             <li>Abra o aplicativo autenticador de sua preferência (Google Authenticator, Authy, etc.).</li>
-                            <li className="my-2">Escaneie o <span className="text-purple">QR Code</span> abaixo com o app.</li>
+                            {isQrcodeGenerateRequired && <li className="my-2">Escaneie o <span className="text-purple">QR Code</span> abaixo com o app.</li>}
                         </ul>
 
-                        <div className="flex items-center justify-center border border-purple p-3 my-4">
-                            <img className="h-40" src={`data:image/png;base64,${qrcodeResponse.qrcodeBase64}`} alt="QR Code" />
-                        </div>
+                        {isQrcodeGenerateRequired &&
+                            <div className="flex items-center justify-center border border-purple p-3 my-4">
+                                <img className="h-40" src={`data:image/png;base64,${qrcodeResponse.qrcodeBase64}`} alt="Imagem do QR Code" />
+                            </div>
+                        }
 
-                        <ul className="list-disc text-white-gray text-sm px-6 w-full">
+                        <ul className="list-disc text-white-gray text-sm px-6 mt-2 w-full">
                             <li>Insira o código de 6 dígitos gerado pelo app nos campos abaixo:</li>
                         </ul>
 
