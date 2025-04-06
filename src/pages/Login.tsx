@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Input } from "../components/Input";
 import { Button } from "../components/Button";
 import { Visibility, VisibilityOff } from '@mui/icons-material';
@@ -10,8 +10,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate, Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import UseAuth from "../hooks/useAuth";
-import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
+import FingerprintJS from '@fingerprintjs/fingerprintjs';
+import "react-toastify/dist/ReactToastify.css";
 
 const loginFormSchema = z.object({
     email: z.string().min(1, "O e-mail é obrigatório").email("Formato de e-mail inválido"),
@@ -43,6 +44,10 @@ export default function Login() {
     const [isPasswordVisible, setPasswordVisible] = useState<boolean>(false);
     const togglePasswordVisibility = () => setPasswordVisible(prevState => !prevState);
 
+    useEffect(() => {
+        getDispositiveCode();
+    }, []);
+
     async function loginUser(data: loginFormData) {
         setLoading(true);
         const response = await login(data.email, data.password, dispositiveCode);
@@ -67,14 +72,14 @@ export default function Login() {
             return;
         }
 
-        if (response.status == 200 && response.data.status == "AGUARDANDO_PAGAMENTO") {
+        if (response.status == 401) {
+            toast.warn("E-mail ou senha inválidos.");
+        } else if (response.status == 200 && response.data.status == "AGUARDANDO_PAGAMENTO") {
             navigate("/plan");
         } else if (response.status == 200 && response.data.status == "AGUARDANDO_FORMULARIO") {
             navigate("/form");
         } else if (response.status == 200 && response.data.status == "CADASTRO_FINALIZADO") {
             navigate("/creative");
-        } else {
-            toast.warn("E-mail ou senha inválidos.");
         }
 
         setLoading(false);
@@ -98,13 +103,19 @@ export default function Login() {
         setLoading(false);
     }
 
+    async function getDispositiveCode() {
+        const fp = await FingerprintJS.load();
+        const result = await fp.get();
+        setDispositiveCode(result.visitorId);
+    }
+
     function limitInputCharacter(e: any) {
         if (e.target.value.length > 1) {
             e.target.value = e.target.value.slice(0, 1);
         }
     }
 
-    function focusNextInput(e: any, index: number) {
+    function focusNextInput(e: React.ChangeEvent<HTMLInputElement>, index: number) {
         if (!/^\d$/.test(e.target.value)) {
             return;
         }
