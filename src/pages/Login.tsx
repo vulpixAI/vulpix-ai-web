@@ -170,7 +170,7 @@ export default function Login() {
 
                         <ul className="list-disc mt-4 text-white-gray text-sm px-6 w-full">
                             <li>Abra o aplicativo autenticador de sua preferência (Google Authenticator, Authy, etc.).</li>
-                            {isQrcodeGenerateRequired && <li className="my-2">Escaneie o <span className="text-purple">QR Code</span> abaixo com o app.</li>}
+                            {isQrcodeGenerateRequired && <li className="my-2">Escaneie o <span className="text-purple select-none">QR Code</span> abaixo com o app.</li>}
                         </ul>
 
                         {isQrcodeGenerateRequired &&
