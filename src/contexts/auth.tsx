@@ -59,27 +59,40 @@ export function AuthProvider({ children }: AuthProvider) {
         });
     }
 
-    async function login(email: string, password: string) {
+    async function login(email: string, password: string, dispositivoCode: string) {
         try {
             const response = await axios.post(`${import.meta.env.VITE_API_URL}/usuarios/login`, {
                 email: email,
-                senha: password
+                senha: password,
+                dispositivoCode: dispositivoCode
+            });
+
+            if (!response.data.mfaRequerido) {
+                sessionStorage.setItem("bearerToken", response.data.token);
+                setLoggedIn(true);
+                await getUserData(response.data.token)
+                await verifyConnection(response.data.token);
+            }
+
+            return response;
+        } catch (error) {
+            if (axios.isAxiosError(error)) return error.response;
+        }
+    }
+
+    async function loginWithMfa(email: string, otp: string, secretKey: string, dispositiveCode: string) {
+        try {
+            const response = await axios.post(`${import.meta.env.VITE_API_URL}/autenticacoes/google/validar-otp`, {
+                email: email,
+                otp: otp,
+                secretKey: secretKey,
+                dispositivoCode: dispositiveCode
             });
 
             sessionStorage.setItem("bearerToken", response.data.token);
             setLoggedIn(true);
-
-            await axios.get(`${import.meta.env.VITE_API_URL}/usuarios`, {
-                headers: {
-                    Authorization: `Bearer ${response.data.token}`
-                }
-            }).then(response => {
-                sessionStorage.setItem("userData", JSON.stringify(response.data));
-                setUserData(response.data);
-            });
-
-            getUserData(response.data.token)
-            verifyConnection(response.data.token);
+            await getUserData(response.data.token)
+            await verifyConnection(response.data.token);
 
             return response;
         } catch (error) {
@@ -122,7 +135,7 @@ export function AuthProvider({ children }: AuthProvider) {
 
     return (
         <AuthContext.Provider
-            value={{ isLoggedIn, isMediaConnected, setMediaConnected, userData, setUserData, login, signUp, signOut }}>
+            value={{ isLoggedIn, isMediaConnected, setMediaConnected, userData, setUserData, login, loginWithMfa, signUp, signOut }}>
             {children}
         </AuthContext.Provider>
     )
