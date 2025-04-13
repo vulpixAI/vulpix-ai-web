@@ -41,7 +41,7 @@ interface qrcodeResponse {
 }
 
 export default function Login() {
-    const { login, loginWithMfa }: any = UseAuth();
+    const { login, validateOtp }: any = UseAuth();
     const navigate = useNavigate();
 
     const { register, handleSubmit, watch, formState: { errors } } = useForm<loginFormData>({ resolver: zodResolver(loginFormSchema) });
@@ -127,7 +127,7 @@ export default function Login() {
     async function loginUserWithMfa(otp: string) {
         setLoading(true);
 
-        const response = await loginWithMfa(userEmail, otp, qrcodeResponse.secretKey, dispositiveCode);
+        const response = await validateOtp(userEmail, otp, qrcodeResponse.secretKey, dispositiveCode);
 
         if (response.status == 401) {
             toast.warn("Código inválido.");
@@ -145,7 +145,7 @@ export default function Login() {
     async function validateOtpForPasswordChange(otp: string) {
         setLoading(true);
 
-        const response = await loginWithMfa(userEmail, otp);
+        const response = await validateOtp(userEmail, otp);
 
         if (response.status == 401) {
             toast.warn("Código inválido.");

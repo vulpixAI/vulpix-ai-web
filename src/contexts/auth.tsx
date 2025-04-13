@@ -80,7 +80,7 @@ export function AuthProvider({ children }: AuthProvider) {
         }
     }
 
-    async function loginWithMfa(email: string, otp: string, secretKey: string, dispositiveCode: string) {
+    async function validateOtp(email: string, otp: string, secretKey: string, dispositiveCode: string) {
         try {
             const response = await axios.post(`${import.meta.env.VITE_API_URL}/autenticacoes/google/validar-otp`, {
                 email: email,
@@ -135,7 +135,7 @@ export function AuthProvider({ children }: AuthProvider) {
 
     return (
         <AuthContext.Provider
-            value={{ isLoggedIn, isMediaConnected, setMediaConnected, userData, setUserData, login, loginWithMfa, signUp, signOut }}>
+            value={{ isLoggedIn, isMediaConnected, setMediaConnected, userData, setUserData, login, validateOtp, signUp, signOut }}>
             {children}
         </AuthContext.Provider>
     )
