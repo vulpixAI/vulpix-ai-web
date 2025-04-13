@@ -51,7 +51,8 @@ export default function Login() {
         handleSubmit: handleSubmitEmailValidation,
         watch: watchEmailValidation,
         setValue: setValueEmailValidation,
-        formState: { errors: emailValidationError }
+        formState: { errors: emailValidationError },
+        clearErrors: clearEmailValidationError,
     } = useForm<emailValidationFormData>({ resolver: zodResolver(emailValidationFormSchema) });
 
     const {
@@ -224,6 +225,12 @@ export default function Login() {
         if (e.key === "Backspace" && !e.target.value && index > 0) {
             inputRefs.current[index - 1].focus();
         }
+    }
+
+    function returnToLogin() {
+        setValueEmailValidation("email", "");
+        clearEmailValidationError();
+        setForgetMyPasswordSelected(false);
     }
 
     return (
@@ -462,6 +469,9 @@ export default function Login() {
                                             : "Verificar"
                                         }
                                     </Button.Purple>
+                                    <div className="flex justify-center items-start">
+                                        <p className="text-white-gray mt-8 whitespace-nowrap select-none">Deseja voltar para o login? Clique <button className="text-purple hover:text-purple-dark transition-all" onClick={returnToLogin}>aqui</button>.</p>
+                                    </div>
                                 </form>
                             </>
                         }
