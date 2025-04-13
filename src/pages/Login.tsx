@@ -70,7 +70,8 @@ export default function Login() {
     const [isMfaRequired, setMfaRequired] = useState<boolean>(false);
     const [isQrcodeGenerateRequired, setQrcodeGenerateRequired] = useState<boolean>(false);
     const [userEmail, setUserEmail] = useState<string>("");
-    const [dispositiveCode, setDispositiveCode] = useState<string>("teste");
+    const [bearerToken, setBearerToken] = useState<string>("");
+    const [dispositiveCode, setDispositiveCode] = useState<string>("");
 
     const [isPasswordVisible, setPasswordVisible] = useState<boolean>(false);
     const togglePasswordVisibility = () => setPasswordVisible(prevState => !prevState);
@@ -151,6 +152,7 @@ export default function Login() {
         if (response.status == 401) {
             toast.warn("Código inválido.");
         } else if (response.status == 200) {
+            setBearerToken(response.data.token);
             setMfaRequired(false);
             setShowPasswordChangeInputs(true);
         }
@@ -174,8 +176,12 @@ export default function Login() {
 
     async function updateUserPassword(data: newPasswordFormData) {
         try {
-            await axios.post(`${import.meta.env.VITE_API_URL}/usuarios/senha/recuperacao`, {
+            await axios.patch(`${import.meta.env.VITE_API_URL}/usuarios/senha/recuperacao`, {
                 novaSenha: data.newPassword
+            }, {
+                headers: {
+                    Authorization: `Bearer ${bearerToken}`
+                }
             }).then(response => {
                 if (response.status == 204) {
                     toast.info("Senha atualizada com sucesso!");
