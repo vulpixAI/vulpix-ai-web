@@ -378,7 +378,7 @@ export default function Login() {
                                         Crie uma nova senha
                                     </h2>
                                     <p className="text-white-gray text-sm mt-2 text-center w-96">
-                                        Por favor, preencha os campos abaixo com sua nova senha para atualizar o acesso à sua conta.
+                                        Por favor, preencha os campos abaixo com sua nova senha para atualizar o acesso à sua conta
                                     </p>
                                 </div>
                                 <form
@@ -444,7 +444,7 @@ export default function Login() {
                                         Por favor, insira seu e-mail
                                     </h2>
                                     <p className="text-white-gray text-sm mt-2 text-center w-96">
-                                        Precisamos verificar seu endereço de e-mail para prosseguir com a recuperação da sua conta.
+                                        Precisamos verificar seu endereço de e-mail para prosseguir com a recuperação da sua conta
                                     </p>
                                 </div>
                                 <form
@@ -470,7 +470,7 @@ export default function Login() {
                                         }
                                     </Button.Purple>
                                     <div className="flex justify-center items-start">
-                                        <p className="text-white-gray mt-8 whitespace-nowrap select-none">Deseja voltar para o login? Clique <button className="text-purple hover:text-purple-dark transition-all" onClick={returnToLogin}>aqui</button>.</p>
+                                        <p className="text-white-gray mt-8 whitespace-nowrap select-none">Deseja voltar para o login? Clique <button className="text-purple hover:text-purple-dark transition-all" onClick={returnToLogin}>aqui</button></p>
                                     </div>
                                 </form>
                             </>
