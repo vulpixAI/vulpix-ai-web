@@ -19,7 +19,21 @@ const loginFormSchema = z.object({
     password: z.string().min(8, "Mínimo de 8 caracteres")
 });
 
+const emailValidationFormSchema = z.object({
+    email: z.string().min(1, "O e-mail é obrigatório").email("Formato de e-mail inválido")
+});
+
+const newPasswordFormSchema = z.object({
+    newPassword: z.string().min(8, "Mínimo de 8 caracteres"),
+    confirmNewPassword: z.string().min(8, "Mínimo de 8 caracteres")
+}).refine(data => data.newPassword == data.confirmNewPassword, {
+    message: "As senhas não coincidem",
+    path: ["confirmNewPassword"]
+});
+
 type loginFormData = z.infer<typeof loginFormSchema>
+type emailValidationFormData = z.infer<typeof emailValidationFormSchema>
+type newPasswordFormData = z.infer<typeof newPasswordFormSchema>
 
 interface qrcodeResponse {
     qrcodeBase64: string,
@@ -32,6 +46,22 @@ export default function Login() {
 
     const { register, handleSubmit, watch, formState: { errors } } = useForm<loginFormData>({ resolver: zodResolver(loginFormSchema) });
 
+    const {
+        register: registerEmailValidation,
+        handleSubmit: handleSubmitEmailValidation,
+        watch: watchEmailValidation,
+        setValue: setValueEmailValidation,
+        formState: { errors: emailValidationError }
+    } = useForm<emailValidationFormData>({ resolver: zodResolver(emailValidationFormSchema) });
+
+    const {
+        register: registerNewPassword,
+        handleSubmit: handleSubmitNewPassword,
+        watch: watchNewPassword,
+        setValue: setValueNewPassword,
+        formState: { errors: newPasswordErrors }
+    } = useForm<newPasswordFormData>({ resolver: zodResolver(newPasswordFormSchema) });
+
     const [isLoading, setLoading] = useState<boolean>(false);
 
     const inputRefs = useRef<any>([]);
@@ -43,6 +73,15 @@ export default function Login() {
 
     const [isPasswordVisible, setPasswordVisible] = useState<boolean>(false);
     const togglePasswordVisibility = () => setPasswordVisible(prevState => !prevState);
+
+    const [isForgetMyPasswordSelected, setForgetMyPasswordSelected] = useState<boolean>(false);
+    const [isValidRecoveryEmail, setValidRecoveryEmail] = useState<boolean>(false);
+    const [ShowPasswordChangeInputs, setShowPasswordChangeInputs] = useState<boolean>(false);
+
+    const [isNewPasswordVisible, setNewPasswordVisible] = useState<boolean>(false);
+    const toggleNewPasswordVisibility = () => setNewPasswordVisible(prevState => !prevState);
+    const [isConfirmNewPasswordVisible, setConfirmNewPasswordVisible] = useState<boolean>(false);
+    const toggleConfirmNewPasswordVisibility = () => setConfirmNewPasswordVisible(prevState => !prevState);
 
     useEffect(() => {
         getDispositiveCode();
@@ -91,7 +130,7 @@ export default function Login() {
         const response = await loginWithMfa(userEmail, otp, qrcodeResponse.secretKey, dispositiveCode);
 
         if (response.status == 401) {
-            toast.warn("Código OTP inválido.");
+            toast.warn("Código inválido.");
         } else if (response.status == 200 && response.data.status == "AGUARDANDO_PAGAMENTO") {
             navigate("/plan");
         } else if (response.status == 200 && response.data.status == "AGUARDANDO_FORMULARIO") {
@@ -101,6 +140,57 @@ export default function Login() {
         }
 
         setLoading(false);
+    }
+
+    async function validateOtpForPasswordChange(otp: string) {
+        setLoading(true);
+
+        const response = await loginWithMfa(userEmail, otp);
+
+        if (response.status == 401) {
+            toast.warn("Código inválido.");
+        } else if (response.status == 200) {
+            setMfaRequired(false);
+            setShowPasswordChangeInputs(true);
+        }
+
+        setLoading(false);
+    }
+
+    async function verifyUserEmail(data: emailValidationFormData) {
+        try {
+            await axios.get(`${import.meta.env.VITE_API_URL}/usuarios?email=${data.email}`).then(response => {
+                if (response.status == 200) {
+                    setUserEmail(data.email);
+                    setValidRecoveryEmail(true);
+                    setMfaRequired(true);
+                }
+            })
+        } catch (error) {
+            toast.warn("E-mail não encontrado.");
+        }
+    }
+
+    async function updateUserPassword(data: newPasswordFormData) {
+        try {
+            await axios.post(`${import.meta.env.VITE_API_URL}/usuarios/senha/recuperacao`, {
+                novaSenha: data.newPassword
+            }).then(response => {
+                if (response.status == 204) {
+                    toast.info("Senha atualizada com sucesso!");
+                    setShowPasswordChangeInputs(false);
+                    setForgetMyPasswordSelected(false);
+                    setValidRecoveryEmail(false);
+                    setNewPasswordVisible(false);
+                    setConfirmNewPasswordVisible(false);
+                    setValueEmailValidation("email", "");
+                    setValueNewPassword("newPassword", "");
+                    setValueNewPassword("confirmNewPassword", "");
+                }
+            })
+        } catch (error) {
+            toast.error("Falha de conexão com o servidor.");
+        }
     }
 
     async function getDispositiveCode() {
@@ -126,7 +216,7 @@ export default function Login() {
 
         if (index == inputRefs.current.length - 1) {
             let otp = inputRefs.current.map((input: any) => input.value).join("");
-            loginUserWithMfa(otp);
+            isValidRecoveryEmail ? validateOtpForPasswordChange(otp) : loginUserWithMfa(otp);
         }
     }
 
@@ -155,8 +245,74 @@ export default function Login() {
             <div className="h-full w-[65%] bg-login bg-cover bg-no-repeat bg-center clip-path-login mobile:hidden"></div>
 
             <div className="h-full w-[40%] flex flex-col items-center justify-center mobile:w-full">
+                {(!isMfaRequired && !isForgetMyPasswordSelected)
+                    &&
+                    <>
+                        <div className="h-40 flex items-center justify-center flex-col mb-4">
+                            <h1 className=" text-5xl font-semibold text-white-gray text-center mobile:text-3xl">Bem-vindo de volta</h1>
+                            <p className="text-white-gray mt-3 text-lg">Faça seu login para prosseguir</p>
+                        </div>
+                        <form
+                            onSubmit={handleSubmit(loginUser)}
+                            className="w-[23rem] mobile:w-80"
+                        >
+                            <div className="flex flex-col">
+                                <Input.Input
+                                    value={watch('email')}
+                                    placeholder="Endereço de e-mail*"
+                                    type="email"
+                                    id="inputEmail"
+                                    name="email"
+                                    register={register}
+                                    disabled={isLoading ? true : false}
+                                />
+                                {errors.email && <span className="text-white-gray text-sm ml-3 mt-2">{errors.email.message}</span>}
+                            </div>
+                            <div className="flex flex-col mt-6 relative">
+                                <Input.Input
+                                    value={watch('password')}
+                                    placeholder='Senha*'
+                                    type={isPasswordVisible ? "text" : "password"}
+                                    id="inputPassword"
+                                    name="password"
+                                    register={register}
+                                    disabled={isLoading ? true : false}
+                                    hasIcon
+                                />
+                                <button
+                                    type="button"
+                                    className="absolute right-3 top-3 text-white-gray cursor-pointer"
+                                    onClick={togglePasswordVisibility}
+                                    tabIndex={-1}
+                                >
+                                    {isPasswordVisible ? <Visibility /> : <VisibilityOff />}
+                                </button>
+                                {errors.password && <span className="text-white-gray text-sm ml-3 mt-2">{errors.password.message}</span>}
+                            </div>
+                            <div className="flex justify-end">
+                                <button
+                                    type="button"
+                                    className="text-white-gray mt-4 mb-8 mr-3 text-sm hover:text-purple transition-all"
+                                    onClick={() => setForgetMyPasswordSelected(true)}
+                                >
+                                    Esqueci minha senha
+                                </button>
+                            </div>
+                            <Button.Purple type="submit" disabled={isLoading ? true : false}>
+                                {isLoading
+                                    ? <CircularProgress size="24px" sx={{ color: "#ffffff" }} />
+                                    : "Entrar"
+                                }
+                            </Button.Purple>
+                            <div className="flex justify-center items-start">
+                                <p className="text-white-gray mt-8 whitespace-nowrap select-none">Ainda não possui uma conta? <Link to="/signup" className="text-purple hover:text-purple-dark transition-all">Inscreva-se</Link></p>
+                            </div>
+                        </form>
+                    </>
+                }
+
                 {isMfaRequired
-                    ?
+                    &&
                     <>
                         <div className="mb-2">
                             <h2 className="text-2xl font-semibold text-white-gray mt-2 text-center">
@@ -202,62 +358,113 @@ export default function Login() {
                             }
                         </div>
                     </>
-                    :
+                }
+
+                {isForgetMyPasswordSelected && !isMfaRequired
+                    &&
                     <>
-                        <div className="h-40 flex items-center justify-center flex-col mb-4">
-                            <h1 className=" text-5xl font-semibold text-white-gray text-center mobile:text-3xl">Bem-vindo de volta</h1>
-                            <p className="text-white-gray mt-3 text-lg">Faça seu login para prosseguir</p>
-                        </div>
-                        <form
-                            onSubmit={handleSubmit(loginUser)}
-                            className="w-[23rem] mobile:w-80"
-                        >
-                            <div className="flex flex-col">
-                                <Input.Input
-                                    value={watch('email')}
-                                    placeholder="Endereço de e-mail*"
-                                    type="email"
-                                    id="inputEmail"
-                                    name="email"
-                                    register={register}
-                                    disabled={isLoading ? true : false}
-                                />
-                                {errors.email && <span className="text-white-gray text-sm ml-3 mt-2">{errors.email.message}</span>}
-                            </div>
-                            <div className="flex flex-col mt-6 relative">
-                                <Input.Input
-                                    value={watch('password')}
-                                    placeholder='Senha*'
-                                    type={isPasswordVisible ? "text" : "password"}
-                                    id="inputPassword"
-                                    name="password"
-                                    register={register}
-                                    disabled={isLoading ? true : false}
-                                    hasIcon
-                                />
-                                <button
-                                    type="button"
-                                    className="absolute right-3 top-3 text-white-gray cursor-pointer"
-                                    onClick={togglePasswordVisibility}
-                                    tabIndex={-1}
+                        {ShowPasswordChangeInputs
+                            ?
+                            <>
+                                <div>
+                                    <h2 className="text-2xl font-semibold text-white-gray mt-2 text-center">
+                                        Crie uma nova senha
+                                    </h2>
+                                    <p className="text-white-gray text-sm mt-2 text-center w-96">
+                                        Por favor, preencha os campos abaixo com sua nova senha para atualizar o acesso à sua conta.
+                                    </p>
+                                </div>
+                                <form
+                                    onSubmit={handleSubmitNewPassword(updateUserPassword)}
+                                    className="w-[23rem] mobile:w-80"
                                 >
-                                    {isPasswordVisible ? <Visibility /> : <VisibilityOff />}
-                                </button>
-                                {errors.password && <span className="text-white-gray text-sm ml-3 mt-2">{errors.password.message}</span>}
-                            </div>
-                            <div className="flex justify-end">
-                                <a href="" className="text-white-gray mt-4 mb-8 mr-3 text-sm hover:text-purple transition-all">Esqueci minha senha</a>
-                            </div>
-                            <Button.Purple type="submit" disabled={isLoading ? true : false}>
-                                {isLoading
-                                    ? <CircularProgress size="24px" sx={{ color: "#ffffff" }} />
-                                    : "Entrar"
-                                }
-                            </Button.Purple>
-                            <div className="flex justify-center items-start">
-                                <p className="text-white-gray mt-8 whitespace-nowrap select-none">Ainda não possui uma conta? <Link to="/signup" className="text-purple hover:text-purple-dark transition-all">Inscreva-se</Link></p>
-                            </div>
-                        </form>
+                                    <div className="flex flex-col mt-6 relative">
+                                        <Input.Input
+                                            value={watchNewPassword('newPassword')}
+                                            placeholder='Nova senha*'
+                                            type={isNewPasswordVisible ? "text" : "password"}
+                                            id="inputNewPassword"
+                                            name="newPassword"
+                                            register={registerNewPassword}
+                                            disabled={isLoading ? true : false}
+                                            hasIcon
+                                        />
+                                        <button
+                                            type="button"
+                                            className="absolute right-3 top-3 text-white-gray cursor-pointer"
+                                            onClick={toggleNewPasswordVisibility}
+                                            tabIndex={-1}
+                                        >
+                                            {isNewPasswordVisible ? <Visibility /> : <VisibilityOff />}
+                                        </button>
+                                        {newPasswordErrors.newPassword && <span className="text-white-gray text-sm ml-3 mt-2">{newPasswordErrors.newPassword.message}</span>}
+                                    </div>
+
+                                    <div className="flex flex-col my-6 relative">
+                                        <Input.Input
+                                            value={watchNewPassword('confirmNewPassword')}
+                                            placeholder='Confirmar nova senha*'
+                                            type={isConfirmNewPasswordVisible ? "text" : "password"}
+                                            id="inputConfirmNewPassword"
+                                            name="confirmNewPassword"
+                                            register={registerNewPassword}
+                                            disabled={isLoading ? true : false}
+                                            hasIcon
+                                        />
+                                        <button
+                                            type="button"
+                                            className="absolute right-3 top-3 text-white-gray cursor-pointer"
+                                            onClick={toggleConfirmNewPasswordVisibility}
+                                            tabIndex={-1}
+                                        >
+                                            {isConfirmNewPasswordVisible ? <Visibility /> : <VisibilityOff />}
+                                        </button>
+                                        {newPasswordErrors.confirmNewPassword && <span className="text-white-gray text-sm ml-3 mt-2">{newPasswordErrors.confirmNewPassword.message}</span>}
+                                    </div>
+
+                                    <Button.Purple type="submit" disabled={isLoading ? true : false}>
+                                        {isLoading
+                                            ? <CircularProgress size="24px" sx={{ color: "#ffffff" }} />
+                                            : "Atualizar Senha"
+                                        }
+                                    </Button.Purple>
+                                </form>
+                            </>
+                            :
+                            <>
+                                <div className="mb-6">
+                                    <h2 className="text-2xl font-semibold text-white-gray mt-2 text-center">
+                                        Por favor, insira seu e-mail
+                                    </h2>
+                                    <p className="text-white-gray text-sm mt-2 text-center w-96">
+                                        Precisamos verificar seu endereço de e-mail para prosseguir com a recuperação da sua conta.
+                                    </p>
+                                </div>
+                                <form
+                                    onSubmit={handleSubmitEmailValidation(verifyUserEmail)}
+                                    className="w-[23rem] mobile:w-80"
+                                >
+                                    <div className="flex flex-col mb-6">
+                                        <Input.Input
+                                            value={watchEmailValidation('email')}
+                                            placeholder="Endereço de e-mail*"
+                                            type="email"
+                                            id="inputEmail"
+                                            name="email"
+                                            register={registerEmailValidation}
+                                            disabled={isLoading ? true : false}
+                                        />
+                                        {emailValidationError.email && <span className="text-white-gray text-sm ml-3 mt-2">{emailValidationError.email.message}</span>}
+                                    </div>
+                                    <Button.Purple type="submit" disabled={isLoading ? true : false}>
+                                        {isLoading
+                                            ? <CircularProgress size="24px" sx={{ color: "#ffffff" }} />
+                                            : "Verificar"
+                                        }
+                                    </Button.Purple>
+                                </form>
+                            </>
+                        }
                     </>
                 }
             </div>
