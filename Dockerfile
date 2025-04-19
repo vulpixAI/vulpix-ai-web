@@ -19,8 +19,8 @@ FROM nginx:alpine
 
 COPY --from=build /app/dist /usr/share/nginx/html
 
-COPY default.conf /etc/nginx/conf.d/default.conf
+COPY nginx.conf /etc/nginx/nginx.conf.template
 
 EXPOSE 80
 
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["sh", "-c", "envsubst '$IP_BACKEND' < /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf && nginx -g 'daemon off;'"]
