@@ -59,7 +59,7 @@ export default function Dashboard() {
     }
 
     async function getKpisData() {
-        await axios.get(`${import.meta.env.VITE_API_URL}/dash/kpís`, {
+        await axios.get(`${import.meta.env.VITE_API_URL}/dash/kpis`, {
             headers: {
                 Authorization: `Bearer ${sessionStorage.getItem("bearerToken")}`
             }
