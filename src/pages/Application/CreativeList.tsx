@@ -44,7 +44,7 @@ export default function CreativeList() {
 
     const [startDate, setStartDate] = useState<Dayjs>(dayjs().subtract(1, "month"));
     const [endDate, setEndDate] = useState<Dayjs>(dayjs());
-    const [selectedStartDate, setSelectedStartDate] = useState<any>(dayjs().subtract(1, "month"));
+    const [selectedStartDate, setSelectedStartDate] = useState<any>(dayjs().subtract(1, "year"));
     const [selectedEndDate, setSelectedEndDate] = useState<any>(dayjs());
     const [isDateRangeChanged, setDateRangeChanged] = useState<boolean>(false);
 

@@ -27,7 +27,7 @@ export default function Dashboard() {
 
     const [startDate, setStartDate] = useState<Dayjs>(dayjs().subtract(1, "month"));
     const [endDate, setEndDate] = useState<Dayjs>(dayjs());
-    const [selectedStartDate, setSelectedStartDate] = useState<any>(dayjs().subtract(1, "month"));
+    const [selectedStartDate, setSelectedStartDate] = useState<any>(dayjs().subtract(1, "year"));
     const [selectedEndDate, setSelectedEndDate] = useState<any>(dayjs());
     const [isDateRangeChanged, setDateRangeChanged] = useState<boolean>(false);
 
@@ -74,7 +74,7 @@ export default function Dashboard() {
                 Authorization: `Bearer ${sessionStorage.getItem("bearerToken")}`
             }
         }).then(response => {
-            setLineChartData(response.data.map(capitalizeKeys));
+            response.data.length > 0 && setLineChartData(response.data.map(capitalizeKeys));
             setLoading(false);
             setDateRangeChanged(false);
         });
