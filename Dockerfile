@@ -23,4 +23,4 @@ COPY nginx.conf /etc/nginx/nginx.conf.template
 
 EXPOSE 80
 
-CMD ["sh", "-c", "envsubst '$IP_BACKEND' < /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf && nginx -g 'daemon off;'"]
+CMD ["sh", "-c", "envsubst '$IP_BACKEND_1 $IP_BACKEND_2' < /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf && nginx -g 'daemon off;'"]
