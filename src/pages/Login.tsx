@@ -115,6 +115,8 @@ export default function Login() {
 
         if (response.status == 401) {
             toast.warn("E-mail ou senha inválidos.");
+        } else if (response.status == 404) {
+            toast.warn("E-mail não encontrado.");
         } else if (response.status == 200 && response.data.status == "AGUARDANDO_PAGAMENTO") {
             navigate("/plan");
         } else if (response.status == 200 && response.data.status == "AGUARDANDO_FORMULARIO") {
