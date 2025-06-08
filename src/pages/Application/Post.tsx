@@ -270,46 +270,37 @@ export default function Post() {
                                     </div>
 
                                     <div className="flex items-center w-28">
-                                        <Tooltip title="Visualizações" placement="bottom">
-                                            <VisibilityIcon />
-                                        </Tooltip>
-                                        <span className="ml-3 mt-[1px]">{selectedPostMetrics.metrics?.impressions.value}</span>
-                                    </div>
-                                </div>
-
-                                <div className="flex flex-col justify-between h-20">
-                                    <div className="flex items-center w-28">
                                         <Tooltip title="Comentários" placement="bottom">
                                             <CommentIcon />
                                         </Tooltip>
                                         <span className="ml-3 mt-[1px]">{selectedPostMetrics.metrics?.comments.value}</span>
                                     </div>
+                                </div>
 
+                                <div className="flex flex-col justify-between h-20">
                                     <div className="flex items-center w-28">
                                         <Tooltip title="Visitas ao Perfil" placement="bottom">
                                             <PersonIcon />
                                         </Tooltip>
                                         <span className="ml-3 mt-[1px]">{selectedPostMetrics.metrics?.profile_visits.value}</span>
                                     </div>
-                                </div>
 
-                                <div className="flex flex-col justify-between h-20">
                                     <div className="flex items-center w-28">
                                         <Tooltip title="Compartilhamentos" placement="bottom">
                                             <ShareIcon />
                                         </Tooltip>
                                         <span className="ml-3 mt-[1px]">{selectedPostMetrics.metrics?.shares.value}</span>
                                     </div>
+                                </div>
 
+                                <div className="flex flex-col justify-between h-20">
                                     <div className="flex items-center w-28">
                                         <Tooltip title="Alcance de Pessoas" placement="bottom">
                                             <ExploreIcon />
                                         </Tooltip>
                                         <span className="ml-3 mt-[1px]">{selectedPostMetrics.metrics?.reach.value}</span>
                                     </div>
-                                </div>
 
-                                <div className="flex flex-col h-20">
                                     <div className="flex items-center w-24">
                                         <Tooltip title="Salvos" placement="bottom">
                                             <BookmarkIcon />
