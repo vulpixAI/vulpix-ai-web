@@ -32,7 +32,6 @@ interface PostMetrics {
     caption: string,
     metrics: {
         comments: { value: number },
-        impressions: { value: number },
         likes: { value: number },
         profile_visits: { value: number },
         reach: { value: number },
