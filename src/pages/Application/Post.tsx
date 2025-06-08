@@ -8,7 +8,6 @@ import { Skeleton } from "@mui/material";
 import dayjs, { Dayjs } from "dayjs";
 import CircularProgress from '@mui/material/CircularProgress';
 import CommentIcon from '@mui/icons-material/Comment';
-import VisibilityIcon from '@mui/icons-material/Visibility';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import PersonIcon from '@mui/icons-material/Person';
 import ExploreIcon from '@mui/icons-material/Explore';
